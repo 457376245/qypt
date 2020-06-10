@@ -1,0 +1,86 @@
+<@override name="title">河北电信天翼会员中心-任务规则配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskRuleEdit.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="ruleId" value="${ruleId}" name="ruleId"/>
+	<input type="hidden" id="taskId" value="${taskId}" name="taskId"/>
+	<input type="hidden" id="rewardId" value="${rewardId}" name="rewardId"/>
+	<input type="hidden" id="infoFrom" value="${infoFrom}" name="infoFrom"/>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>规则类型：</label>
+		<div class="layui-inline" style="width:450px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择规则类型" lay-filter="ruleType"  id="ruleType" name="ruleType">
+				<option value="">请选择规则类型</option>
+			    <option value="1" <#if (taskRuleInfo??)  && (taskRuleInfo.ruleType=='1')>selected="selected"</#if> >星级限制</option>
+			    <option value="2" <#if (taskRuleInfo??)  && (taskRuleInfo.ruleType=='2')>selected="selected"</#if>>签到数目</option>
+			     <option value="8" <#if (taskRuleInfo??)  && (taskRuleInfo.ruleType=='8')>selected="selected"</#if> >地市限制</option>
+			    <option value="10" <#if (taskRuleInfo??)  && (taskRuleInfo.ruleType=='10')>selected="selected"</#if>>每日兑换量</option>
+			    <option value="11" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='11')>selected="selected"</#if>>每日参与活动</option>
+			    <option value="16" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='16')>selected="selected"</#if>>当日分享次数</option>
+			    <option value="17" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='17')>selected="selected"</#if>>总计分享次数</option>
+			    <option value="3" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='3')>selected="selected"</#if>>语音量</option>
+			    <option value="4" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='4')>selected="selected"</#if>>使用流量</option>
+			    <option value="5" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='5')>selected="selected"</#if>>5G终端</option>
+			    <option value="12" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='12')>selected="selected"</#if>>5G专属</option>
+			    <option value="13" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='13')>selected="selected"</#if>>全屋WIFI用户</option>
+			    <option value="14" <#if (taskRuleInfo??) && (taskRuleInfo.ruleType=='14')>selected="selected"</#if>>智能看家用户</option>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item symbolChooseCla_">
+		<label class="layui-form-label"><span class="red">*</span>比对方式：</label>
+		
+		<div class="layui-inline" >
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择比对方式" lay-filter="ruleDataSymbol" id="ruleDataSymbol" name="ruleDataSymbol">
+				<option value="">请选择比对类型</option>
+				<option value=">=" <#if (taskRuleInfo??)  && (taskRuleInfo.ruleDataSymbol=='>=')>selected="selected"</#if>>大于等于</option>
+				<option value="<=" <#if (taskRuleInfo??) && (taskRuleInfo.ruleDataSymbol=='&lt=')>selected="selected"</#if>>小于等于</option>
+				<option value=">>" <#if (taskRuleInfo??) && (taskRuleInfo.ruleDataSymbol=='>>')>selected="selected"</#if>>大于</option>
+				<option value="<<" <#if (taskRuleInfo??) && (taskRuleInfo.ruleDataSymbol=='&lt&lt')>selected="selected"</#if>>小于</option>
+				<option value="==" <#if (taskRuleInfo??) && (taskRuleInfo.ruleDataSymbol=='==')>selected="selected"</#if>>等于</option>
+				<option value="-" <#if (taskRuleInfo??) && (taskRuleInfo.ruleDataSymbol=='-')>selected="selected"</#if>>两者之间</option>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item symbolChooseCla_">
+		<label class="layui-form-label"><span class="red">*</span>比对数据：</label>
+		
+		<div class="layui-inline" >
+			<input type="text" required lay-verify="required" lay-reqText="请输入比对数值" placeholder="请输入数值" id="ruleData" name="ruleData" autocomplete="off" class="layui-input" value="${taskRuleInfo.ruleData}" style="width:180px;"> 
+		</div>
+		
+		<div class="layui-inline" id="ruleDataSubDiv" <#if (taskRuleInfo.ruleDataSymbol!='-')>style="display: none;"</#if> >
+			<input type="text"  placeholder="请输入数值" id="ruleDataSub" name="ruleDataSub" autocomplete="off" class="layui-input" value="${taskRuleInfo.ruleDataSub}" style="width: 180px;"> 
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>规则名称：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="groupTitle" required lay-verify="required" lay-reqText="请输入规则名称" placeholder="请输入规则名称（必填）" name="ruleTitle" autocomplete="off" class="layui-input" value="${taskRuleInfo.ruleTitle}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">规则简介：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text"  placeholder="请输入简介（非必填）" name="ruleDesc" autocomplete="off" class="layui-input" value="${taskRuleInfo.ruleDesc}"> 
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

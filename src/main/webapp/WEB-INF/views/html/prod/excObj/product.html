@@ -1,0 +1,38 @@
+<@override name="title">产品信息</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/prod/excObj/product.js"></script>
+</@override> <@override name="content">
+    <input value="${oldProductId}" class="layui-input search_input" type="text" id="oldProductId" style="display: none" >
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <blockquote class="layui-elem-quote news_search">
+                <div class="layui-inline layui-form-item pad10">
+                    <form class="layui-form">
+                        <div class="layui-input-inline">
+                            <input value="" placeholder="请输入商品名称" class="layui-input search_input" type="text" id="productTitle">
+                        </div>
+                        <div class="layui-input-inline">
+                            <input value="" placeholder="请输入商品编码" class="layui-input search_input" type="text" id="productCode">
+                        </div>
+                        <div class="layui-input-inline" style="width:75px;">
+                            <a class="layui-btn search_btn" id="searchInfoBtn">查询</a>
+                        </div>
+                    </form>
+                </div>
+            </blockquote>
+            <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+                <!--<div class="title-box">
+                    <ul>
+                        <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 抽奖活动列表（点击活动标题查看奖品列表）</p></li>
+                    </ul>
+                </div>-->
+
+                <!-- table -->
+                <table class="layui-table table-hover sortable" lay-filter="productListTable" lay-skin="nob" id="productListTable">
+                </table>
+            </div>
+        </div>
+    </div>
+
+</@override>
+<@extends name="/main/main-template.html"/>

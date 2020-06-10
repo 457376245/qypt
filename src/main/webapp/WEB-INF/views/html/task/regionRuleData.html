@@ -1,0 +1,30 @@
+<@override name="title">河北电信天翼会员中心-地市查看</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/regionRuleData.js"></script>
+</@override> 
+<@override name="content">
+<input type="hidden" id="ruleId" name="ruleId" value="${ruleId}"/>
+
+<section class="layui-larry-box">
+	<div class="larry-personal">
+		<div class="layui-tab">
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box" >
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 可用地市查看</p></li>
+	    	 			<li class="right"><div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="sureChooseBtns" onclick="regionRuleData.delChooseInfo('DEL');">确定删除</a></div>
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="regionList" lay-filter="regionList">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		</div>
+	</div>
+</section>
+</@override> 
+<@extends name="/main/main-template.html"/>

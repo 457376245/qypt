@@ -1,0 +1,57 @@
+<@override name="title">编辑秒杀商品</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/activity/seckillPro.js"></script>
+</@override> <@override name="content">
+<form class="layui-form com-form">
+    <div class="layui-form-item" data-id="${parentId}" id="contentDiv">
+        <#assign style='' />
+        <#if flag=='detail'>
+        <#assign style='disabled' />
+       </#if>
+        <#if result?? &&result.data??>
+            <#list result.data as act>
+                <div class="layui-input-block">
+                    <div class="layui-inline">
+                        <#if act.type=='1'>
+                        <input type="button" readonly class="layui-btn layui-btn-radius layui-btn-primary"  value="${act.time}时" >
+                        <#else>
+                        <input type="button" readonly class="layui-btn layui-btn-radius layui-btn-primary"  value="${act.time}" >
+                        </#if>
+                    </div>
+                    <div class="layui-inline">
+                        <input type="button" value="添加商品" class="seckill-time actAdd_btn"  data-id="${act.activityId}" ${style}>
+                    </div>
+                    <div class="layui-inline">
+                        <table  id="seckilltable${act.activityId}" lay-filter="seckilltable${act.activityId}">　
+                        </table>
+                        <script type="text/html" id="toolBar${act.activityId}">
+                            <#if flag!='detail'>
+                            <a class="layui-btn layui-btn-xs" lay-event="del"> 删除</a>
+                            </#if>
+                        </script>
+                    </div>
+                </div>
+
+            </#list>
+        </#if>
+    </div>
+    <#if flag!='detail'&&result.statusCd!='101'>
+    <div class="layui-form-item"  id="bottomTool">
+        <div class="layui-input-block">
+            <button class="layui-btn"  lay-submit="" lay-filter="saveAct">保存</button>
+            <button class="layui-btn" lay-submit="" lay-filter="publishAct">发布</button>
+        </div>
+    </div>
+    </#if>
+</form>
+<script>
+    var resultData='${resultData}';
+    var olddatas={};
+    var tempDatas={};
+    if(resultData!=null&&resultData!=undefined&&resultData!=''){
+        olddatas=JSON.parse(resultData).data;
+        tempDatas=JSON.parse(resultData).data;
+    }
+</script>
+</@override>
+<@extends name="/main/main-template.html"/>

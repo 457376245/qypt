@@ -1,0 +1,48 @@
+<@override name="title">河北电信天翼会员中心-任务图片配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/task/taskImgEdit.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="taskId" value="${taskId}" name="taskId"/>
+	<input type="hidden" id="imgIp" value="${imgIp}" name="imgIp"/>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>图片排序：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number" id="sortSeq" required lay-verify="required" lay-reqText="请输入图片排序" placeholder="请输入排序（越小越靠前）" name="sortSeq" autocomplete="off" class="layui-input" > 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>图片类型：</label>
+		<div class="layui-inline" style="width:450px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择图片类型" lay-filter="" id="classCode" name="classCode">
+			    <option value="105">首页广告弹窗图片</option>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>选择图片：</label>
+		<div class="layui-inline">
+			<button type="button" class="layui-btn" id="taskImgFile">
+				<i class="layui-icon">&#xe67c;</i>上传图片
+			</button>
+		</div>
+		
+		<div class="layui-inline">
+			<button type="button" class="layui-btn" onclick="taskImgEdit.showImgInfo();">查看图片</button>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

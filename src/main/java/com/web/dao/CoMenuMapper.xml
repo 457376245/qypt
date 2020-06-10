@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoMenuDao">
+<resultMap id="getMenu" type="com.web.model.CoMenu">
+    <result column="ID" property="id"></result>
+    <result column="NAME" property="name"></result>
+    <result column="PID" property="pid"></result>
+    <result column="SORT_SEQ" property="sort_seq"></result>
+    <result column="IS_TYPE" property="is_type"></result>
+    <result column="DESCPT" property="descpt"></result>
+    <result column="CODE" property="code"></result>
+    <result column="ICON" property="icon"></result>
+    <result column="PAGE_URL" property="page_url"></result>
+    <result column="STATUS_DATE" property="status_date"></result>
+    <result column="UPDATE_DATE" property="update_date"></result>
+    <result column="STATUS_CD" property="status_cd"></result>
+    <collection property="secondMenu" ofType="com.web.model.CoMenu"></collection>
+</resultMap>
+<select id="getMenus" resultMap="getMenu">
+    select * from qypt.co_menu
+</select>
+
+</mapper>

@@ -1,0 +1,162 @@
+<@override name="title">河北电信天翼会员中心-任务展示</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskIndex.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskRule.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskReward.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskRewardRule.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskImg.js"></script>
+</@override> 
+<@override name="content">
+<section class="layui-larry-box">
+	<div class="larry-personal">
+	
+		<!-- 任务展示START -->
+		<div class="layui-tab" id="taskTab">
+	        <blockquote class="layui-elem-quote news_search">
+				<div class="layui-inline layui-form-item pad10" style="margin-bottom:4px;">
+					<form class="layui-form">
+					    <div class="layui-inline">
+					    	<div class="layui-input-inline">
+					    		<input value="" id="taskName" placeholder="请输入任务名称关键字" class="layui-input search_input" type="text" maxlength="8">
+					   	 	</div>
+					    
+							<div class="layui-input-inline">
+								<select class="newsLook" lay-filter="" id="statusCd">
+								    <option value="">请选择状态</option>
+							        <option value="100">待启用</option>
+							        <option value="101">已启用</option>
+							    </select>
+							</div>
+							
+							<div class="layui-input-inline">
+								<select class="newsLook" lay-filter="" id="groupId">
+								    <option value="">请选择归属分组</option>
+								    <#if (taskGroups??) && (taskGroups?size>0)>
+								    <#list taskGroups as taskGroupInfo>
+								    <option value="${taskGroupInfo.groupId}">${taskGroupInfo.groupTitle}</option>
+								    </#list>
+								    </#if>
+							    </select>
+							</div>
+							
+							<div class="layui-input-inline">
+								<button class="layui-btn" type="button"  id="searchInfoBtn">查询</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</blockquote>
+            
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box" >
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 任务列表</p></li>
+	    	 			<li class="right">
+	    	 				<div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addTaskGroupBtn" onclick="taskIndex.toEditTaskInfo('ADD');">添加任务</a></div>
+	    	 				<div class="layui-inline"><a class="layui-btn layui-btn-normal" href="javascript:void(0);" onclick="taskIndex.reloadTaskAndRewardRedis();">刷新缓存</a></div>
+	    	 			</li>
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="taskListTable">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		    
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box taskDivCla_" id="taskRuleDiv" style="display: none;">
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p" id="taskRuleP">任务规则()</p></li>
+	    	 			<li class="right">
+	    	 				<div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addTaskRuleBtn" onclick="taskRule.toEditTaskRuleInfo('ADD');">添加规则</a></div>
+	    	 				<div class="layui-inline"><a class="layui-btn layui-btn-normal" href="javascript:void(0);" onclick="taskRule.toEditMode('SHOW')">任务展示条件</a></div>
+	    	 				<div class="layui-inline"><a class="layui-btn layui-btn-normal" href="javascript:void(0);" onclick="taskRule.toEditMode('FINISH')">任务完成条件</a></div>
+	    	 			</li>
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="taskRuleList">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		    
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box taskDivCla_" id="taskImgDiv" style="display: none;">
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p" id="taskImgP">任务图片()</p></li>
+	    	 			<li class="right">
+	    	 				<div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addTaskGroupBtn" onclick="taskImg.toEditTaskImgInfo('ADD');">添加图片</a></div>
+	    	 			</li>
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="taskImgListTable">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		</div>
+		<!-- 任务展示END -->
+		
+		<!-- 任务奖品的展示START -->
+		<div class="layui-tab" id="taskRewardTab" style="display: none;">
+	        <blockquote class="layui-elem-quote news_search">
+				<div class="layui-inline layui-form-item pad10" style="margin-bottom:4px;">
+					<form class="layui-form">
+					    <div class="layui-inline">
+							<div class="layui-input-inline">
+								<a  href="javascript:void(0);" id="turnTaskList" class="layui-btn search_btn" onclick="taskReward.backToTaskList();">返回任务列表</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</blockquote>
+            
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box" >
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p" id="rewardListP">奖品列表</p></li>
+	    	 			<li class="right">
+	    	 				<div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addTaskRewardBtn" onclick="taskReward.toChooseReward();">添加奖品</a></div>
+	    	 			</li>
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="rewardList">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		    
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box" id="rewardRuleDiv" style="display: none;">
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p" id="rewardRuleP">奖品规则()</p></li>
+	    	 			<li class="right">
+	    	 				<div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addRewardRuleBtn" onclick="taskRewardRule.toEditRewardRuleInfo('ADD');">添加规则</a></div>
+	    	 				<div class="layui-inline"><a class="layui-btn layui-btn-normal" href="javascript:void(0);" onclick="taskRewardRule.toEditMode('FINISH');">奖品领取条件</a></div>
+	    	 			</li>
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="rewardRuleList">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		</div>
+		<!-- 任务奖品的展示END -->
+		
+	</div>
+</section>
+</@override> 
+<@extends name="/main/main-template.html"/>

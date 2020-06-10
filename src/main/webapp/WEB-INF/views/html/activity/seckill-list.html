@@ -1,0 +1,85 @@
+<@override name="title">秒杀活动管理</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/activity/seckill-list.js"></script>
+</@override> <@override name="content">
+<section class="layui-larry-box">
+	<div class="larry-personal" id="contentList" data-id="${source}">
+		<div class="layui-tab">
+			<blockquote class="layui-elem-quote news_search">
+				<div class="layui-inline layui-form-item pad10">
+					<form class="layui-form">
+						<div class="layui-inline">
+							<div class="layui-input-inline">
+								<input value="" placeholder="请输入活动名称" class="layui-input search_input" type="text" id="actTitle">
+							</div>
+							<div class="layui-input-inline" style="width: 130px">
+								<select  id="seckillType" >
+									<option value="0">请选择类别</option>
+									<option value="1">时会场</option>
+									<option value="2">日会场</option>
+								</select>
+							</div>
+							<div class="layui-input-inline" style="width: 130px">
+								<select  id="statusCd">
+									<option value="0">请选择状态</option>
+									<option value="1">进行中</option>
+									<option value="2">未开始</option>
+									<option value="3">未发布</option>
+									<option value="4">已结束</option>
+									<option value="5">已下架</option>
+								</select>
+							</div>
+							<#if source!=''>
+							<div class="layui-input-inline" style="width: 130px">
+								<select  id="env">
+									<option value="0" selected>当前环境</option>
+									<option value="1">测试环境</option>
+								</select>
+							</div>
+						   </#if>
+							<div class="layui-input-inline">
+								<a class="layui-btn search_btn">查询</a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</blockquote>
+			<div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+				<div class="title-box">
+					<ul>
+						<li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 秒杀管理列表</p></li>
+						<#if source==''>
+						<li class="right">
+							<div class="layui-inline"><a class="layui-btn actAdd_btn">添加秒杀</a></div>
+                            <div class="layui-inline"><a class="layui-btn layui-btn-normal reflash">刷新缓存</a></div>
+						</li>
+                        </#if>
+					</ul>
+				</div>
+				<!-- table -->
+				<div class="layui-tab-item layui-show">
+					<table class="layui-table table-hover sortable" lay-filter="seckilltable" lay-skin="nob" id="seckilltable">
+					</table>
+					<!--table工具栏-->
+					<script type="text/html" id="toolBar">
+						<a class="layui-btn layui-btn-xs" lay-event="detail"> 详情</a>
+						{{#  if(d.statusCd =='3'){ }}
+						<a class="layui-btn layui-btn-xs"  lay-event="edit">编辑活动</a>
+						<a class="layui-btn layui-btn-xs"  lay-event="editProd">编辑商品</a>
+						{{#  } }}
+						{{#  if(d.statusCd =='1'||d.statusCd =='2'){ }}
+						<a class="layui-btn layui-btn-xs" lay-event="del">下架</a>
+						<a class="layui-btn layui-btn-xs"  lay-event="editProdStock">库存追加</a>
+						{{#  } }}
+						{{#  if(d.statusCd =='3'){ }}
+						<a class="layui-btn layui-btn-xs" lay-event="del"> 删除</a>
+						{{#  } }}
+					</script>
+					<!--table工具栏-->
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+</@override>
+<@extends name="/main/main-template.html"/>

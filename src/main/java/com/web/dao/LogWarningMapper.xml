@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.LogWarningDao">
+  <resultMap id="LogWarningMap" type="com.web.model.LogWarning">
+    <!--@Table OC_LOG_WARNING-->
+    <id column="WARNING_ID" jdbcType="BIGINT" property="warningId" />
+    <result column="MEMBER_ID" jdbcType="BIGINT" property="memberId" />
+    <result column="PRIZE_ID" jdbcType="BIGINT" property="prizeId" />
+    <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="ORDER_ID" jdbcType="BIGINT" property="orderId" />
+    <result column="WARNING_TYPE" jdbcType="VARCHAR" property="warningType" />
+    <result column="WARNING_CONTENT" jdbcType="VARCHAR" property="warningContent" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="OPT_RESULT" jdbcType="VARCHAR" property="optResult" />
+    <result column="OPT_REMARK" jdbcType="VARCHAR" property="optRemark" />
+    <result column="OPT_STAFF" jdbcType="VARCHAR" property="optStaff" />
+    <result column="OPT_DATE" jdbcType="TIMESTAMP" property="optDate" />
+    <result column="BUSI_TYPE" jdbcType="VARCHAR" property="busiType" />
+    <result column="BUSI_ID" jdbcType="BIGINT" property="busiId" />
+  </resultMap>
+
+  <insert id="insertLogWarning" keyColumn="WARNING_ID" keyProperty="warningId" parameterType="com.web.model.LogWarning" useGeneratedKeys="true">
+    INSERT INTO CO_LOG_WARNING
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        MEMBER_ID,
+      </if>
+      <if test="prizeId != null">
+        PRIZE_ID,
+      </if>
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="warningType != null">
+        WARNING_TYPE,
+      </if>
+      <if test="warningContent != null">
+        WARNING_CONTENT,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+      <if test="optResult != null">
+        OPT_RESULT,
+      </if>
+      <if test="optRemark != null">
+        OPT_REMARK,
+      </if>
+      <if test="busiType != null">
+        BUSI_TYPE,
+      </if>
+      <if test="busiId != null">
+        BUSI_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        #{memberId,jdbcType=NUMERIC},
+      </if>
+      <if test="prizeId != null">
+        #{prizeId,jdbcType=NUMERIC},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=NUMERIC},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=NUMERIC},
+      </if>
+      <if test="warningType != null">
+        #{warningType,jdbcType=VARCHAR},
+      </if>
+      <if test="warningContent != null">
+        #{warningContent,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="optResult != null">
+        #{optResult,jdbcType=VARCHAR},
+      </if>
+      <if test="optRemark != null">
+        #{optRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="busiType != null">
+        #{busiType,jdbcType=VARCHAR},
+      </if>
+      <if test="busiId != null">
+        #{busiId,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="queryLogWarningList" parameterType="com.web.model.LogWarning" resultMap="LogWarningMap">
+  	SELECT T.WARNING_ID, T.MEMBER_ID, T.WARNING_CONTENT, T.PRODUCT_ID FROM CO_LOG_WARNING T WHERE T.OPT_RESULT='101'
+  	  <if test="memberId != null">
+        AND T.MEMBER_ID=#{memberId,jdbcType=NUMERIC}
+      </if>
+  	  <if test="orderId != null">
+        AND T.ORDER_ID=#{orderId,jdbcType=NUMERIC}
+      </if>  	
+   </select>
+ 
+ 	<select id="qryMonitorList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT T.WARNING_ID, T.WARNING_TYPE, T.WARNING_CONTENT, T.OPT_RESULT, T.OPT_REMARK,C.MEMBER_PHONE, K.PRODUCT_TITLE, K.PRODUCT_CODE, T.ADD_TIME,T.UPDATE_DATE	
+		FROM CO_MEMBER C, CO_LOG_WARNING T LEFT JOIN CO_SUB_ORDER K ON T.ORDER_ID = K.ORDER_ID 
+		WHERE T.MEMBER_ID = C.MEMBER_ID 
+		<if test="rightsName != null and rightsName != '' ">
+	        <![CDATA[AND K.PRODUCT_TITLE LIKE '%'||#{rightsName,jdbcType=VARCHAR}||'%']]>
+	    </if>
+	    <if test="rightsCode != null and rightsCode != '' ">
+	        AND K.PRODUCT_CODE=#{rightsCode,jdbcType=VARCHAR}
+	    </if>
+	    <if test="optResult != null and optResult != '' ">
+	        AND T.OPT_RESULT=#{optResult,jdbcType=VARCHAR}
+	    </if>
+		 ORDER BY T.ADD_TIME DESC
+    </select>
+    
+    <update id="updateLogWarning" parameterType="com.web.model.LogWarning">
+       UPDATE CO_LOG_WARNING 
+        <set>
+            <if test="optResult != null">
+                OPT_RESULT = #{optResult,jdbcType=VARCHAR},
+            </if>
+            <if test="optRemark != null">
+                OPT_REMARK = #{optRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="optStaff != null">
+                OPT_STAFF = #{optStaff,jdbcType=VARCHAR},
+            </if>           
+            OPT_DATE = NOW(),UPDATE_DATE=NOW(),
+        </set>
+        WHERE WARNING_ID=#{warningId,jdbcType=NUMERIC}
+    </update>
+    
+    <delete id="deleteLogWarning" parameterType="com.web.model.LogWarning">
+    	DELETE FROM CO_LOG_WARNING WHERE 1=1
+    	<if test="memberId != null">
+            AND MEMBER_ID = #{memberId,jdbcType=NUMERIC}
+        </if>
+        <if test="orderId != null">
+            AND ORDER_ID = #{orderId,jdbcType=NUMERIC}
+        </if>
+        <if test="optResult != null">
+            AND OPT_RESULT = #{optResult,jdbcType=VARCHAR}
+        </if>
+    </delete>
+</mapper>

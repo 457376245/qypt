@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">-->
+    <!--		<property name="driverClassName">-->
+    <!--			<value>com.mysql.jdbc.Driver</value>-->
+    <!--		</property>-->
+    <!--		<property name="url">-->
+    <!--			<value>jdbc:mysql://10.19.83.29:3306/qypt?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</value>-->
+    <!--&lt;!&ndash;			<value>jdbc:mysql://192.168.137.5:13306/qypt?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</value>&ndash;&gt;-->
+    <!--		</property>-->
+    <!--		<property name="username">-->
+    <!--			<value>test</value>-->
+    <!--		</property>-->
+    <!--		<property name="password">-->
+    <!--			<value>123456</value>-->
+    <!--		</property>-->
+    <!--		<property name="testOnBorrow">-->
+    <!--			<value>true</value>-->
+    <!--		</property>-->
+    <!--		<property name="testWhileIdle">-->
+    <!--			<value>true</value>-->
+    <!--		</property>-->
+    <!--		<property name="maxTotal" value="300"/>-->
+    <!--		<property name="minIdle" value="30"/>-->
+    <!--        <property name="maxIdle" value="60"/>  -->
+    <!--        <property name="initialSize" value="100"/>  -->
+    <!--        <property name="logAbandoned" value="true"/>-->
+    <!--		<property name="removeAbandonedOnMaintenance" value="true" />-->
+    <!--		<property name="removeAbandonedOnBorrow" value="true" />-->
+    <!--        <property name="removeAbandonedTimeout" value="10"/>-->
+    <!--		<property name="maxWaitMillis" value="3000" />-->
+    <!--        <property name="timeBetweenEvictionRunsMillis" value="10000"/>  -->
+    <!--        <property name="numTestsPerEvictionRun" value="10"/>  -->
+    <!--        <property name="minEvictableIdleTimeMillis" value="10000"/> -->
+    <!--		<property name="validationQuery">-->
+    <!--			<value>select 1</value>-->
+    <!--		</property>-->
+    <!--	</bean>-->
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="driverClassName">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+
+        <property name="jdbcUrl">
+            <value>jdbc:mysql://172.16.117.120:3306/qypt?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8</value>
+            <!--			<value>jdbc:mysql://192.168.137.5:13306/qypt?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</value>-->
+        </property>
+        <property name="username">
+            <value>rights</value>
+        </property>
+        <property name="password">
+            <value>8VF6TuXfXFzD1</value>
+        </property>
+        <!-- 连接只读数据库时配置为true， 保证安全 -->
+        <property name="readOnly">
+            <value>false</value>
+        </property>
+        <!-- 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒 -->
+        <property name="connectionTimeout">
+            <value>30000</value>
+        </property>
+        <!-- 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟 -->
+        <property name="idleTimeout">
+            <value>600000</value>
+        </property>
+        <!-- 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒，参考MySQL
+            wait_timeout参数（show variables like '%timeout%';） -->
+        <property name="maxLifetime">
+            <value>1800000</value>
+        </property>
+        <!-- 连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count) -->
+        <property name="maximumPoolSize">
+            <value>60</value>
+        </property>
+        <property name="minimumIdle">
+            <value>10</value>
+        </property>
+
+    </bean>
+    <!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>jdbc/oracle/compay</value>
+        </property>
+        <property name="resourceRef">
+            <value>true</value>
+        </property>
+    </bean> -->
+</beans>

@@ -1,0 +1,71 @@
+<@override name="title">四川开渠</@override> 
+
+<@override name="head-js">
+
+</@override>
+
+<@override name="content">
+	<div class="content">
+		<div class="user-center">
+			<div class="title">
+				<h1>主页</h1>
+			</div>
+			<div class="user-box">
+				<ul>
+					<li onclick="commonUtil.backDxe();">
+						<div class="img-box">
+							<img src="${contextPath}/imgs/home_exit.png">
+							<!-- <span class="label">3</span> -->
+						</div>
+						<p class="p1">进入电小二</p>
+					</li>
+					<li>
+						<div class="img-box">
+							<img src="${contextPath}/imgs/3.png">
+						</div>
+						<p class="name">${Session["staffInfo"].name}</p>
+					</li>
+					<li>
+						<div class="img-box">
+							<img src="${contextPath}/imgs/2.png">
+						</div>
+						<p class="p1">切换渠道</p>
+					</li>
+				</ul>
+				<p class="adr">${Session["staffInfo"].defaultChannelName}</p>
+			</div>
+		</div>
+		<div class="menu">
+			<ul>
+				<#if (quickMenuList??) && (quickMenuList?size>0)>
+					<#list quickMenuList as quickMenuInfo>
+        				<li onclick="commonUtil.funJump('${contextPath}${quickMenuInfo.uri}')">
+							<div class="img-box">
+								<img src="${contextPath}/imgs/${quickMenuInfo.icon}" alt="">
+							</div>
+							<p class="p2">${quickMenuInfo.name}</p>
+						</li>
+		        	</#list>
+				</#if>
+			</ul>
+		</div>
+		<div class="bottom-tab">
+			<ul>
+				<li class="active">
+					<i class="iconfont">&#xe679;</i>
+					<p class="p3">首页</p>
+				</li>
+				<li>
+					<i class="iconfont">&#xe608;</i>
+					<p class="p3">服务</p>
+				</li>
+				<li>
+					<i class="iconfont">&#xe75d;</i>
+					<p class="p3">我的</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</@override> 
+
+<@extends name="/main/main-template.html"/>

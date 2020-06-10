@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.SecKillDao">
+
+	<resultMap id="secKillResult" type="com.web.model.SecKill">
+		<result property="activityId" column="ACTIVITY_ID" />
+		<result property="activityCD" column="ACTIVITY_CD" />
+		<result property="activityTitle" column="ACTIVITY_TITLE" />
+		<result property="seckillId" column="SECKILL_ID" />
+		<result property="startTime" column="START_TIME" />
+		<result property="showTime" column="SHOW_TIME" />
+		<result property="endTime" column="END_TIME" />
+		<result property="showRuleMode" column="SHOW_RULE_MODE" />
+		<result property="ruleMode" column="RULE_MODE" />
+		<result property="activityRule" column="ACTIVITY_RULE" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productCode" column="PRODUCT_CODE" />
+		<result property="productTitle" column="PRODUCT_TITLE" />
+		<result property="productTitleSub" column="PRODUCT_TITLE_SUB" />
+		<result property="oldPrice" column="OLD_PRICE" />
+		<result property="newPrice" column="NEW_PRICE" />
+		<result property="buyCount" column="BUY_COUNT" />
+		<result property="productStock" column="PRODUCT_STOCK" />
+		<result property="productDesc" column="PRODUCT_DESC" />
+		<result property="seckillType" column="SECKILL_TYPE" />
+		<result property="statusCd" column="STATUS_CD" />
+        <result property="productTotal" column="PRODUCT_TOTAL" />
+	</resultMap>
+	<select id="queryActivityList" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT count(1)
+		FROM CO_ACTIVITY A WHERE
+		 <![CDATA[
+		    A.STATUS_CD NOT IN ('102','104')
+			AND A.ACTIVITY_MODE ='2'
+			AND A.PARENT_ID <> 0
+			AND A.ACTIVITY_ID<>#{activityId,jdbcType=NUMERIC}
+			AND (
+			(A.START_TIME >=#{beginDt,jdbcType=TIMESTAMP}
+			AND A.START_TIME <=#{endDt,jdbcType=TIMESTAMP})
+			OR
+			(A.END_TIME>=#{beginDt,jdbcType=TIMESTAMP}
+			AND A.END_TIME <=#{endDt,jdbcType=TIMESTAMP})
+			OR
+			(A.START_TIME<=#{beginDt,jdbcType=TIMESTAMP}
+			AND A.END_TIME >=#{endDt,jdbcType=TIMESTAMP})
+			)
+		]]>
+	</select>
+	<select id="querySecKill" parameterType="java.util.Map"
+		resultMap="secKillResult">
+		SELECT
+		a.START_TIME,
+		a.END_TIME,
+		a.SHOW_TIME,
+		a.ACTIVITY_TITLE,
+		a.ACTIVITY_RULE,
+		a.ACTIVITY_CD,
+		a.SECKILL_TYPE,
+		a.ACTIVITY_ID,
+		b.SECKILL_ID,
+		b.PRODUCT_ID,
+		b.PRODUCT_CODE,
+		b.PRODUCT_TITLE,
+		b.PRODUCT_TITLE_SUB,
+		b.OLD_PRICE,
+		b.NEW_PRICE,
+		b.BUY_COUNT,
+		b.PRODUCT_STOCK,
+		a.STATUS_CD,
+		b.PRODUCT_TOTAL
+		FROM
+		CO_ACTIVITY a
+		LEFT JOIN  CO_ACT_SECKILL b
+		ON a.ACTIVITY_ID=b.ACTIVITY_ID
+		WHERE
+		a.PARENT_ID = #{activityId,jdbcType=DECIMAL}
+		<if test="seckillId!= null  and seckillId!= 0">
+			AND b.SECKILL_ID=#{seckillId,jdbcType=DECIMAL}
+		</if>
+		AND a.ACTIVITY_MODE
+		= '2'
+		ORDER BY
+		a.START_TIME,
+		b.SORT_SEQ
+	</select>
+	<insert id="insertSeckill" parameterType="com.web.model.SecKill">
+		INSERT INTO CO_ACT_SECKILL(
+			PRODUCT_ID,ACTIVITY_ID,PRODUCT_CODE,PROD_SUPPLIER,PRODUCT_TITLE,PRODUCT_TITLE_SUB,
+			OLD_PRICE,NEW_PRICE,BUY_COUNT,ADD_TIME,STATUS_DATE,UPDATE_DATE,STATUS_CD,SORT_SEQ,
+			VERSION_NO,PRODUCT_STOCK,PRODUCT_DESC,PRODUCT_TOTAL,STAFF_ID,EDIT_STAFF_ID
+		) VALUES(
+			#{productId,jdbcType=DECIMAL},#{activityId,jdbcType=DECIMAL},#{productCode,jdbcType=VARCHAR},
+			#{prodSupplier,jdbcType=VARCHAR},#{productTitle,jdbcType=VARCHAR},#{productTitleSub,jdbcType=VARCHAR},
+			#{oldPrice,jdbcType=VARCHAR},#{newPrice,jdbcType=VARCHAR},#{buyCount,jdbcType=DECIMAL},NOW(),NOW(),NOW(),
+			#{statusCd,jdbcType=VARCHAR},#{sortSeq,jdbcType=DECIMAL},#{version,jdbcType=DECIMAL},#{productStock,jdbcType=DECIMAL},
+			#{productDesc,jdbcType=VARCHAR},#{productTotal,jdbcType=DECIMAL},#{staffId,jdbcType=NUMERIC},#{editStaffId,jdbcType=NUMERIC}
+		)
+	</insert>
+	<delete id="deleteSeckill" parameterType="java.util.Map">
+		DELETE FROM CO_ACT_SECKILL WHERE ACTIVITY_ID=#{activityId,jdbcType=DECIMAL} AND PRODUCT_CODE=#{productCode,jdbcType=VARCHAR}
+	</delete>
+	<select id="queryIsExist" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT COUNT(1) FROM CO_ACT_SECKILL
+		WHERE PRODUCT_CODE=#{productCode,jdbcType=VARCHAR}
+		<![CDATA[AND STATUS_CD<>102]]>
+		<if test="parentId!=null">
+			AND ACTIVITY_ID IN
+			(
+				SELECT ACTIVITY_ID from CO_ACTIVITY where PARENT_ID=#{parentId,jdbcType=DECIMAL}
+				  <![CDATA[AND STATUS_CD<>102]]>
+			)
+		</if>
+		<if test="activityId!=null">
+			AND ACTIVITY_ID=#{activityId,jdbcType=DECIMAL}
+		</if>
+	</select>
+	<update id="updateSeckill" parameterType="com.web.model.SecKill">
+		UPDATE CO_ACT_SECKILL SET UPDATE_DATE=NOW()
+			<if test="oldPrice!= null">
+				,OLD_PRICE=#{oldPrice,jdbcType=VARCHAR}
+			</if>
+			<if test="newPrice!= null">
+				,NEW_PRICE=#{newPrice,jdbcType=VARCHAR}
+			</if>
+			<if test="buyCount!= null and buyCount!=0">
+				,BUY_COUNT=#{buyCount,jdbcType=DECIMAL}
+			</if>
+			<if test="productTotal!= null and productTotal!=0">
+				,PRODUCT_TOTAL=PRODUCT_TOTAL+#{productTotal,jdbcType=DECIMAL}
+				,PRODUCT_STOCK=PRODUCT_STOCK+#{productTotal,jdbcType=DECIMAL}
+			</if>
+			<if test="statusCd!= null">
+				,STATUS_CD=#{statusCd,jdbcType=DECIMAL}
+				,STATUS_DATE=NOW()
+			</if>
+			<if test="editStaffId!= null">
+				,EDIT_STAFF_ID=#{editStaffId,jdbcType=NUMERIC}
+			</if>
+
+		WHERE ACTIVITY_ID=#{activityId,jdbcType=DECIMAL}
+		<if test="productCode!=null">
+		AND PRODUCT_CODE=#{productCode,jdbcType=VARCHAR}
+		</if>
+
+	</update>
+	<select id="queryIsAllSet" parameterType="java.lang.Long" resultType="java.util.Map">
+		SELECT ACTIVITY_ID, COUNT(*) COUNT FROM   CO_ACT_SECKILL
+		where ACTIVITY_ID in(
+			SELECT ACTIVITY_ID from CO_ACTIVITY where PARENT_ID=#{parentId,jdbcType=DECIMAL}
+			  <![CDATA[AND STATUS_CD<>102]]>
+		)
+		  <![CDATA[AND STATUS_CD<>102]]>
+		GROUP BY ACTIVITY_ID ;
+	</select>
+</mapper>

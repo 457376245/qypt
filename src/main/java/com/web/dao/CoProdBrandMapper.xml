@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoProdBrandDao">
+  <resultMap id="BaseResultMap" type="com.web.model.CoProdBrand">
+    <!--@mbg.generated-->
+    <!--@Table co_prod_brand-->
+    <id column="BRAND_CODE" jdbcType="VARCHAR" property="brandCode" />
+    <result column="BRAND_TITLE" jdbcType="VARCHAR" property="brandTitle" />
+    <result column="BRAND_DESC" jdbcType="VARCHAR" property="brandDesc" />
+    <result column="SORT_SEQ" jdbcType="DECIMAL" property="sortSeq" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="STAFF_ID" jdbcType="INTEGER" property="staffId" />
+    <result column="EDIT_STAFF_ID" jdbcType="INTEGER" property="editStaffId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    BRAND_CODE, BRAND_TITLE, BRAND_DESC, SORT_SEQ, ADD_TIME, STATUS_DATE, UPDATE_DATE, 
+    STATUS_CD, STAFF_ID, EDIT_STAFF_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from co_prod_brand
+    where BRAND_CODE = #{brandCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectCountByBrandCode" parameterType="java.util.Map" resultType="java.lang.Long">
+    <!--@mbg.generated-->
+    SELECT
+    count(0)
+    FROM co_prod_brand
+    WHERE BRAND_CODE = #{brandCode,jdbcType=VARCHAR}
+    <if test="oldBrandCode != null and oldBrandCode != ''">
+      AND BRAND_CODE != #{oldBrandCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <!--@mbg.generated-->
+    delete from co_prod_brand
+    where BRAND_CODE = #{brandCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.web.model.CoProdBrand">
+    <!--@mbg.generated-->
+    insert into co_prod_brand (BRAND_CODE, BRAND_TITLE, BRAND_DESC, 
+      SORT_SEQ, ADD_TIME, STATUS_DATE, 
+      UPDATE_DATE, STATUS_CD, STAFF_ID, 
+      EDIT_STAFF_ID)
+    values (#{brandCode,jdbcType=VARCHAR}, #{brandTitle,jdbcType=VARCHAR}, #{brandDesc,jdbcType=VARCHAR}, 
+      #{sortSeq,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{statusDate,jdbcType=TIMESTAMP}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{statusCd,jdbcType=VARCHAR}, #{staffId,jdbcType=INTEGER}, 
+      #{editStaffId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.web.model.CoProdBrand">
+    <!--@mbg.generated-->
+    insert into co_prod_brand
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="brandCode != null">
+        BRAND_CODE,
+      </if>
+      <if test="brandTitle != null">
+        BRAND_TITLE,
+      </if>
+      <if test="brandDesc != null">
+        BRAND_DESC,
+      </if>
+      <if test="sortSeq != null">
+        SORT_SEQ,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+      <if test="staffId != null">
+        STAFF_ID,
+      </if>
+      <if test="editStaffId != null">
+        EDIT_STAFF_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="brandCode != null">
+        #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandTitle != null">
+        #{brandTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="brandDesc != null">
+        #{brandDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortSeq != null">
+        #{sortSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="editStaffId != null">
+        #{editStaffId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoProdBrand">
+    <!--@mbg.generated-->
+    update co_prod_brand
+    <set>
+      <if test="brandCode != null">
+        BRAND_CODE = #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandTitle != null">
+        BRAND_TITLE = #{brandTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="brandDesc != null">
+        BRAND_DESC = #{brandDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortSeq != null">
+        SORT_SEQ = #{sortSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null">
+        STAFF_ID = #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="editStaffId != null">
+        EDIT_STAFF_ID = #{editStaffId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where BRAND_CODE = #{oldBrandCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.web.model.CoProdBrand">
+    <!--@mbg.generated-->
+    update co_prod_brand
+    set BRAND_TITLE = #{brandTitle,jdbcType=VARCHAR},
+      BRAND_DESC = #{brandDesc,jdbcType=VARCHAR},
+      SORT_SEQ = #{sortSeq,jdbcType=DECIMAL},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      STAFF_ID = #{staffId,jdbcType=INTEGER},
+      EDIT_STAFF_ID = #{editStaffId,jdbcType=INTEGER}
+    where BRAND_CODE = #{brandCode,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into co_prod_brand
+    (BRAND_CODE, BRAND_TITLE, BRAND_DESC, SORT_SEQ, ADD_TIME, STATUS_DATE, UPDATE_DATE, 
+      STATUS_CD, STAFF_ID, EDIT_STAFF_ID)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.brandCode,jdbcType=VARCHAR}, #{item.brandTitle,jdbcType=VARCHAR}, #{item.brandDesc,jdbcType=VARCHAR}, 
+        #{item.sortSeq,jdbcType=DECIMAL}, #{item.addTime,jdbcType=TIMESTAMP}, #{item.statusDate,jdbcType=TIMESTAMP}, 
+        #{item.updateDate,jdbcType=TIMESTAMP}, #{item.statusCd,jdbcType=VARCHAR}, #{item.staffId,jdbcType=INTEGER}, 
+        #{item.editStaffId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <select id="queryBrand" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM co_prod_brand
+    WHERE 1=1
+    <include refid="queryGroupCondition" />
+    ORDER BY STATUS_CD ,SORT_SEQ
+  </select>
+  <sql id="queryGroupCondition">
+    <if test="brandCode != null and brandCode != ''">
+      AND BRAND_CODE LIKE CONCAT('%',#{brandCode,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="brandTitle != null  and brandTitle != ''">
+      AND BRAND_TITLE LIKE CONCAT('%',#{brandTitle,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="brandDesc != null">
+      AND BRAND_DESC = #{brandDesc,jdbcType=VARCHAR}
+    </if>
+    <if test="sortSeq != null">
+      AND SORT_SEQ = #{sortSeq,jdbcType=DECIMAL}
+    </if>
+    <if test="addTime != null">
+      AND ADD_TIME = #{addTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="statusDate != null">
+      AND STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateDate != null">
+      AND UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="statusCd != null">
+      AND STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+    </if>
+    <if test="staffId != null">
+      AND STAFF_ID = #{staffId,jdbcType=INTEGER}
+    </if>
+    <if test="editStaffId != null">
+      AND EDIT_STAFF_ID = #{editStaffId,jdbcType=INTEGER}
+    </if>
+  </sql>
+</mapper>

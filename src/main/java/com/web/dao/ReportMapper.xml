@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ReportDao">
+    <select id="querySecKillProReport" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        a.ACTIVITY_ID,
+        b.SECKILL_ID,
+        b.PRODUCT_ID,
+        b.PRODUCT_CODE,
+        b.PRODUCT_TITLE,
+        b.PRODUCT_TITLE_SUB,
+        b.OLD_PRICE,
+        b.NEW_PRICE,
+        b.PRODUCT_STOCK,
+        b.PRODUCT_TOTAL,
+        (SELECT COUNT(1) FROM CO_SUB_ORDER R,CO_ORDER T WHERE R.ORDER_ID=T.ORDER_ID
+        AND R.PRODUCT_CODE=b.PRODUCT_CODE  AND T.IN_CODE=a.ACTIVITY_CD)AS BUY_COUNT
+        FROM
+        CO_ACTIVITY a, CO_ACT_SECKILL b
+        WHERE
+        a.ACTIVITY_ID=b.ACTIVITY_ID
+        AND a.PARENT_ID = #{activityId,jdbcType=DECIMAL}
+        AND a.ACTIVITY_MODE
+        = '2'
+        ORDER BY
+        a.START_TIME,
+        b.SORT_SEQ
+    </select>
+    <select id="queryPrizeReport" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT A.LUCK_ID,A.ACTIVITY_ID,A.LUCK_LEVEL,A.WEIGHT_VAL,B.USER_PRIZE_COUNT,C.PRIZE_ID,C.PRODUCT_CODE,C.PROD_SUPPLIER,C.PRIZE_VAL,
+        C.PRIZE_TITLE,C.PRIZE_TYPE,C.PRIZE_DESC,C.PRIZE_COUNT,C.PRIZE_USE,C.PRIZE_STOCK,
+        (SELECT COUNT(1)*B.USER_PRIZE_COUNT FROM CO_USER_PRIVILEGE WHERE PRIZE_ID=C.PRIZE_ID) AS PRIZE_BUYCOUNT
+        FROM  CO_ACT_LUCK A,CO_ACT_PRIZE B,CO_PRIZE C
+        WHERE A.LUCK_ID = B.LUCK_ID AND B.PRIZE_ID = C.PRIZE_ID	AND A.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+    </select>
+    <sql id="queryActCondition">
+        <if test="activityId != null">
+            AND A.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        </if>
+        <if test="activityCd != null">
+            AND A.ACTIVITY_CD=#{activityCd,jdbcType=VARCHAR}
+        </if>
+        <!--活动未开始-->
+        <if test="beforeStartTime!= null">
+            AND A.START_TIME>sysdate()
+        </if>
+        <!--活动已结束-->
+        <if test="afterEndTime!= null">
+            <![CDATA[AND A.END_TIME<sysdate()]]>
+        </if>
+        <!--活动进行中-->
+        <if test="nowTime != null">
+            <![CDATA[AND A.START_TIME <= sysdate()]]>
+            AND A.END_TIME>sysdate()
+        </if>
+        <if test="statusCd!= null">
+            AND A.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+        </if>
+        <if test="activityMode != null">
+            AND A.ACTIVITY_MODE=#{activityMode,jdbcType=VARCHAR}
+        </if>
+        <if test="activityTitle != null">
+            AND A.ACTIVITY_TITLE LIKE CONCAT('%',#{activityTitle},'%')
+        </if>
+        <if test="parentId!= null">
+            AND A.PARENT_ID =#{parentId,jdbcType=NUMERIC}
+        </if>
+        <if test="qryStartTime!= null">
+            AND A.START_TIME>=#{qryStartTime,jdbcType=VARCHAR}
+        </if>
+        <if test="qryEndTime!= null">
+            <![CDATA[AND A.START_TIME<=#{qryEndTime,jdbcType=VARCHAR}]]>
+        </if>
+        ORDER BY A.ADD_TIME DESC
+    </sql>
+    <select id="queryLotteryReport" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.ACTIVITY_ID,A.ACTIVITY_CD,A.ACTIVITY_TITLE,A.ACTIVITY_DESC,
+        A.ACTIVITY_RULE,A.STATUS_CD,A.SHOW_TIME,A.START_TIME,A.END_TIME,A.ACTIVITY_MODE,
+        A.RULE_MODE,A.SHOW_RULE_MODE,A.CLICK_COUNT,A.SECKILL_TYPE,
+        (SELECT COUNT(1) FROM  CO_ACT_USER WHERE ACTIVITY_ID=A.ACTIVITY_ID AND IN_COUNT>0) AS IN_USER_COUNT,
+        (SELECT SUM(IN_COUNT) FROM  CO_ACT_USER WHERE ACTIVITY_ID=A.ACTIVITY_ID) AS USE_ACCOUNT
+         FROM CO_ACTIVITY A WHERE   <![CDATA[A.STATUS_CD <>'102']]>
+        <include refid="queryActCondition" />
+    </select>
+    <select id="querySecKillReport" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT A.ACTIVITY_ID,A.ACTIVITY_CD,A.ACTIVITY_TITLE,A.ACTIVITY_DESC,
+        A.ACTIVITY_RULE,A.STATUS_CD,A.SHOW_TIME,A.START_TIME,A.END_TIME,A.ACTIVITY_MODE,
+        A.RULE_MODE,A.SHOW_RULE_MODE,A.CLICK_COUNT,A.SECKILL_TYPE,
+        (SELECT COUNT(1) FROM  CO_ACT_USER
+        WHERE ACTIVITY_ID IN(
+        SELECT ACTIVITY_ID FROM CO_ACTIVITY WHERE PARENT_ID=A.ACTIVITY_ID AND STATUS_CD='101'
+        )) AS IN_USER_COUNT,
+        ( SELECT SUM(IN_COUNT) FROM  CO_ACT_USER
+        WHERE ACTIVITY_ID IN(
+        SELECT ACTIVITY_ID FROM CO_ACTIVITY WHERE PARENT_ID=A.ACTIVITY_ID AND STATUS_CD='101'
+        )) AS USE_ACCOUNT
+        FROM CO_ACTIVITY A WHERE   <![CDATA[A.STATUS_CD <>'102']]>
+        <include refid="queryActCondition" />
+    </select>
+    <!--中奖记录相关报表-->
+    <select id="queryUserPrivilege" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT B.MEMBER_NAME,B.MEMBER_PHONE,B.STAR_LEVEL,A.PRIZE_TITLE,A.PRODUCT_CODE,
+        DATE_FORMAT(A.STATUS_DATE,'%y-%m-%d %H:%i:%s')STATUS_DATE FROM CO_USER_PRIVILEGE A,CO_MEMBER B
+        WHERE A.MEMBER_ID=B.MEMBER_ID
+        AND A.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        <if test="memberId!= null">
+          AND B.MEMBER_ID=#{memberId,jdbcType=NUMERIC}
+        </if>
+        <if test="prizeId!= null">
+            AND A.PRIZE_ID=#{prizeId,jdbcType=NUMERIC}
+        </if>
+        <if test="qryStartTime!= null">
+            AND A.STATUS_DATE>=#{qryStartTime,jdbcType=VARCHAR}
+        </if>
+        <if test="qryEndTime!= null">
+            <![CDATA[AND A.STATUS_DATE<=#{qryEndTime,jdbcType=VARCHAR}]]>
+        </if>
+        ORDER BY A.STATUS_DATE DESC
+    </select>
+    <select id="queryHasPrivilegeUser" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM(
+        SELECT B.MEMBER_NAME,B.MEMBER_PHONE,B.STAR_LEVEL,B.MEMBER_ID,
+        (SELECT COUNT(1) FROM CO_USER_PRIVILEGE WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC} AND MEMBER_ID=B.MEMBER_ID) AS
+        PRIZE_COUNT,
+        (SELECT IN_COUNT FROM CO_ACT_USER WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC} AND MEMBER_ID=B.MEMBER_ID) AS
+        IN_COUNT
+        FROM CO_MEMBER B WHERE  B.MEMBER_ID IN (
+        SELECT A.MEMBER_ID FROM CO_USER_PRIVILEGE A WHERE A.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        <if test="qryStartTime!= null">
+            AND A.STATUS_DATE>=#{qryStartTime,jdbcType=VARCHAR}
+        </if>
+        <if test="qryEndTime!= null">
+            <![CDATA[AND A.STATUS_DATE<=#{qryEndTime,jdbcType=VARCHAR}]]>
+        </if>
+        )
+        <if test="mobilePhone!=null">
+            AND B.MEMBER_PHONE=#{mobilePhone,jdbcType=VARCHAR}
+        </if>
+        ) T ORDER BY T.PRIZE_COUNT DESC
+    </select>
+    <!--中奖记录相关报表-->
+    <!--新增客户相关报表-->
+    <select id="queryNewMemberByTime" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT DATE_FORMAT(add_time,'%Y-%m-%d') as TIME,sum(1) TOTAL_COUNT
+        FROM co_member where STATUS_CD = '101'
+        <if test="qryStartTime!= null">
+            AND add_time>=#{qryStartTime,jdbcType=VARCHAR}
+        </if>
+        <if test="qryEndTime!= null">
+            <![CDATA[AND add_time<=#{qryEndTime,jdbcType=VARCHAR}]]>
+        </if>
+        GROUP BY TIME ORDER BY TIME DESC
+    </select>
+    <select id="queryNewMemberByArea" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT b.REGION_NAME,b.REGION_CODE,sum(1) AREA_COUNT
+        FROM co_member a,co_region b WHERE a.AREA_ID=b.REGION_CODE
+        AND a.STATUS_CD='101'
+        <if test="qryStartTime!= null">
+            AND a.add_time>=#{qryStartTime,jdbcType=VARCHAR}
+        </if>
+        <if test="qryEndTime!= null">
+            <![CDATA[AND a.add_time<=#{qryEndTime,jdbcType=VARCHAR}]]>
+        </if>
+        GROUP BY REGION_CODE;
+    </select>
+    <select id="queryNewMemberDetail"  parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT a.MEMBER_NAME,a.MEMBER_LEVEL,a.MEMBER_PHONE,a.NICKNAME,b.REGION_NAME,a.STAR_LEVEL
+        FROM co_member a,co_region b
+        WHERE a.AREA_ID=b.REGION_CODE AND a.STATUS_CD='101'
+        <if test="qryStartTime!= null">
+            AND a.add_time>=#{qryStartTime,jdbcType=VARCHAR}
+        </if>
+        <if test="qryEndTime!= null">
+            <![CDATA[AND a.add_time<=#{qryEndTime,jdbcType=VARCHAR}]]>
+        </if>
+        <if test="areaId!= null">
+            AND a.AREA_ID=#{areaId,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!--新增客户相关报表-->
+</mapper>

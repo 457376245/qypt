@@ -1,0 +1,106 @@
+<@override name="title">编辑其它活动</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/time.js"></script>
+<script type="text/javascript" src="${contextPath}/js/activity/otherActAdd.js"></script>
+</@override> <@override name="content">
+<form class="layui-form com-form"  id="contentDiv" data-id="${coActivity.activityId}" data-type="${flag}">
+<#assign style='' />
+<#if flag=='detail'>
+<#assign style='disabled' />
+</#if>
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label"><span class="red">*</span>活动标题：</label>
+        <div class="layui-inline">
+            <input class="layui-input" lay-verify="required" lay-reqtext="请输入活动标题" placeholder="请输入活动标题" type="text" id="actTitle"  style="width:500px" ${style}>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label">活动链接：</label>
+        <div class="layui-inline">
+            <input class="layui-input"  lay-reqtext="请输入活动链接" placeholder="请输入活动链接" type="text" id="ssoUrl"  style="width:500px" ${style}>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label"><span class="red">*</span>展示时间：</label>
+    <div class="layui-input-block">
+        <input type="text" readonly class="seckill-day"  id="showTime" placeholder="${startTime}" value="${startTime}" ${style}>
+    </div>
+</div>
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label"><span class="red">*</span>活动时间：</label>
+        <div class="layui-input-block">
+            <input type="button" value="选择起止时间" class="seckill-time">
+            <div  class="block">
+                <input type="text" readonly class="seckill-day"  id="startTime" placeholder="${startTime}" value="${startTime}" ${style}>~
+                <input type="text" readonly class="seckill-day"  id="endTime" placeholder="${endTime}" value="${endTime}" ${style}>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">活动简介：</label>
+    <div class="layui-input-block"  style="width:600px;">
+        <textarea placeholder="请输入活动简介" class="layui-textarea" id="activityDesc" cols="2" ${style}></textarea>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label">活动说明：</label>
+    <div class="layui-input-block"  style="width:600px">
+        <textarea placeholder="请输入活动说明" class="layui-textarea" id="activityRule" style="display: none" ${style}></textarea>
+    </div>
+</div>
+<div class="layui-form-item">
+    <label class="layui-form-label"><span class="red">*</span>展示位置：</label>
+    <div class="layui-input-block">
+        <span class="yellow tip-info">注：系统默认抽奖入口位于活动列表</span>
+        <div class="block bottom15">
+            <div class="layui-inline" style="width: 150px">
+                <input type="checkbox" lay-skin="primary" name="banners" title="首页顶部banner" value="102" ${style} lay-filter="delPic">
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="banner102">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+            </div>
+        </div>
+        <div class="block bottom15">
+            <div class="layui-inline" style="width: 150px">
+                <input type="checkbox" lay-skin="primary" name="banners" title="首页活动宣传banner" value="103" ${style} lay-filter="delPic">
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="banner103">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+            </div>
+        </div>
+        <div class="block bottom15">
+            <div class="layui-inline" style="width: 150px">
+                <input type="checkbox" lay-skin="primary" name="banners" title="首页活动弹窗banner" value="105" ${style} lay-filter="delPic">
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn" id="banner105">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-form-item" id="bottomTool">
+    <div class="layui-input-block">
+        <#if flag!='detail'>
+        <button class="layui-btn"  lay-submit="" lay-filter="saveAct">保存</button>
+        <input type="button" class="layui-btn"  id="backList" value="返回列表" />
+        <button type="reset" class="layui-btn layui-btn-primary" id="resetData">重置</button>
+        <#else>
+        <input type="button" class="layui-btn"  id="backList" value="返回列表" />
+       </#if>
+    </div>
+</div>
+</form>
+</@override>
+<@extends name="/main/main-template.html"/>

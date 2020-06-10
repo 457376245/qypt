@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoMemberDao">
+    <select id="insertCoMember" parameterType="com.web.model.CoMember">
+        insert into co_member(member_id,
+        PHOTO_ID,
+        MEMBER_NO,
+        MEMBER_PHONE,
+        PHONE_TYPE,
+        MEMBER_LEVEL,
+        O_MEMBER_ACCT,
+        MEMBER_NAME,
+        STAR_LEVEL,
+        NICKNAME,
+        ADD_TIME,
+        STATUS_DATE,
+        UPDATE_DATE,
+        STATUS_CD,
+        MEMBER_BIRTH,
+        MEMBER_BEAN,
+        MEMBER_PWD)
+        values(
+        #{memberId,jdbcType=NUMERIC},
+        1,
+        #{memberNo,jdbcType=VARCHAR},
+        #{memberPhone,jdbcType=VARCHAR},
+        #{phoneType,jdbcType=VARCHAR},
+        #{memberLevel,jdbcType=VARCHAR},
+        #{oMemberAcct,jdbcType=VARCHAR},
+        #{memberName,jdbcType=VARCHAR},
+        #{starLevel,jdbcType=VARCHAR},
+        #{nickName,jdbcType=VARCHAR},
+        sysdate(),
+        sysdate(),
+        sysdate(),
+        #{statusCd,jdbcType=VARCHAR},
+        #{memberBirth,jdbcType=VARCHAR},
+        #{memberBean,jdbcType=NUMERIC},
+        #{memberPwd,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getCoMemberCount" resultType="java.lang.Integer" parameterType="com.web.model.CoMember">
+        select count(1) from co_member where member_id=#{memberId,jdbcType=VARCHAR}
+    </select>
+    <update id="updateCoMember" parameterType="com.web.model.CoMember">
+        update co_member
+        <set>
+            <if test="photoId != null">
+                PHOTO_ID = #{photoId,jdbcType=NUMERIC},
+            </if>
+            <if test="memberPhone != null">
+                MEMBER_PHONE = #{memberPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneType != null">
+                PHONE_TYPE = #{phoneType,jdbcType=VARCHAR},
+            </if>
+            <if test="memberLevel != null">
+                MEMBER_LEVEL = #{memberLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="oMemberAcct != null">
+                O_MEMBER_ACCT = #{oMemberAcct,jdbcType=VARCHAR},
+            </if>
+            <if test="memberName != null">
+                MEMBER_NAME = #{memberName,jdbcType=VARCHAR},
+            </if>
+            <if test="starLevel != null">
+                STAR_LEVEL = #{starLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="nickName != null">
+                NICKNAME = #{nickName,jdbcType=VARCHAR},
+            </if>
+             STATUS_DATE = sysdate(),
+             UPDATE_DATE = sysdate(),
+            <if test="memberBirth != null">
+                MEMBER_BIRTH = #{memberBirth,jdbcType=VARCHAR},
+            </if>
+            <if test="memberBean != null">
+                MEMBER_BEAN = #{memberBean,jdbcType=VARCHAR},
+            </if>
+            <if test="memberPwd != null">
+                MEMBER_PWD = #{memberPwd,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where member_id = #{memberId,jdbcType=DECIMAL}
+    </update>
+    
+    <select id="getCoMember" parameterType="com.web.model.CoMember" resultType="java.util.Map">
+     	SELECT T.MEMBER_ID, T.MEMBER_NO, T.MEMBER_NAME, T.MEMBER_BEAN, T.MEMBER_PHONE,T.AREA_CODE,T.AREA_ID 
+			FROM CO_MEMBER T  WHERE  T.MEMBER_PHONE = #{memberPhone,jdbcType=VARCHAR}
+    </select>
+    <select id="qryCoMember" parameterType="com.web.model.CoMember" resultType="java.util.Map">
+     	SELECT PHOTO_ID,
+        MEMBER_NO,
+        MEMBER_PHONE,
+        PHONE_TYPE,
+        MEMBER_LEVEL,
+        O_MEMBER_ACCT,
+        MEMBER_NAME,
+        STAR_LEVEL,
+        NICKNAME,
+        ADD_TIME,
+        STATUS_DATE,
+        UPDATE_DATE,
+        STATUS_CD,
+        MEMBER_BIRTH,
+        MEMBER_BEAN,
+        MEMBER_PWD
+			FROM CO_MEMBER T  WHERE  T.MEMBER_ID = #{memberId,jdbcType=VARCHAR}
+    </select>
+    <insert id="insertCoLogBean" parameterType="com.web.model.CoLogBean">
+        INSERT INTO CO_LOG_BEAN(MEMBER_ID,OPT_TYPE,OPT_VAL,OPT_RESULT,OPT_DESC,ADD_TIME,
+        STATUS_DATE,UPDATE_DATE,STATUS_CD,STAFF_ID,EDIT_STAFF_ID)
+        VALUES (#{memberId,jdbcType=DECIMAL},#{optType,jdbcType=VARCHAR},#{optVal,jdbcType=DECIMAL},
+        #{optResult,jdbcType=VARCHAR},#{optDesc,jdbcType=VARCHAR},sysdate(),sysdate(),sysdate(),'101',0,0
+        )
+    </insert>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoRegionDao">
+   
+    <resultMap id="coRegionResult" type="com.web.model.CoRegion">
+        <result property="regionId" column="REGION_ID" />
+        <result property="parentId" column="PARENT_ID" />
+        <result property="regionName" column="REGION_NAME" />
+        <result property="regionCode" column="REGION_CODE" />
+        <result property="regionType" column="REGION_TYPE" />
+        <result property="regionDesc" column="REGION_DESC" />
+        <result property="idPrefix" column="ID_PREFIX" />
+        <result property="areaLevel" column="AREA_LEVEL" />
+        <result property="zipCode" column="ZIP_CODE" />
+        <result property="zoneNumber" column="ZONE_NUMBER" />
+        <result property="addTime" column="ADD_TIME" />
+        <result property="statusDate" column="STATUS_DATE" />
+        <result property="updateDate" column="UPDATE_DATE" />
+        <result property="statusCd" column="STATUS_CD" />        
+    </resultMap>
+
+    <select id="queryCoRegionList" parameterType="java.util.Map" resultMap="coRegionResult">
+        SELECT T.REGION_ID, T.REGION_NAME, T.REGION_CODE, T.REGION_DESC, T.ID_PREFIX, T.AREA_LEVEL, T.ZONE_NUMBER 
+		FROM CO_REGION T  WHERE T.STATUS_CD = '101'
+		<if test="areaLevel != null">
+            AND T.AREA_LEVEL=#{areaLevel,jdbcType=VARCHAR}
+        </if>
+		<if test="regionCode != null">
+            AND T.REGION_CODE=#{regionCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>

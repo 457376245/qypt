@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ProdTelBindDao">
+    <resultMap id="ProdTelBindResult" type="com.web.model.ProdTelBind">
+        <result property="telBindId" column="TEL_BIND_ID" />
+        <result property="productId" column="PRODUCT_ID" />
+        <result property="productCode" column="PRODUCT_CODE" />
+        <result property="telProdId" column="TEL_PROD_ID" />
+        <result property="telProdTitle" column="TEL_PROD_TITLE" />
+        <result property="telProdType" column="TEL_PROD_TYPE" />
+        <result property="canExcluse" column="CAN_EXCLUSE" />
+        <result property="addTime" column="ADD_TIME" />  
+        <result property="statusDate" column="STATUS_DATE" />  
+        <result property="updateDate" column="UPDATE_DATE" />  
+        <result property="statusCd" column="STATUS_CD" />
+              
+    </resultMap>
+    <select id="getProdTelBindList" parameterType="java.util.Map" resultMap="ProdTelBindResult">
+        SELECT A.TEL_BIND_ID,A.PRODUCT_ID,A.PRODUCT_CODE,A.TEL_PROD_ID, A.TEL_PROD_TITLE,A.TEL_PROD_TYPE,A.CAN_EXCLUSE,
+        	A.ADD_TIME,A.STATUS_CD,A.UPDATE_DATE,A.STATUS_CD
+        FROM CO_PROD_TEL_BIND A WHERE A.STATUS_CD='101'
+        <if test="telBindId != null">
+            AND A.TEL_BIND_ID=#{telBindId,jdbcType=NUMERIC}
+        </if>
+        <if test="rightsCode != null">
+            AND A.PRODUCT_CODE=#{rightsCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+</mapper>

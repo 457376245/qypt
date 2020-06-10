@@ -1,0 +1,32 @@
+<@override name="title">河北电信天翼会员中心</@override>
+<script type="text/javascript" charset="utf-8" src="${contextPath}/js/common/flexible.js"></script>
+<script type="text/javascript"
+        src="${contextPath}/js/jquery-3.4.1.min.js"></script>
+<@override name="content">
+<!--error-->
+<div class="error">
+    <img src="${contextPath}/images/500.png"  width="100%"/>
+    <p class="cen">页面出错了，请重试！</p>
+</@override>
+<@extends name="/main/main-template.html"/>
+<style>
+    .error {
+        min-height: 100%;
+        width: 100%;
+        height: 100%;
+        max-width: 10rem;
+        min-width: 4.26667rem;
+        margin: 0 auto;
+        overflow: hidden;
+        padding-bottom: 1.52rem;
+        background-size: 100%;
+        position: fixed;
+        background: #f4f4f4;
+        top:0;
+        left:0;
+    }
+    .error img{width:90%; text-align: center;margin-top:2rem;}
+    .error p{font-size:0.34rem;color:#888;width:80%;margin:0.3rem 10%;line-height:0.5rem; }
+    .error p.cen{ text-align: center;}
+    .btn-refresh{color:#000; text-decoration:none;border:1px solid #FF7300; height: 0.8rem;line-height:0.8rem ;font-size:0.34rem;padding:0 0.8rem;margin:0.2rem 0; display: inline-block;border-radius: 5rem;;}
+</style>

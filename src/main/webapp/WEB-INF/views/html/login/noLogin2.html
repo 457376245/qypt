@@ -1,0 +1,52 @@
+<@override name="title">信息提示</@override> 
+
+<@override name="head-js">
+	<script>
+	</script>
+</@override>
+
+<@override name="content">
+	<div class="content">
+		<div class="body-page">
+			<div class="header">
+				<div class="title">
+					<h1>信息提示</h1>
+				</div>
+			</div>
+		</div>
+		<div class="panel">
+			<div class="result-box">
+				<svg class="icon" aria-hidden="true">
+                	<use xlink:href="#icon-chongzhishibai"></use>
+                </svg>
+			</div>
+			<div class="result-box dis-none"><!--错误状态预留图标“dis-none”控制隐藏显示-->
+				<svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-jiazaishibai2"></use>
+                </svg>
+			</div>
+            <div class="result-box dis-none"><!--错误状态预留图标“dis-none”控制隐藏显示-->
+            	<svg class="icon" aria-hidden="true">
+            	    <use xlink:href="#icon-jiazaishibai1"></use>
+            	</svg>
+            </div>
+			<div class="result">
+				<p class="result-text"></p>
+				<p class="result-number" style="margin-top: 0.2rem;font-size: 0.3rem;">
+					<#if (message??) && (message!='' )>
+					${message}
+					<#else>
+					您的登录已失效
+					</#if>
+				</p>
+			</div>
+			<div class="result-btn">
+				<button type="button" onclick="commonUtil.backDxe();">返回首页</button>
+			</div>
+		</div>
+	</div>
+</@override> 
+
+<@extends name="/main/main-template.html"/>
+
+<script type="text/javascript" src="${contextPath}/js/login/login.js?d=${.now?string('yyyyMMddhhmmssSSS')}"></script>

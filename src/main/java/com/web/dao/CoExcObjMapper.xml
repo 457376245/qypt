@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoExcObjDao">
+    <resultMap id="BaseResultMap" type="com.web.model.CoExcObj">
+        <!--@mbg.generated-->
+        <!--@Table co_exc_obj-->
+        <id column="OBJ_ID" jdbcType="BIGINT" property="objId"/>
+        <result column="OBJ_CODE" jdbcType="VARCHAR" property="objCode"/>
+        <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId"/>
+        <result column="PAY_TYPE" jdbcType="VARCHAR" property="payType"/>
+        <result column="PAY_VAL" jdbcType="DECIMAL" property="payVal"/>
+        <result column="PAY_MONEY" jdbcType="DECIMAL" property="payMoney"/>
+        <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="EFF_DATE" jdbcType="TIMESTAMP" property="effDate"/>
+        <result column="EXP_DATE" jdbcType="TIMESTAMP" property="expDate"/>
+        <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd"/>
+        <result column="STAFF_ID" jdbcType="INTEGER" property="staffId"/>
+        <result column="EDIT_STAFF_ID" jdbcType="INTEGER" property="editStaffId"/>
+        <result column="SORT_SEQ" jdbcType="DECIMAL" property="sortSeq"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        OBJ_ID, OBJ_CODE, PRODUCT_ID, PAY_TYPE, PAY_VAL, PAY_MONEY, ADD_TIME, EFF_DATE, EXP_DATE,
+        UPDATE_DATE, STATUS_CD, STAFF_ID, EDIT_STAFF_ID, SORT_SEQ
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+    select 
+
+        <include refid="Base_Column_List"/>
+
+    from co_exc_obj
+    where OBJ_ID = #{objId,jdbcType=BIGINT}
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        <!--@mbg.generated-->
+    delete from co_exc_obj
+    where OBJ_ID = #{objId,jdbcType=BIGINT}
+
+    </delete>
+    <insert id="insertSelective" keyColumn="OBJ_ID" keyProperty="objId" parameterType="com.web.model.CoExcObj"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+    insert into co_exc_obj
+
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="objCode != null">
+                OBJ_CODE,
+            </if>
+            <if test="productId != null">
+                PRODUCT_ID,
+            </if>
+            <if test="payType != null">
+                PAY_TYPE,
+            </if>
+            <if test="payVal != null">
+                PAY_VAL,
+            </if>
+            <if test="payMoney != null">
+                PAY_MONEY,
+            </if>
+            <if test="addTime != null">
+                ADD_TIME,
+            </if>
+            <if test="effDate != null">
+                EFF_DATE,
+            </if>
+            <if test="expDate != null">
+                EXP_DATE,
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE,
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD,
+            </if>
+            <if test="staffId != null">
+                STAFF_ID,
+            </if>
+            <if test="editStaffId != null">
+                EDIT_STAFF_ID,
+            </if>
+            <if test="sortSeq != null">
+                SORT_SEQ,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="objCode != null">
+                #{objCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="payType != null">
+                #{payType,jdbcType=VARCHAR},
+            </if>
+            <if test="payVal != null">
+                #{payVal,jdbcType=DECIMAL},
+            </if>
+            <if test="payMoney != null">
+                #{payMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="effDate != null">
+                #{effDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDate != null">
+                #{expDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="statusCd != null">
+                #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="staffId != null">
+                #{staffId,jdbcType=INTEGER},
+            </if>
+            <if test="editStaffId != null">
+                #{editStaffId,jdbcType=INTEGER},
+            </if>
+            <if test="sortSeq != null">
+                #{sortSeq,jdbcType=DECIMAL},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoExcObj">
+        <!--@mbg.generated-->
+    update co_exc_obj
+        <set>
+            <if test="objCode != null">
+                OBJ_CODE = #{objCode,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                PRODUCT_ID = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="payType != null">
+                PAY_TYPE = #{payType,jdbcType=VARCHAR},
+            </if>
+            <if test="payVal != null">
+                PAY_VAL = #{payVal,jdbcType=DECIMAL},
+            </if>
+            <if test="payMoney != null">
+                PAY_MONEY = #{payMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="addTime != null">
+                ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="effDate != null">
+                EFF_DATE = #{effDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDate != null">
+                EXP_DATE = #{expDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null">
+                UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+            </if>
+            <if test="staffId != null">
+                STAFF_ID = #{staffId,jdbcType=INTEGER},
+            </if>
+            <if test="editStaffId != null">
+                EDIT_STAFF_ID = #{editStaffId,jdbcType=INTEGER},
+            </if>
+            <if test="sortSeq != null">
+                SORT_SEQ = #{sortSeq,jdbcType=DECIMAL},
+            </if>
+        </set>
+
+    where OBJ_ID = #{objId,jdbcType=BIGINT}
+
+    </update>
+    <insert id="batchInsert" keyColumn="OBJ_ID" keyProperty="objId" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+    INSERT INTO co_exc_obj
+    (OBJ_CODE, PRODUCT_ID, PAY_TYPE, PAY_VAL, PAY_MONEY, ADD_TIME, EFF_DATE, EXP_DATE, 
+      UPDATE_DATE, STATUS_CD, STAFF_ID, EDIT_STAFF_ID, SORT_SEQ)
+    VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.objCode,jdbcType=VARCHAR}, #{item.productId,jdbcType=BIGINT}, #{item.payType,jdbcType=VARCHAR},
+        #{item.payVal,jdbcType=DECIMAL}, #{item.payMoney,jdbcType=DECIMAL}, #{item.addTime,jdbcType=TIMESTAMP}, 
+        #{item.effDate,jdbcType=TIMESTAMP}, #{item.expDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP},
+        #{item.statusCd,jdbcType=VARCHAR}, #{item.staffId,jdbcType=INTEGER}, #{item.editStaffId,jdbcType=INTEGER}, 
+        #{item.sortSeq,jdbcType=DECIMAL})
+        </foreach>
+    </insert>
+
+    <select id="queryExcObj" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+        <include refid="Base_Column_List"/>
+    FROM co_exc_obj
+    WHERE 1=1
+        <include refid="queryExcObjCondition"/>
+    ORDER BY OBJ_ID,STATUS_CD,SORT_SEQ
+
+    </select>
+    <sql id="queryExcObjCondition">
+        <if test="objCode != null and objCode != ''">
+            AND OBJ_CODE LIKE CONCAT('%',#{objCode,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="statusCd != null and statusCd != ''">
+            AND STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <select id="selectCountObjCode" resultType="java.lang.Integer">
+        SELECT
+            count(0)
+        FROM co_exc_obj
+        WHERE OBJ_CODE = #{objCode,jdbcType=VARCHAR}
+        <if test="oldObjCode != null and oldObjCode != ''">
+            AND OBJ_CODE != #{oldObjCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="queryExcObjByNotTypeId" resultMap="BaseResultMap">
+    SELECT r.OBJ_ID, r.OBJ_CODE, r.PRODUCT_ID, r.PAY_TYPE, r.PAY_VAL, r.PAY_MONEY, r.ADD_TIME, r.EFF_DATE, r.EXP_DATE,
+        r.UPDATE_DATE, r.STATUS_CD, r.STAFF_ID, r.EDIT_STAFF_ID, r.SORT_SEQ
+         FROM co_exc_obj r
+         WHERE 1=1
+        <if test="typeId != null">
+            AND r.OBJ_ID NOT IN (SELECT o.OBJ_ID FROM co_exc_type_rela o WHERE  o.TYPE_ID = #{typeId,jdbcType=BIGINT})
+        </if>
+
+    </select>
+
+
+</mapper>

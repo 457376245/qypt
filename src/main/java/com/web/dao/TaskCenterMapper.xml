@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.TaskCenterDao">
+	<!-- 查询具体的规则组 -->
+	<resultMap type="RuleGroupCommonBean" id="RuleGroupMap">
+		<id property="ruleGroupId" column="ruleGroupId"/>
+		<result property="ruleMode" column="RULE_MODE"/>
+		<result property="showRuleMode" column="SHOW_RULE_MODE"/>
+		<collection property="ruleCommonList" javaType="java.util.ArrayList" ofType="RuleCommonBean">
+			<id property="ruleId" column="RULE_ID"/>
+			<result property="ruleCode" column="RULE_CODE"/>
+			<result property="ruleType" column="RULE_TYPE"/>
+			<result property="ruleData" column="RULE_DATA"/>
+			<result property="ruleMode" column="RULE_MODE"/>
+			<result property="sortSeq" column="SORT_SEQ"/>
+			<collection property="ruleDatalist" javaType="java.util.ArrayList" ofType="CoRuleData">
+				<id property="expId" column="EXP_ID"/>
+				<id property="ruleData" column="RULE_DATA_SUB"/>
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="getTaskGroupCount" resultType="java.lang.Integer">
+		select count(t.GROUP_ID) from co_task_group t
+		<include refid="getTaskGroupListSql"/>
+	</select>
+
+    <select id="getTaskGroupList" resultType="CoTaskGroup">
+    	select 
+    	t.GROUP_ID as groupId,t.GROUP_TITLE as groupTitle,t.GROUP_CODE as groupCode,
+    	t.GROUP_TYPE as groupType,t.GROUP_DESC as groupDesc,t.ADD_TIME as addTime,
+		t.STATUS_CD as statusCd,t.START_TIME as satrtTime,t.END_TIME as endTime,t.SORT_SEQ as sortSeq,
+		DATE_FORMAT(t.START_TIME,'%Y-%m-%d %H:%i:%s')  as startDate,
+		DATE_FORMAT(t.END_TIME,'%Y-%m-%d %H:%i:%s')  as endDate
+    	from co_task_group t 
+    	<include refid="getTaskGroupListSql"/>
+    	order by t.SORT_SEQ ASC
+    </select>
+    
+    <sql id="getTaskGroupListSql">
+    	where t.STATUS_CD!='102'
+		<if test="groupTitle !=null and groupTitle !='' ">
+			and INSTR(t.GROUP_TITLE,#{groupTitle,jdbcType=VARCHAR})>0
+		</if>
+		<if test="statusCd !=null and statusCd !='' ">
+			and t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		</if>
+    </sql>
+    
+    <!-- 查询任务分组信息 -->
+    <select id="getTaskGroupInfo" resultType="CoTaskGroup">
+    	select
+		t.GROUP_ID as groupId,t.GROUP_TITLE as groupTitle,t.group_desc as groupDesc,
+		t.GROUP_CODE as groupCode,t.SORT_SEQ as sortSeq,
+		t.START_TIME as startTime,t.status_cd as statusCd,
+		DATE_FORMAT(t.START_TIME,'%Y-%m-%d %H:%i:%s') as startDate,
+		t.END_TIME as endTime,
+		DATE_FORMAT(t.END_TIME,'%Y-%m-%d %H:%i:%s') as endDate
+		from co_task_group t
+		where t.STATUS_CD!='102'
+		and t.GROUP_ID=#{groupId,jdbcType=NUMERIC}
+    </select>
+    
+    <!-- 新增分组信息 -->
+    <insert id="addTaskGroupInfo">
+    	insert into co_task_group(
+			GROUP_TITLE,GROUP_CODE,GROUP_TYPE,
+			SHOW_TYPE,GROUP_DESC,ADD_TIME,
+			STATUS_DATE,UPDATE_DATE,
+			STATUS_CD,SORT_SEQ,START_TIME,
+			END_TIME,STAFF_ID,EDIT_STAFF_ID
+		)values(
+			#{groupTitle,jdbcType=VARCHAR},#{groupCode,jdbcType=VARCHAR},#{groupType,jdbcType=VARCHAR},
+			'1',#{groupDesc,jdbcType=VARCHAR},now(),
+			now(),now(),
+			#{statusCd,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC},DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s'),
+			DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%s'),
+			#{staffId,jdbcType=NUMERIC},#{staffId,jdbcType=NUMERIC}
+		)
+    </insert>
+    
+    <!-- 修改分组信息 -->
+    <update id="editTaskGroupInfo">
+    	update co_task_group t
+		set t.STATUS_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC}
+		<if test="groupTitle !=null and groupTitle !=''">
+			,t.GROUP_TITLE=#{groupTitle,jdbcType=VARCHAR}
+		</if>
+		<if test="groupDesc !=null and groupDesc !='' ">
+			,t.GROUP_DESC=#{groupDesc,jdbcType=VARCHAR}
+		</if>
+		<if test="sortSeq !=null and sortSeq !='' ">
+			,t.SORT_SEQ=#{sortSeq,jdbcType=NUMERIC}
+		</if>
+		<if test="statusCd !=null and statusCd !='' ">
+			,t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime !=null and startTime !='' ">
+			,t.START_TIME=DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s')
+		</if>
+		<if test="endTime !=null and endTime !='' ">
+			,t.END_TIME=DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%s')
+		</if>
+		where t.GROUP_ID=#{groupId,jdbcType=NUMERIC}
+    </update>
+    
+    <select id="getTaskInfos" resultType="CoTask">
+    	select
+		t.task_id as taskId,t.TASK_CODE as taskCode,t.TASK_NAME as taskName,
+		t.TASK_DESC as taskDesc,t.TASK_TYPE as taskType,t.PRIZE_DESC as prizeDesc,
+		t.STATUS_CD as statusCd,t.SHOW_TIME as showTime,t.START_TIME as startTime,t.END_TIME as endTime,t.add_time as addTime,
+		t.CYCLE_TYPE as cycleType,t.CYCLE_VAL as cycleVal,t.IN_TYPE as inType,
+		t.SORT_SEQ as sortSeq,t.RULE_MODE as ruleMode,t.SHOW_RULE_MODE as showRuleMode,
+		t.TASK_URL as taskUrl,t.IMG_CODE as imgCode,
+		t.ACT_TAB_TITLE as actTabTitle,t.COM_TAB_TITLE as comTabTitle,t.SELL_TAB_TITLE as sellTabTitle,
+		t.group_id as groupId,t1.GROUP_TITLE as ownerGroupTitle,
+		DATE_FORMAT(t.ADD_TIME,'%Y-%m-%d %H:%i:%s')  as addDate,
+		DATE_FORMAT(t.SHOW_TIME,'%Y-%m-%d %H:%i:%s')  as showDate,
+		DATE_FORMAT(t.START_TIME,'%Y-%m-%d %H:%i:%s')  as startDate,
+		DATE_FORMAT(t.END_TIME,'%Y-%m-%d %H:%i:%s')  as endDate
+		from co_task t
+		inner join co_task_group t1 on t1.GROUP_ID=t.GROUP_ID and t1.STATUS_CD!='102'
+		where t.STATUS_CD!='102'
+		<if test="taskName !=null and taskName !='' ">
+			and INSTR(t.TASK_NAME,#{taskName,jdbcType=VARCHAR})>0
+		</if>
+		<if test="statusCd !=null and statusCd !='' ">
+			and t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		</if>
+		<if test="groupId !=null and groupId !='' ">
+			and t.GROUP_ID=#{groupId,jdbcType=NUMERIC}
+		</if>
+		<if test="taskId !=null and taskId !='' ">
+			and t.task_id=#{taskId,jdbcType=NUMERIC}
+		</if>
+		order by t1.sort_seq ASC,t.sort_seq ASC
+    </select>
+    
+    <!-- 新增任务信息 -->
+    <insert id="addTaskInfo">
+    	insert into co_task(
+			GROUP_ID,TASK_CODE,TASK_NAME,
+			TASK_DESC,TASK_TYPE,PRIZE_DESC,
+			ADD_TIME,STATUS_DATE,UPDATE_DATE,
+			STATUS_CD,SHOW_TIME,START_TIME,
+			END_TIME,CYCLE_TYPE,CYCLE_VAL,
+			IN_TYPE,SORT_SEQ,STAFF_ID,
+			EDIT_STAFF_ID,IMG_CODE,TASK_URL,
+			ACT_TAB_TITLE,COM_TAB_TITLE,SELL_TAB_TITLE
+		)values(
+			#{groupId,jdbcType=NUMERIC},#{taskCode,jdbcType=VARCHAR},#{taskName,jdbcType=VARCHAR},
+			#{taskDesc,jdbcType=VARCHAR},#{taskType,jdbcType=VARCHAR},#{prizeDesc,jdbcType=VARCHAR},
+			now(),now(),now(),
+			#{statusCd,jdbcType=VARCHAR},DATE_FORMAT(#{showTime},'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s'),
+			DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%s'),#{cycleType,jdbcType=VARCHAR},#{cycleVal,jdbcType=NUMERIC},
+			#{inType,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC},#{staffId,jdbcType=NUMERIC},
+			#{staffId,jdbcType=NUMERIC},#{imgCode,jdbcType=VARCHAR},#{taskUrl,jdbcType=VARCHAR},
+			#{actTabTitle,jdbcType=VARCHAR},#{comTabTitle,jdbcType=VARCHAR},#{sellTabTitle,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+    <!-- 修改任务基础信息 -->
+    <update id="editTaskInfo">
+    	update co_task t
+		set 
+		t.UPDATE_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC},
+		t.GROUP_ID=#{groupId,jdbcType=NUMERIC},
+		t.TASK_NAME=#{taskName,jdbcType=VARCHAR},
+		t.TASK_DESC=#{taskDesc,jdbcType=VARCHAR},
+		<if test="taskType !=null and taskType !='' ">
+			t.TASK_TYPE=#{taskType,jdbcType=VARCHAR},
+		</if>
+		t.PRIZE_DESC=#{prizeDesc,jdbcType=VARCHAR},
+		t.STATUS_CD=#{statusCd,jdbcType=VARCHAR},
+		t.SHOW_TIME=DATE_FORMAT(#{showTime},'%Y-%m-%d %H:%i:%s'),
+		t.START_TIME=DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s'),
+		t.END_TIME=DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%s'),
+		
+		<if test="cycleType !=null and cycleType !='' ">
+			t.CYCLE_TYPE=#{cycleType,jdbcType=VARCHAR},
+		</if>
+		<if test="cycleVal !=null and cycleVal !='' ">
+			t.CYCLE_VAL=#{cycleVal,jdbcType=NUMERIC},
+		</if>
+		<if test="inType !=null and inType !='' ">
+			t.IN_TYPE=#{inType,jdbcType=VARCHAR},
+		</if>
+		t.SORT_SEQ=#{sortSeq,jdbcType=NUMERIC},
+		t.IMG_CODE=#{imgCode,jdbcType=VARCHAR},
+		t.TASK_URL=#{taskUrl,jdbcType=VARCHAR},
+		t.ACT_TAB_TITLE=#{actTabTitle,jdbcType=VARCHAR},
+		t.COM_TAB_TITLE=#{comTabTitle,jdbcType=VARCHAR},
+		t.SELL_TAB_TITLE=#{sellTabTitle,jdbcType=VARCHAR}
+		where t.STATUS_CD!='102'
+		and t.TASK_ID=#{taskId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 修改任务状态（启用、停用、删除） -->
+    <update id="editTaskStatus">
+    	update co_task t
+		set 
+		t.STATUS_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC},
+		t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		where t.STATUS_CD!='102'
+		and t.TASK_ID=#{taskId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 查询任务规则列表 -->
+    <select id="getTaskRuleInfos" resultType="CoTaskRule">
+    	select
+		t.RULE_ID as ruleId,t.RULE_CODE as ruleCode,t.RULE_TITLE as ruleTitle,
+		t.RULE_DESC as ruleDesc,t.RULE_TYPE as ruleType,t.RULE_DATA as ruleData,
+		t.STATUS_CD as statusCd
+		from co_task_rule t
+		where t.STATUS_CD!='102'
+		<choose>
+			<when test="taskId!=null and taskId!='' ">
+				and t.TASK_ID=#{taskId,jdbcType=NUMERIC}
+			</when>
+			<when test="rewardId !=null and rewardId !='' ">
+				and t.reward_id=#{rewardId,jdbcType=NUMERIC}
+			</when>
+			<otherwise>
+				and t.TASK_ID=-1
+			</otherwise>
+		</choose>
+		<if test="ruleId !=null and ruleId !='' ">
+		and t.RULE_ID=#{ruleId,jdbcType=NUMERIC}
+		</if>
+		order by t.RULE_ID DESC
+    </select>
+    
+    <!-- 新增任务或奖品规则数据 -->
+    <insert id="addTaskOrRewardRuleInfo">
+    	insert into co_task_rule(
+			RULE_CODE,
+			RULE_TITLE,RULE_DESC,ADD_TIME,
+			STATUS_DATE,UPDATE_DATE,STATUS_CD,
+			RULE_TYPE,RULE_DATA,IS_SHOW,SORT_SEQ
+			<if test="taskId !=null and taskId !='' ">
+			,TASK_ID
+			</if>
+			<if test="rewardId !=null and rewardId !='' ">
+			,REWARD_ID
+			</if>
+		)values(
+			#{ruleCode,jdbcType=VARCHAR},
+			#{ruleTitle,jdbcType=VARCHAR},#{ruleDesc,jdbcType=VARCHAR},now(),
+			now(),now(),'101',
+			#{ruleType,jdbcType=VARCHAR},#{ruleData,jdbcType=VARCHAR},'1',1
+			<if test="taskId !=null and taskId !='' ">
+			,#{taskId,jdbcType=NUMERIC}
+			</if>
+			<if test="rewardId !=null and rewardId !='' ">
+			,#{rewardId,jdbcType=NUMERIC}
+			</if>
+		)
+    </insert>
+    
+    <!-- 修改规则信息 -->
+    <update id="editTaskOrRewardRuleInfo">
+    	update co_task_rule t
+		set 
+		t.UPDATE_DATE=now(),
+		t.RULE_TITLE=#{ruleTitle,jdbcType=VARCHAR},
+		t.RULE_DESC=#{ruleDesc,jdbcType=VARCHAR},
+		t.RULE_TYPE=#{ruleType,jdbcType=VARCHAR},
+		t.RULE_DATA=#{ruleData,jdbcType=VARCHAR}
+		where 
+		t.STATUS_CD!='102'
+		and t.RULE_ID=#{ruleId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 修改规则状态 -->
+    <update id="editTaskOrRewardRuleStatus">
+    	update co_task_rule t
+    	set
+    	t.STATUS_DATE=now(),
+		t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		where 
+		t.STATUS_CD!='102'
+		and t.RULE_ID=#{ruleId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 查询任务奖励列表 -->
+    <select id="getTaskRewardList" resultType="CoTaskReward">
+    	select
+		t.REWARD_ID as rewardId,t.PRIZE_ID as prizeId,t.TASK_ID as taskId,
+		t.RULE_MODE as ruleMode,t.USER_PRIZE_COUNT as userPrizeCount,
+		t.status_cd as statusCd,
+		t1.PRIZE_COUNT as prizeCount,t1.PRIZE_TITLE as prizeTitle,t1.PRIZE_DESC as prizeDesc,
+		t1.PRIZE_TYPE as prizeType,t1.PRIZE_STOCK as prizeStock,t1.PRODUCT_CODE as productCode
+		from co_task_reward t
+		inner join co_prize t1 on t1.PRIZE_ID=t.PRIZE_ID and t.STATUS_CD!='102'
+		where t.STATUS_CD!='102'
+		<if test="taskId !=null and taskId !='' ">
+			and t.TASK_ID=#{taskId,jdbcType=NUMERIC}
+		</if>
+		<if test="rewardId !=null and rewardId !='' ">
+			and t.reward_id=#{rewardId,jdbcType=NUMERIC}
+		</if>
+    </select>
+    
+    <!-- 新增奖品库数据 -->
+    <insert id="addPrizeInfo" useGeneratedKeys="true" keyProperty="prizeId">
+	    insert into CO_PRIZE(
+			PRIZE_TITLE,PRIZE_TYPE,PRIZE_DESC,
+			PRIZE_COUNT,PRIZE_USE,PRODUCT_CODE,
+			PROD_SUPPLIER,PRIZE_VAL,
+			ADD_TIME,STATUS_DATE,UPDATE_DATE,
+			STATUS_CD,STAFF_ID,EDIT_STAFF_ID,
+			IMG_CODE,PRIZE_STOCK,	
+			START_TIME,END_TIME
+		)values(
+			#{prizeTitle,jdbcType=VARCHAR},#{prizeType,jdbcType=VARCHAR},#{prizeDesc,jdbcType=VARCHAR},
+			#{prizeCount,jdbcType=NUMERIC},#{prizeUse,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},
+			#{prodSupplier,jdbcType=VARCHAR},#{prizeVal,jdbcType=VARCHAR},
+			now(),now(),now(),
+			'101',#{staffId,jdbcType=NUMERIC},#{staffId,jdbcType=NUMERIC},
+			#{imgCode,jdbcType=VARCHAR},#{prizeStock,jdbcType=NUMERIC},
+			now(),DATE_FORMAT('2099-12-31 23:59:59','%Y-%m-%d %H:%i:%s')
+		)
+    </insert>
+    
+    <!-- 新增任务奖励关系 -->
+    <insert id="addTaskRewardInfo">
+    	insert into CO_TASK_REWARD(
+			TASK_ID,PRIZE_ID,USER_PRIZE_COUNT,
+			ADD_TIME,STATUS_DATE,UPDATE_DATE,
+			STATUS_CD,STAFF_ID,EDIT_STAFF_ID,
+			RULE_MODE
+		)values(
+			#{taskId,jdbcType=NUMERIC},#{prizeId,jdbcType=NUMERIC},#{usePrizeCount,jdbcType=NUMERIC},
+			now(),now(),now(),
+			'101',#{staffId,jdbcType=NUMERIC},#{staffId,jdbcType=NUMERIC},
+			#{ruleMode,jdbcType=VARCHAR}
+		)
+    </insert>
+    
+    <!-- 修改任务奖励信息 -->
+    <update id="editTaskRewardInfo">
+    	update CO_TASK_REWARD t
+		set 
+		t.UPDATE_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC},
+		t.USER_PRIZE_COUNT=#{userPrizeCount,jdbcType=NUMERIC}
+		where t.STATUS_CD!='102'
+		and t.REWARD_ID=#{rewardId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 修改任务奖励状态 -->
+    <update id="editTaskRewardStatus">
+	    update CO_TASK_REWARD t
+		set 
+		t.STATUS_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC},
+		t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		where t.STATUS_CD!='102'
+		and t.REWARD_ID=#{rewardId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 查询任务奖励规则列表 -->
+    <select id="getTaskRewardRuleList" resultType="CoTaskRule">
+    	select
+		t.RULE_ID as ruleId,t.RULE_CODE as ruleCode,t.RULE_TITLE as ruleTitle,
+		t.RULE_DESC as ruleDesc,t.RULE_TYPE as ruleType,t.RULE_DATA as ruleData,
+		t.STATUS_CD as statusCd
+		from co_task_rule t
+		where t.STATUS_CD!='102'
+		and t.REWARD_ID=#{rewardId,jdbcType=NUMERIC}
+		order by t.RULE_ID DESC
+    </select>
+    
+    <!-- 修改任务规则条件 -->
+    <update id="editTaskRuleMode">
+    	update co_task t
+		set t.UPDATE_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC}
+		<if test="forType !=null and forType !='' ">
+			<choose>
+				<when test="forType=='SHOW'">
+					,t.SHOW_RULE_MODE=#{showRuleMode,jdbcType=VARCHAR}
+				</when>
+				<otherwise>
+					,t.RULE_MODE=#{ruleMode,jdbcType=VARCHAR}
+				</otherwise>
+			</choose>
+		</if>
+		where t.STATUS_CD!='102'
+		and t.TASK_ID=#{taskId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 修改任务奖励规则条件 -->
+    <update id="editTaskRewardRuleMode">
+    	update co_task_reward t
+		set t.UPDATE_DATE=now(),
+		t.EDIT_STAFF_ID=#{staffId,jdbcType=NUMERIC},
+		t.RULE_MODE=#{ruleMode,jdbcType=VARCHAR}
+		where t.STATUS_CD!='102'
+		and t.REWARD_ID=#{rewardId,jdbcType=NUMERIC}
+    </update>
+    
+    <!-- 获取活动和活动规则(用于刷新缓存) -->
+	<select id="getActivityAndRuleList" resultMap="RuleGroupMap">
+		select
+		t.ACTIVITY_ID as ruleGroupId,t.RULE_MODE,t.SHOW_RULE_MODE,
+		t2.RULE_ID,t2.RULE_CODE,t2.RULE_TYPE,t2.RULE_DATA,
+		t2.RULE_MODE,t2.SORT_SEQ,
+		t3.EXP_ID,t3.RULE_DATA as RULE_DATA_SUB
+		from co_activity t
+		left join co_act_rule t2 on t2.ACTIVITY_ID=t.ACTIVITY_ID and t2.STATUS_CD='101'
+		left join co_act_rule_data t3 on t3.RULE_ID=t2.RULE_ID and t3.STATUS_CD='101'
+		where 
+		t.STATUS_CD='101'
+		and now() BETWEEN DATE_SUB(t.SHOW_TIME,INTERVAL 31 day) and t.END_TIME
+	</select>
+	
+	<!-- 获取所有任务和任务规则（用于缓存刷新） -->
+	<select id="getTaskAndRuleList" resultMap="RuleGroupMap">
+		select 
+		t.TASK_ID as ruleGroupId,t.RULE_MODE,t.SHOW_RULE_MODE,
+		t2.RULE_ID,t2.RULE_CODE,t2.RULE_TYPE,t2.RULE_DATA,
+		t2.RULE_MODE,t2.SORT_SEQ,
+		t3.EXP_ID,t3.RULE_DATA as RULE_DATA_SUB
+		from co_task t
+		left join CO_TASK_RULE t2 on t2.TASK_ID=t.TASK_ID and t2.STATUS_CD='101'
+		left join CO_RULE_DATA t3 on t3.RULE_ID=t2.RULE_ID and t3.STATUS_CD='101'
+		where 
+		t.STATUS_CD='101'
+		and now() BETWEEN DATE_SUB(t.SHOW_TIME,INTERVAL 31 day) and t.END_TIME 
+	</select>
+	
+	<!-- 获取任务奖励规则（用于缓存刷新） -->
+	<select id="getTaskRewardAndRuleList" resultMap="RuleGroupMap">
+		select
+		tr.REWARD_ID as ruleGroupId, tr.RULE_MODE,
+		t2.RULE_ID,t2.RULE_CODE,t2.RULE_TYPE,t2.RULE_DATA,
+		t2.RULE_MODE,t2.SORT_SEQ,
+		t3.EXP_ID,t3.RULE_DATA as RULE_DATA_SUB
+		from co_task_reward tr
+		inner join co_task t on tr.TASK_ID=t.TASK_ID and t.STATUS_CD='101' and now() BETWEEN DATE_SUB(t.SHOW_TIME,INTERVAL 31 day) and t.END_TIME
+		left join CO_TASK_RULE t2 on t2.REWARD_ID=tr.REWARD_ID and t2.STATUS_CD='101'
+		left join CO_RULE_DATA t3 on t3.RULE_ID=t2.RULE_ID and t3.STATUS_CD='101'
+		where tr.STATUS_CD='101'
+	</select>
+	
+	<!-- 获取任务图片数据 -->
+	<select id="getTaskImgList" resultType="CoTaskImg">
+		select 
+		t.TASK_IMG_ID as taskImgId,t.IMG_ID as imgId,t.TASK_ID as taskId,
+		t.ADD_TIME as addTime,DATE_FORMAT(t.ADD_TIME,'%Y-%m-%d %H:%i:%s') as addDate,
+		t.CLASS_CODE as classCode,t.IMG_CODE as imgCode,t.sort_seq as sortSeq,
+		t1.OLD_NAME as oldName,t1.NEW_NAME as newName,t1.LINK_ID as linkId,
+		t1.FILE_TYPE as fileType
+		from co_task_img t
+		inner join CO_O_IMG t1 on t1.IMG_ID=t.IMG_ID and t.STATUS_CD!='102'
+		where t.STATUS_CD!='102'
+		and t.TASK_ID=#{taskId,jdbcType=NUMERIC}
+		<if test="taskImgId !=null and taskImgId !='' ">
+			and t.TASK_IMG_ID=#{taskImgId,jdbcType=NUMERIC}
+		</if>
+		order by t.SORT_SEQ ASC
+	</select>
+	
+	<!-- 新增任务图片 -->
+	<insert id="addTaskImgInfo">
+		insert into co_task_img (
+			IMG_ID,TASK_ID,CLASS_CODE,
+			ADD_TIME,STATUS_DATE,UPDATE_DATE,
+			STATUS_CD,IMG_CODE,SORT_SEQ
+		)values(
+			#{imgId,jdbcType=NUMERIC},#{taskId,jdbcType=NUMERIC},#{classCode,jdbcType=VARCHAR},
+			now(),now(),now(),
+			'101',#{imgCode,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC}
+		)
+	</insert>
+	
+	<!-- 修改图片任务状态 -->
+	<update id="editTaskImgStatus">
+		update 
+		co_task_img t
+		set t.STATUS_DATE=now(),
+		t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		where t.STATUS_CD!='102'
+		and t.TASK_IMG_ID=#{taskImgId,jdbcType=NUMERIC}
+	</update>
+	
+	<!-- 查询未被规则选择的地市 -->
+	<select id="getCommonRegionForRule" resultType="CoRegion">
+		select
+		t1.REGION_NAME as parentRegionName,
+		t.REGION_ID as regionId,t.REGION_CODE as regionCode,t.REGION_NAME as regionName
+		from co_region t
+		inner join co_region t1 on t1.REGION_ID=t.PARENT_ID and t1.STATUS_CD='101' 
+		where t.STATUS_CD='101'
+		and t.AREA_LEVEL=2
+		<if test="ruleId !=null and ruleId !='' ">
+		and t.REGION_CODE not in (
+			select t3.rule_data from co_rule_data t3 where t3.status_cd='101'
+			and t3.rule_id=#{ruleId,jdbcType=NUMERIC}
+		)
+		</if>
+		<if test="provinceCode !=null and provinceCode !='' ">
+		and t1.REGION_CODE=#{provinceCode,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+	<insert id="addRuleRegionData">
+		insert into CO_RULE_DATA (
+			RULE_ID,RULE_DATA,
+			ADD_TIME,STATUS_DATE,UPDATE_DATE,
+			STATUS_CD,SORT_SEQ
+		)values(
+			#{ruleId,jdbcType=NUMERIC},#{ruleData,jdbcType=VARCHAR},
+			now(),now(),now(),
+			'101',1
+		)
+	</insert>
+	
+	<!-- 获取规则地市数据集合 -->
+	<select id="getRegionRuleData" resultType="CoRuleData">
+		select
+		t.EXP_ID as expId,t.RULE_DATA as ruleData,t1.REGION_NAME as regionName,t2.REGION_NAME as parentRegionName
+		from co_rule_data t
+		inner join co_region t1 on t1.REGION_CODE=t.RULE_DATA
+		inner join co_region t2 on t2.REGION_ID=t1.PARENT_ID
+		where t.STATUS_CD='101'
+		and t.RULE_ID=#{ruleId,jdbcType=NUMERIC}
+	</select>
+	
+	<!-- 删除规则地市数据集合 -->
+	<update id="delRegionRuleData">
+		update 
+		co_rule_data t
+		set t.STATUS_DATE=now(),
+		t.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+		where t.STATUS_CD!='102'
+		and t.EXP_ID in 
+		<foreach item="item" collection="ruleRegions" separator="," open="(" close=")" index="">
+       	#{item.expId,jdbcType=NUMERIC}
+     	</foreach>
+	</update>
+	
+	<select id="getRegionRuleDataByTask" resultType="CoRuleData">
+	select
+	t.EXP_ID as expId,t.RULE_DATA as ruleData,t1.REGION_NAME as regionName
+	from co_rule_data t
+	inner join co_region t1 on t1.REGION_CODE=t.RULE_DATA
+	inner join co_task_rule t2 on t2.rule_id=t.rule_id and t2.status_cd='101'
+	where t.STATUS_CD='101'
+	and t2.rule_type='8'
+	and t2.task_id=#{taskId,jdbcType=NUMERIC}
+	</select>
+</mapper>

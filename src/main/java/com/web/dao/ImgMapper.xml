@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ImgDao">
+  <resultMap id="BaseResultMap" type="com.web.model.CoImg">
+
+    <!--@Table co_o_img-->
+    <id column="IMG_ID" jdbcType="BIGINT" property="imgId" />
+    <result column="LINK_ID" jdbcType="VARCHAR" property="linkId" />
+    <result column="LINK_TYPE" jdbcType="VARCHAR" property="linkType" />
+    <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName" />
+    <result column="OLD_NAME" jdbcType="VARCHAR" property="oldName" />
+    <result column="NEW_NAME" jdbcType="VARCHAR" property="newName" />
+    <result column="FILE_DIR" jdbcType="VARCHAR" property="fileDir" />
+    <result column="FILE_TYPE" jdbcType="VARCHAR" property="fileType" />
+    <result column="STORAGE_TYPE" jdbcType="VARCHAR" property="storageType" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    
+    IMG_ID, LINK_ID, LINK_TYPE, FILE_NAME, OLD_NAME, NEW_NAME, FILE_DIR, FILE_TYPE, STORAGE_TYPE, 
+    ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM co_o_img
+    WHERE IMG_ID = #{imgId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    
+    DELETE FROM co_o_img
+    WHERE IMG_ID = #{imgId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="IMG_ID" keyProperty="imgId" parameterType="com.web.model.CoImg" useGeneratedKeys="true">
+    
+    INSERT INTO co_o_img (LINK_ID, LINK_TYPE, FILE_NAME,
+      OLD_NAME, NEW_NAME, FILE_DIR, 
+      FILE_TYPE, STORAGE_TYPE, ADD_TIME, 
+      STATUS_DATE, UPDATE_DATE, STATUS_CD
+      )
+    VALUES (#{linkId,jdbcType=VARCHAR}, #{linkType,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR},
+      #{oldName,jdbcType=VARCHAR}, #{newName,jdbcType=VARCHAR}, #{fileDir,jdbcType=VARCHAR}, 
+      #{fileType,jdbcType=VARCHAR}, #{storageType,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{statusDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, #{statusCd,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="IMG_ID" keyProperty="imgId" parameterType="com.web.model.CoImg" useGeneratedKeys="true">
+    INSERT INTO co_o_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="linkId != null">
+        LINK_ID,
+      </if>
+      <if test="linkType != null">
+        LINK_TYPE,
+      </if>
+      <if test="fileName != null">
+        FILE_NAME,
+      </if>
+      <if test="oldName != null">
+        OLD_NAME,
+      </if>
+      <if test="newName != null">
+        NEW_NAME,
+      </if>
+      <if test="fileDir != null">
+        FILE_DIR,
+      </if>
+      <if test="fileType != null">
+        FILE_TYPE,
+      </if>
+      <if test="storageType != null">
+        STORAGE_TYPE,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="linkId != null">
+        #{linkId,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldName != null">
+        #{oldName,jdbcType=VARCHAR},
+      </if>
+      <if test="newName != null">
+        #{newName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDir != null">
+        #{fileDir,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="storageType != null">
+        #{storageType,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoImg">
+    
+    UPDATE co_o_img
+    <set>
+      <if test="linkId != null">
+        LINK_ID = #{linkId,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        LINK_TYPE = #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldName != null">
+        OLD_NAME = #{oldName,jdbcType=VARCHAR},
+      </if>
+      <if test="newName != null">
+        NEW_NAME = #{newName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDir != null">
+        FILE_DIR = #{fileDir,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="storageType != null">
+        STORAGE_TYPE = #{storageType,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE IMG_ID = #{imgId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.web.model.CoImg">
+    
+    UPDATE co_o_img
+    SET LINK_ID = #{linkId,jdbcType=VARCHAR},
+      LINK_TYPE = #{linkType,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      OLD_NAME = #{oldName,jdbcType=VARCHAR},
+      NEW_NAME = #{newName,jdbcType=VARCHAR},
+      FILE_DIR = #{fileDir,jdbcType=VARCHAR},
+      FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      STORAGE_TYPE = #{storageType,jdbcType=VARCHAR},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+    WHERE IMG_ID = #{imgId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateSelective" parameterType="com.web.model.CoImg">
+    
+    UPDATE co_o_img
+    <set>
+      <if test="linkId != null">
+        LINK_ID = #{linkId,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        LINK_TYPE = #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldName != null">
+        OLD_NAME = #{oldName,jdbcType=VARCHAR},
+      </if>
+      <if test="newName != null">
+        NEW_NAME = #{newName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileDir != null">
+        FILE_DIR = #{fileDir,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="storageType != null">
+        STORAGE_TYPE = #{storageType,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    WHERE LINK_ID = #{linkId,jdbcType=VARCHAR} AND FILE_TYPE = #{fileType,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSelective" parameterType="com.web.model.CoImg" resultMap="BaseResultMap">
+  
+    SELECT
+        <include refid="Base_Column_List" />
+    FROM co_o_img
+    WHERE 1=1
+        <if test="linkId != null">
+            AND LINK_ID = #{linkId,jdbcType=VARCHAR}
+        </if>
+        <if test="fileType != null">
+            AND FILE_TYPE = #{fileType,jdbcType=VARCHAR}
+        </if>
+        <if test="statusCd != null">
+            AND STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+        </if>
+  </select>
+</mapper>

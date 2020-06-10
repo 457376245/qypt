@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CommonDao">
+	
+	<select id="getRegionList" resultType="CoRegion">
+		select
+		t1.REGION_NAME as parentRegionName,
+		t.REGION_ID as regionId,t.REGION_CODE as regionCode,t.REGION_NAME as regionName
+		from co_region t
+		inner join co_region t1 on t1.REGION_ID=t.PARENT_ID and t1.STATUS_CD='101' 
+		where t.STATUS_CD='101'
+		and t.AREA_LEVEL=2
+		<if test="provinceCode !=null and provinceCode !='' ">
+		and t1.REGION_CODE=#{provinceCode,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>

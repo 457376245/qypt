@@ -1,0 +1,57 @@
+<@override name="title">商品</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/prod/excType/addExcTypeRela.js"></script>
+</@override> <@override name="content">
+
+<div class="layui-tab-content" style="height: 100px;">
+    <input style="display: none" value="${typeId}" id="typeId" name="typeId">
+    <div class="layui-tab-item layui-show">
+        <blockquote class="layui-elem-quote news_search">
+            <div class="layui-inline layui-form-item pad10">
+                <form class="layui-form">
+                    <div class="layui-input-inline">
+                        <input value="" placeholder="请输入商品编码" class="layui-input search_input" type="text" id="objCode">
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline">
+                            <select name="browseLook" class="newsLook" lay-filter="browseLook" id="statusCd">
+                                <option value="">请选择状态</option>
+                                <option value="101">可用</option>
+                                <option value="102">不可用</option>
+                            </select>
+                        </div>
+                        <!--                            <div class="layui-input-inline">-->
+                        <!--                                <input value="" placeholder="请选择查询时间" class="layui-input search_input" type="text" id="times">-->
+                        <!--                            </div>-->
+                        <div class="layui-input-inline">
+                            <a class="layui-btn search_btn" id="searchInfoBtn">查询</a>
+                            <!--                                <a class="layui-btn export_btn">导入</a>-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </blockquote>
+        <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+            <!--<div class="title-box">
+                <ul>
+                    <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 抽奖活动列表（点击活动标题查看奖品列表）</p></li>
+                </ul>
+            </div>-->
+            <!-- table -->
+            <div class="title-box">
+                <ul>
+                    <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i>商品列表</p></li>
+                    <li class="right">
+                        <div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addExcObjBtn" onclick="excObjList.toEditExcObj('ADD');">添加商品</a></div>
+                    </li>
+                </ul>
+            </div>
+            <!-- table -->
+            <table class="layui-table table-hover sortable" lay-filter="excObjListTable" lay-skin="nob" id="excObjListTable">
+            </table>
+        </div>
+    </div>
+</div>
+
+</@override>
+<@extends name="/main/main-template.html"/>

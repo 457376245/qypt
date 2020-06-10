@@ -1,0 +1,79 @@
+<@override name="title">河北电信天翼会员中心-任务分组配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskGroupEdit.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="groupId" value="${groupId}" name="groupId"/>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>任务分组标题：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="groupTitle" required lay-verify="required" lay-reqText="请输入任务分组标题" placeholder="请输入标题（必填）" name="groupTitle" autocomplete="off" class="layui-input" value="${taskGroupInfo.groupTitle}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">简介：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text"  placeholder="请输入简介（非必填）" name="groupDesc" autocomplete="off" class="layui-input" value="${taskGroupInfo.groupDesc}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>排序号：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number" required lay-verify="required" lay-reqText="请输入任务分组排序" placeholder="越小分组排序越靠前（必填）" name="sortSeq" autocomplete="off" class="layui-input" value="${taskGroupInfo.sortSeq}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>状态：</label>
+		<div class="layui-inline" style="width:450px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择分组状态" lay-filter="" id="statusCd" name="statusCd">
+			    <option value="">请选择状态</option>
+			    <#if (taskGroupInfo??) && (taskGroupInfo.statusCd??)>
+				    <#if (taskGroupInfo.statusCd=='100')>
+				    	<option value="100" selected="selected">待启用</option>
+		        		<option value="101">已启用</option>
+				    <#else>
+				    	<option value="100">待启用</option>
+		        		<option value="101" selected="selected">已启用</option>
+				    </#if>
+				<#else>
+					<option value="100">待启用</option>
+			        <option value="101">已启用</option>
+			    </#if>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>开始时间：</label>
+		<div class="layui-inline" style="width:450px;">
+			<div class="layui-input-inline">
+				<input type="text" required lay-verify="required" lay-reqText="请选择分组开始时间" placeholder="请选择开始时间" readonly="readonly"  class="layui-input" id="startTime" name="startTime" value="${taskGroupInfo.startDate}">
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>结束时间：</label>
+		<div class="layui-inline" style="width:450px;">
+			<div class="layui-input-inline">
+				<input type="text" required lay-verify="required" lay-reqText="请选择分组结束时间" placeholder="请选择结束时间" readonly="readonly"  class="layui-input" id="endTime" name="endTime" value="${taskGroupInfo.endDate}">
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

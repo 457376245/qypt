@@ -1,0 +1,68 @@
+<@override name="title">河北电信天翼会员中心-任务分组展示</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskGroup.js"></script>
+</@override> 
+<@override name="content">
+<section class="layui-larry-box">
+	<div class="larry-personal">
+		<div class="layui-tab">
+	        <blockquote class="layui-elem-quote news_search">
+				<div class="layui-inline layui-form-item pad10" style="margin-bottom:4px;">
+					<form class="layui-form">
+					    <div class="layui-input-inline">
+					    	<input value="" id="groupTitle" placeholder="请输入分组名称关键字" class="layui-input search_input" type="text" maxlength="8">
+					    </div>
+					    <div class="layui-inline">
+							<div class="layui-input-inline">
+								<select class="newsLook" lay-filter="" id="statusCd">
+								    <option value="">请选择状态</option>
+							        <option value="100">待启用</option>
+							        <option value="101">已启用</option>
+							    </select>
+							</div>
+							
+							<!-- <div class="layui-input-inline">
+								<select class="newsLook" lay-filter="" id="">
+								    <option value="0">请选择状态</option>
+							        <option value="1">进行中</option>
+							        <option value="2">未开始</option>
+							        <option value="3">未发布</option>
+							        <option value="4">已结束</option>
+							    </select>
+							    <div class="layui-unselect layui-form-select"></div>
+							</div> -->
+							
+							<!-- <div class="layui-input-inline"> 注意：这一层元素并不是必须的
+							  <input type="text" class="layui-input" id="test1">
+							</div> -->
+							
+							<div class="layui-input-inline">
+								<button class="layui-btn" type="button" id="searchInfoBtn">查询</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</blockquote>
+            
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box" >
+	    	 	<div class="title-box">
+	    	 		<ul>
+	    	 			<li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 任务分组列表</p></li>
+	    	 			<li class="right"><div class="layui-inline"><a class="layui-btn newsAdd_btn" href="javascript:void(0);" id="addTaskGroupBtn" onclick="taskGroupIndex.toEditTaskGroup('ADD');">添加分组</a></div>
+	    	 			<!-- <div class="layui-inline"><a class="layui-btn layui-btn-normal">导出</a></div></li> -->
+	    	 		</ul>
+	    	 	</div>
+	    	 	
+	    	 	<!-- 列表数据START -->
+               	<table class="layui-table"  id="taskGroupListTable">
+                   	
+                </table>
+			    <!-- 列表数据END -->
+		    </div>
+		</div>
+	</div>
+</section>
+</@override> 
+<@extends name="/main/main-template.html"/>

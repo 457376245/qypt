@@ -1,0 +1,27 @@
+<@override name="title">河北电信天翼会员中心-规则选择</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/ruleChoose.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>规则组成选择：</label>
+		<div class="layui-input-block" >
+			<#if (ruleList??) && (ruleList?size>0)>
+			<#list ruleList as ruleInfo>
+			<input type="checkbox" lay-filter="ruleCode" name="ruleCode" value="${ruleInfo.ruleCode}" title="${ruleInfo.ruleTitle}">
+			</#list>
+			</#if>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" onclick="ruleChoose.saveInfo();">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

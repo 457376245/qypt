@@ -1,0 +1,205 @@
+<@override name="title">河北电信天翼会员中心-商品分组配置</@override>
+<@override name="header">
+<!--<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>-->
+<script type="text/javascript" src="${contextPath}/js/prod/product/productEdit.js"></script>
+</@override>
+<@override name="content">
+<form class="com-form layui-form" id="editForm" method="post" enctype="multipart/form-data" lay-filter="editForm">
+
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="productId" value="${productId}" name="productId"/>
+	<input type="hidden" id="genProdCode" value="${genProdCode}" name="genProdCode"/>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>提供平台：</label>
+		<div class="layui-inline" style="width:450px;">
+<!--			<input type="text"  placeholder="请输入简介（必填）" name="prodSupplier" autocomplete="off" class="layui-input" value="${productInfo.prodSupplier}" style="">-->
+			<select class="newsLook" required lay-verify="required" lay-verify="required" lay-reqText="请选择提供平台" lay-filter="prodSupplier" id="prodSupplier" name="prodSupplier" <#if (editType == 'EDIT') > disabled </#if>>
+				<option value="">请选择提供平台</option>
+				<#if (productInfo??) && (productInfo.prodSupplier??)>
+				<option value="1" <#if (productInfo.prodSupplier=='1')>selected="selected"</#if>>电信销售品权益</option>
+				<option value="2" <#if (productInfo.prodSupplier=='2')>selected="selected"</#if>>合作商卡卷权益</option>
+				<#else>
+				<option value="1" >电信销售品权益</option>
+				<option value="2" >合作商卡卷权益</option>
+				</#if>
+		</select>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>产品编码：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" required lay-verify="required"  placeholder="请输入产品编码（非必填）" lay-filter="productCode" id="productCode" name="productCode" autocomplete="off" class="layui-input" value="${productInfo.productCode}">
+		</div>
+		<!--
+		<div class="layui-inline" style="width:450px;">
+			<button type="button" class="layui-btn" id="refreshProductCode">
+				重新生成产品编码
+			</button>
+		</div>-->
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>产品名称：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="productTitle" required lay-verify="required" lay-reqText="请输入产品名称" placeholder="请输入名称（必填）" name="productTitle" autocomplete="off" class="layui-input" value="${productInfo.productTitle}">
+		</div>
+	</div>
+
+	<!--<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>产品面额：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="oldPrice" required lay-verify="required" lay-reqText="请输入产品面额" placeholder="请输入面额（必填）" name="oldPrice" autocomplete="off" class="layui-input" value="${productInfo.oldPrice}">
+		</div>
+	</div>-->
+
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示时间：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="showTime" readonly required lay-verify="required" lay-reqText="请选择展示时间" placeholder="请选择展示时间（必填）" name="showTime" autocomplete="off" class="layui-input" value="${formatLocalDateTime(productInfo.showTime, 'yyyy-MM-dd hh:mm:ss')}">
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>开始时间：</label>
+		<div class="layui-inline" style="width:450px;">
+
+			<input type="text" id="startTime" readonly required lay-verify="required" lay-reqText="请选择展示时间" placeholder="请选择展示时间（必填）" name="startTime" autocomplete="off" class="layui-input" value="${formatLocalDateTime(productInfo.startTime, 'yyyy-MM-dd hh:mm:ss')}">
+
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>结束时间：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="endTime" readonly required lay-verify="required" lay-reqText="请选择展示时间" placeholder="请选择展示时间（必填）" name="endTime" autocomplete="off" class="layui-input" value="${formatLocalDateTime(productInfo.endTime, 'yyyy-MM-dd hh:mm:ss')}">
+		</div>
+	</div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>详情图上传：</label>
+        <div class="layui-inline layui-upload" style="width:450px;">
+
+            <button type="button" class="layui-btn" id="detailImg"><i class="layui-icon">&#xe67c;</i>上传图片</button>
+            <div class=" layui-inline layui-upload-list">
+                <img class="layui-upload-img" id="detailImge"  style="height: 40px;width: 40px" src="${detailImg.src}">
+				<input type="text" id="detailImgeId" style="display: none" value="${detailImg.imgId}">
+            </div>
+
+		</div>
+
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>缩略图上传：</label>
+        <div class="layui-inline layui-upload" style="width:450px;">
+            <button type="button" class="layui-btn" id="thumbnail" >
+                <i class="layui-icon">&#xe67c;</i>上传图片
+            </button>
+			<div class="layui-inline layui-upload-list" >
+				<img id="thumbnailImge" style="height: 40px;width: 40px" src="${listImg.src}">
+				<input type="text" id="thumbnailId" style="display: none" value="${listImg.imgId}">
+			</div>
+        </div>
+
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>实例化库存：</label>
+        <div class="layui-inline" style="width:450px;">
+            <select class="newsLook" required lay-verify="required" lay-reqText="请选择产品状态" lay-filter="stockInst" id="stockInst" name="stockInst" <#if (productInfo.prodSupplier=='1')> disabled </#if>>
+                <option value="">请选择实例化</option>
+                <#if (productInfo??) && (productInfo.stockInst??)>
+                <#if (productInfo.stockInst=='1')>
+                <option value="1" selected="selected">是</option>
+                <option value="2">否</option>
+                <#else>
+                <option value="1">是</option>
+                <option value="2" selected="selected">否</option>
+            </#if>
+            <#else>
+            <option value="1">是</option>
+            <option value="2">否</option>
+        </#if>
+        </select>
+        </div>
+    </div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>产品库存数量：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number"  required lay-verify="required" lay-reqText="请输入库存数量" placeholder="请输入库存数量（必填）" id="stockCount" name="stockCount" value="${productStock.productStock}" autocomplete="off" class="layui-input"  <#if (productInfo.stockInst=='1')> disabled </#if> >
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>预警数量：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number"  required lay-verify="required" lay-reqText="请输入预警数量" placeholder="请输入预警数量,为0时不预警（必填）" id="productWarn" name="productWarn" value="${productStock.productWarn}" autocomplete="off" class="layui-input">
+		</div>
+	</div>
+
+	<#if (editType == 'EDIT')>
+	<div class="layui-form-item">
+		<label class="layui-form-label">已使用量：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number"  required lay-verify="required" lay-reqText="请输入预警数量" placeholder="请输入预警数量（必填）" id="productUse" name="productUse" value="${productStock.productUse}" autocomplete="off" class="layui-input"  disabled  >
+
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">预占数量：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number"  required lay-verify="required" lay-reqText="请输入预警数量" placeholder="请输入预警数量（必填）" id="productPreemption" name="productPreemption" value="${productStock.productPreemption}" autocomplete="off" class="layui-input"  disabled  >
+		</div>
+	</div>
+	</#if>
+
+	<!--<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>排序号：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number"  required lay-verify="required" lay-reqText="请输入产品排序" placeholder="越小产品排序越靠前（必填）" name="sortSeq" autocomplete="off" class="layui-input" value="${productInfo.sortSeq}">
+		</div>
+	</div>-->
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>状态：</label>
+		<div class="layui-inline" style="width:450px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择产品状态" lay-filter="" id="statusCd" name="statusCd">
+			    <option value="">请选择状态</option>
+			    <#if (productInfo??) && (productInfo.statusCd??)>
+				    <#if (productInfo.statusCd=='101')>
+				    	<option value="101" selected="selected">可用</option>
+		        		<option value="102">不可用</option>
+				    <#else>
+				    	<option value="101">可用</option>
+		        		<option value="102" selected="selected">不可用</option>
+				    </#if>
+				<#else>
+					<option value="101">可用</option>
+			        <option value="102">不可用</option>
+			    </#if>
+		    </select>
+		</div>
+	</div>
+
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>产品描述：</label>
+		<div class="layui-inline" style="width:800px;">
+			<textarea id="productDes" style="display: none;" lay-verify="content" class="layui-textarea" name="productDes">${productInfo.productDes}</textarea>
+	</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override>
+<@extends name="/main/main-template.html"/>

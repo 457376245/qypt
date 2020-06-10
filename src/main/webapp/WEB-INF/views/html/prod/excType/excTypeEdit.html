@@ -1,0 +1,64 @@
+<@override name="title">河北电信天翼会员中心-商品分组配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/prod/excType/excTypeEdit.js"></script>
+</@override>
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+    <input type="hidden" id="editType" value="${editType}" name="editType"/>
+    <input type="hidden" id="typeId" value="${typeId}" name="typeId"/>
+    <input type="hidden" id="oldStatusCd" value="${oldStatusCd}" name="oldStatusCd"/>
+    <input type="hidden" id="oldTypeCode" value="${oldTypeCode}" name="oldTypeCode"/>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>分类编码：</label>
+        <div class="layui-inline" style="width:450px;">
+            <input type="text" id="typeCode" required lay-verify="required" lay-reqText="请输入商品分类编码" placeholder="请输入编码（必填）" name="typeCode" autocomplete="off" class="layui-input" value="${excTypeInfo.typeCode}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">分类名称：</label>
+        <div class="layui-inline" style="width:450px;">
+            <input type="text"  placeholder="请输入名称（必填）" required lay-verify="required" lay-reqText="请输入商品分类名称" name="typeDesc" autocomplete="off" class="layui-input" value="${excTypeInfo.typeDesc}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>排序号：</label>
+        <div class="layui-inline" style="width:450px;">
+            <input type="number" required lay-verify="required" lay-reqText="请输入任务分类排序" placeholder="越小分类排序越靠前（必填）" name="sortSeq" autocomplete="off" class="layui-input" value="${excTypeInfo.sortSeq}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>状态：</label>
+        <div class="layui-inline" style="width:450px;">
+            <select class="newsLook" required lay-verify="required" lay-reqText="请选择分类状态" lay-filter="" id="statusCd" name="statusCd">
+                <option value="">请选择状态</option>
+                <#if (excTypeInfo??) && (excTypeInfo.statusCd??)>
+                <#if (excTypeInfo.statusCd=='101')>
+                <option value="101" selected="selected">可用</option>
+                <option value="102">不可用</option>
+                <#else>
+                <option value="101">可用</option>
+                <option value="102" selected="selected">不可用</option>
+                </#if>
+                <#else>
+                <option value="101" selected="selected">可用</option>
+                <option value="102">不可用</option>
+                </#if>
+        </select>
+    </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</@override>
+<@extends name="/main/main-template.html"/>

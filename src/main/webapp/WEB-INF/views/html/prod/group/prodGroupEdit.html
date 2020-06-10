@@ -1,0 +1,63 @@
+<@override name="title">河北电信天翼会员中心-商品分组配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/prod/group/prodGroupEdit.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="groupId" value="${groupId}" name="groupId"/>
+	<input type="hidden" id="oldStatusCd" value="${oldStatusCd}" name="oldStatusCd"/>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>商品分组标题：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text" id="brandTitle" required lay-verify="required" lay-reqText="请输入商品分组标题" placeholder="请输入标题（必填）" name="brandTitle" autocomplete="off" class="layui-input" value="${groupInfo.brandTitle}">
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">简介：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="text"  placeholder="请输入简介（非必填）" name="brandDesc" autocomplete="off" class="layui-input" value="${groupInfo.brandDesc}">
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>排序号：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number" required lay-verify="required" lay-reqText="请输入任务分组排序" placeholder="越小分组排序越靠前（必填）" name="sortSeq" autocomplete="off" class="layui-input" value="${groupInfo.sortSeq}">
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>状态：</label>
+		<div class="layui-inline" style="width:450px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择分组状态" lay-filter="" id="statusCd" name="statusCd">
+			    <option value="">请选择状态</option>
+			    <#if (groupInfo??) && (groupInfo.statusCd??)>
+				    <#if (groupInfo.statusCd=='101')>
+				    	<option value="101" selected="selected">可用</option>
+		        		<option value="102">不可用</option>
+				    <#else>
+				    	<option value="101">可用</option>
+		        		<option value="102" selected="selected">不可用</option>
+				    </#if>
+				<#else>
+					<option value="101">可用</option>
+			        <option value="102">不可用</option>
+			    </#if>
+		    </select>
+		</div>
+	</div>
+
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

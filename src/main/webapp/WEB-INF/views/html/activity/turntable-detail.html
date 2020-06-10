@@ -1,0 +1,173 @@
+<@override name="title">大转盘抽奖管理</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/time.js"></script>
+<script type="text/javascript" src="${contextPath}/js/activity/turntableDetail.js"></script>
+</@override> <@override name="content">
+<form class="layui-form com-form" id="contentDiv" data-id="${coActivity.activityId}">
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>活动标题：</label>
+		<div class="layui-input-block">
+			<input class="layui-input" lay-verify="required" lay-reqtext="请输入活动标题" placeholder="请输入活动标题" type="text" id="actTitle"  style="width:500px" readonly>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示时间：</label>
+		<div class="layui-input-block">
+			<input type="text" readonly class="seckill-day"  id="showTime" placeholder="${startTime}" value="${startTime}">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label"><span class="red">*</span>活动时间：</label>
+			<div class="layui-input-block">
+				<div  class="block">
+					<input type="text" readonly class="seckill-day"  id="startTime" placeholder="${startTime}" value="${startTime}">~
+					<input type="text" readonly class="seckill-day"  id="endTime" placeholder="${endTime}" value="${endTime}">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>抽奖模式：</label>
+		<div class="layui-input-block">
+			<input type="radio" name="ruleYD" title="翼豆抽奖" value="1" checked>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label"><span class="red">*</span>中奖概率：</label>
+			<div class="layui-input-inline">
+				<input class="layui-input" lay-verify="required|number" id="probability"  type="text" readonly>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label"><span class="red">*</span>抽奖价格：</label>
+			<div class="layui-input-inline">
+				<input class="layui-input" lay-verify="required|number" placeholder="0" type="text"  id="YdNum" value="" readonly><span style="color:#999; position: absolute;right:6px;top:6px">翼豆</span>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>抽奖商品：</label>		
+        <div class="layui-input-block" style="width: 85%">
+			<table class="layui-table" lay-filter="prizeTable" lay-skin="nob" id="prizeTable">
+			</table>
+		</div>
+	</div>
+	<#if (coRegionList)?? &&((coRegionList)?size>0)>
+		<div class="layui-form-item">
+			<label class="layui-form-label"><span class="red">*</span>活动地区：</label>
+			<div class="layui-input-block">
+				<#list coRegionList as region>
+	               <input type="checkbox" name="areaRel" title="${region.regionName}" value="${region.regionCode}" disabled>
+	            </#list>
+			</div>
+		</div>
+	</#if>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>抽奖频次：</label>
+		<div class="layui-input-block">
+			<div class="layui-inline" style="width: 150px">
+				<input type="radio"  name="countRatebox" title="每天限制" value="1">
+			</div>
+			<div class="layui-inline">
+				<input class="layui-input" placeholder="5" type="text"  id="countRate" value="5">
+				<span style="color:#999; position: absolute;right:6px;top:6px">次</span>
+			</div>
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="radio"  name="countRatebox" title="不限制次数" value="0" checked>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">定向推送：</label>
+		<div class="layui-input-block">
+			<span class="yellow tip-info">注：系统默认推向全部用户</span>
+			<div class="block bottom15">
+				<div class="tip-tit left"> 条件一：</div>
+                <div class="layui-input-block" style="margin-left: 70px">
+                    <input type="checkbox" name="ruleType" title="星级用户" value="1" lay-filter="isCheckXj" disabled>
+                    <input type="checkbox" name="ruleType" title="5G终端用户" value="5" disabled>
+                    <input type="checkbox" name="ruleType" title="5G专属" value="12" disabled>
+				</div>
+			</div>
+			<div class="block bottom15">
+				<div class="tip-tit left"> 条件二：</div>
+                <div class="layui-input-block" style="margin-left: 70px">
+                    <input type="radio" name="ruleContion" title="满足一个条件-即可" value="OR" checked disabled>
+                    <input type="radio" name="ruleContion" title="满足所有条件-的用户" value="AND" disabled>
+                </div>
+			</div>
+
+		</div>
+	</div>
+    <div class="layui-form-item" id="ruleDataDiv1" style="display: none">
+        <label class="layui-form-label">星级要求：</label>
+        <div class="layui-input-block" style="width:200px">
+            <select id="ruleData1">
+                <#list 0..7 as t>
+                <option value="${t}">${t}级</option>
+                </#list>
+            </select>
+        </div>
+    </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">活动简介：</label>
+		<div class="layui-input-block"  style="width:600px">
+			<textarea placeholder="请输入活动简介" class="layui-textarea" id="activityDesc" cols="2"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">活动说明：</label>
+		<div class="layui-input-block"  style="width:600px">
+			<textarea placeholder="请输入活动说明" class="layui-textarea" id="activityRule" style="display: none"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示位置：</label>
+		<div class="layui-input-block">
+			<span class="yellow tip-info">注：系统默认抽奖入口位于活动列表</span>
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="checkbox" lay-skin="primary" name="banners" title="首页顶部banner" value="102" disabled>
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn" id="banner102" disabled>
+						<i class="layui-icon">&#xe67c;</i>上传图片
+					</button>
+				</div>
+			</div>
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="checkbox" lay-skin="primary" name="banners" title="首页活动宣传banner" value="103" disabled>
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn" id="banner103" disabled>
+						<i class="layui-icon">&#xe67c;</i>上传图片
+					</button>
+				</div>
+			</div>
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="checkbox" lay-skin="primary" name="banners" title="首页活动弹窗banner" value="105" disabled>
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn" id="banner105" disabled>
+						<i class="layui-icon">&#xe67c;</i>上传图片
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="" lay-filter="back">返回</button>
+		</div>
+	</div>
+</form>
+</@override>
+<@extends name="/main/main-template.html"/>

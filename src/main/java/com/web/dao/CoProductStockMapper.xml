@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoProductStockDao">
+  <resultMap id="BaseResultMap" type="com.web.model.CoProductStock">
+    <!--@mbg.generated-->
+    <!--@Table co_product_stock-->
+    <id column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+    <result column="PRODUCT_STOCK" jdbcType="DECIMAL" property="productStock" />
+    <result column="PRODUCT_USE" jdbcType="DECIMAL" property="productUse" />
+    <result column="PRODUCT_PREEMPTION" jdbcType="DECIMAL" property="productPreemption" />
+    <result column="PRODUCT_WARN" jdbcType="DECIMAL" property="productWarn" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    PRODUCT_ID, PRODUCT_CODE, PRODUCT_STOCK, PRODUCT_USE, PRODUCT_PREEMPTION, PRODUCT_WARN, 
+    ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from co_product_stock
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from co_product_stock
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.web.model.CoProductStock">
+    <!--@mbg.generated-->
+    insert into co_product_stock (PRODUCT_ID, PRODUCT_CODE, PRODUCT_STOCK, 
+      PRODUCT_USE, PRODUCT_PREEMPTION, PRODUCT_WARN, 
+      ADD_TIME, STATUS_DATE, UPDATE_DATE, 
+      STATUS_CD)
+    values (#{productId,jdbcType=BIGINT}, #{productCode,jdbcType=VARCHAR}, #{productStock,jdbcType=DECIMAL}, 
+      #{productUse,jdbcType=DECIMAL}, #{productPreemption,jdbcType=DECIMAL}, #{productWarn,jdbcType=DECIMAL}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{statusDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{statusCd,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.web.model.CoProductStock">
+    <!--@mbg.generated-->
+    insert into co_product_stock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        PRODUCT_ID,
+      </if>
+      <if test="productCode != null">
+        PRODUCT_CODE,
+      </if>
+      <if test="productStock != null">
+        PRODUCT_STOCK,
+      </if>
+      <if test="productUse != null">
+        PRODUCT_USE,
+      </if>
+      <if test="productPreemption != null">
+        PRODUCT_PREEMPTION,
+      </if>
+      <if test="productWarn != null">
+        PRODUCT_WARN,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productStock != null">
+        #{productStock,jdbcType=DECIMAL},
+      </if>
+      <if test="productUse != null">
+        #{productUse,jdbcType=DECIMAL},
+      </if>
+      <if test="productPreemption != null">
+        #{productPreemption,jdbcType=DECIMAL},
+      </if>
+      <if test="productWarn != null">
+        #{productWarn,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoProductStock">
+    <!--@mbg.generated-->
+    update co_product_stock
+    <set>
+      <if test="productCode != null">
+        PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productStock != null">
+        PRODUCT_STOCK = #{productStock,jdbcType=DECIMAL},
+      </if>
+      <if test="productUse != null">
+        PRODUCT_USE = #{productUse,jdbcType=DECIMAL},
+      </if>
+      <if test="productPreemption != null">
+        PRODUCT_PREEMPTION = #{productPreemption,jdbcType=DECIMAL},
+      </if>
+      <if test="productWarn != null">
+        PRODUCT_WARN = #{productWarn,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.web.model.CoProductStock">
+    <!--@mbg.generated-->
+    update co_product_stock
+    set PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      PRODUCT_STOCK = #{productStock,jdbcType=DECIMAL},
+      PRODUCT_USE = #{productUse,jdbcType=DECIMAL},
+      PRODUCT_PREEMPTION = #{productPreemption,jdbcType=DECIMAL},
+      PRODUCT_WARN = #{productWarn,jdbcType=DECIMAL},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into co_product_stock
+    (PRODUCT_ID, PRODUCT_CODE, PRODUCT_STOCK, PRODUCT_USE, PRODUCT_PREEMPTION, PRODUCT_WARN, 
+      ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.productId,jdbcType=BIGINT}, #{item.productCode,jdbcType=VARCHAR}, #{item.productStock,jdbcType=DECIMAL}, 
+        #{item.productUse,jdbcType=DECIMAL}, #{item.productPreemption,jdbcType=DECIMAL}, 
+        #{item.productWarn,jdbcType=DECIMAL}, #{item.addTime,jdbcType=TIMESTAMP}, #{item.statusDate,jdbcType=TIMESTAMP}, 
+        #{item.updateDate,jdbcType=TIMESTAMP}, #{item.statusCd,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <update id="addProductStock"  parameterType="map">
+    UPDATE co_product_stock SET PRODUCT_STOCK = PRODUCT_STOCK + #{productStock,jdbcType=DECIMAL} WHERE PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+ 	<!-- 尽量别用绝对路径，如果带参数不同容器路径解释可能不同 -->  
+	<substitutionProperty name="log.base" value="logs/" />
+	<jmxConfigurator />
+	<conversionRule conversionWord="sid" converterClass="com.web.log.Converter_sid" />
+	<conversionRule conversionWord="rid" converterClass="com.web.log.Converter_rid" />
+	<appender name="log_console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoding>UTF-8</encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %sid-%rid %logger{80}.%method:%line -%msg%n</pattern>
+		</layout>
+	</appender>
+	<appender name="log_rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoding>UTF-8</encoding>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.base}/qy-conf.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %sid-%rid %logger{80}.%method:%line -%msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<root level="DEBUG"></root>
+	<logger name="com.web" level="DEBUG">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+	<logger name="com.al.crm.nosql.cache" level="DEBUG">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+	<logger name="com.al.dsession" level="error">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+	<logger name="com.opensymphony.oscache" level="DEBUG">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+	<logger name="org.springframework.web" level="DEBUG">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+	<logger name="java.sql.Statement" level="DEBUG">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+	<logger name="java.sql.PreparedStatement" level="DEBUG">
+		<!-- 生产不输出console，catalina.out受不了，校促这段时间每2天的日志量能达1G以上 -->
+		<appender-ref ref="log_console" />
+		<appender-ref ref="log_rollingFile" />
+	</logger>
+
+</configuration>

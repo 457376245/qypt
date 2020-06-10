@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.ActivityDao">
+    <resultMap id="activityResult" type="com.web.model.CoActivity">
+        <result property="activityId" column="ACTIVITY_ID" />
+        <result property="activityCd" column="ACTIVITY_CD" />
+        <result property="activityTitle" column="ACTIVITY_TITLE" />
+        <result property="activityDesc" column="ACTIVITY_DESC" />
+        <result property="activityRule" column="ACTIVITY_RULE" />
+        <result property="statusCd" column="STATUS_CD" />
+        <result property="showTime" column="SHOW_TIME" />
+        <result property="startTime" column="START_TIME" />
+        <result property="endTime" column="END_TIME" />
+        <result property="activityMode" column="ACTIVITY_MODE" />
+        <result property="ruleMode" column="RULE_MODE" />
+        <result property="showRuleMode" column="SHOW_RULE_MODE" />
+        <result property="clickCount" column="CLICK_COUNT" />
+        <result property="seckillType" column="SECKILL_TYPE" />
+        <result property="staffId" column="STAFF_ID" />
+        <result property="editStaffId" column="EDIT_STAFF_ID" />
+        <result property="probability" column="PROBABILITY" />
+        <result property="ssoUrl" column="SSO_URL" />
+    </resultMap>
+    <resultMap id="actRuleResult" type="com.web.model.CoActRule">
+        <result property="ruleId" column="RULE_ID" />
+        <result  property="activityId" column="ACTIVITY_ID" />
+        <result property="ruleCode" column="RULE_CODE" />
+        <result property="ruleTitle" column="RULE_TITLE" />
+        <result property="ruleDesc" column="RULE_DESC" />
+        <result property="ruleType" column="RULE_TYPE" />
+        <result property="ruleData" column="RULE_DATA" />
+        <result property="ruleMode" column="RULE_MODE" />
+        <result property="isShow" column="IS_SHOW" />
+    </resultMap>
+    <resultMap id="actUserResult" type="com.web.model.CoActUser">
+        <result  property="privilegeId" column="PRIVILEGE_ID" />
+        <result  property="privilegeCount" column="PRIVILEGE_COUNT" />
+        <result  property="inCount" column="IN_COUNT" />
+    </resultMap>
+    <resultMap id="activityImgResult" type="com.web.model.CoActivityImg">
+        <result property="actImgId" column="ACT_IMG_ID" />
+        <result property="imgId" column="IMG_ID" />
+        <result property="activityId" column="ACTIVITY_ID" />
+        <result property="classCode" column="CLASS_CODE" />
+        <result property="statusCd" column="STATUS_CD" />
+        <result property="imgCode" column="IMG_CODE" />
+    </resultMap>
+    <resultMap id="actRuleDataResult" type="com.web.model.CoActRuleData">
+        <result property="expId" column="EXP_ID" />
+        <result property="ruleId" column="RULE_ID" />        
+        <result property="ruleData" column="RULE_DATA" />
+    </resultMap>
+    <select id="getCoActivityImgList" parameterType="java.util.Map" resultMap="activityImgResult">
+        SELECT T.ACT_IMG_ID,T.IMG_ID,T.ACTIVITY_ID,T.CLASS_CODE,T.STATUS_CD,T.IMG_CODE
+        FROM CO_ACTIVITY_IMG T WHERE
+        T.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        AND <![CDATA[T.STATUS_CD <>'102']]>
+    </select>
+    <select id="queryActivityList" parameterType="java.util.Map" resultMap="activityResult">
+        SELECT A.ACTIVITY_ID,A.ACTIVITY_CD,A.ACTIVITY_TITLE,A.ACTIVITY_DESC,
+        A.ACTIVITY_RULE,A.STATUS_CD,A.SHOW_TIME,A.START_TIME,A.END_TIME,A.ACTIVITY_MODE,
+        A.RULE_MODE,A.SHOW_RULE_MODE,A.CLICK_COUNT,A.SECKILL_TYPE,A.PROBABILITY,A.SSO_URL
+        FROM CO_ACTIVITY A WHERE   <![CDATA[A.STATUS_CD <>'102']]>
+        <if test="activityId != null">
+            AND A.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        </if>
+        <if test="activityCd != null">
+            AND A.ACTIVITY_CD=#{activityCd,jdbcType=VARCHAR}
+        </if>
+        <!--活动未开始-->
+        <if test="beforeStartTime!= null">
+            AND A.START_TIME>sysdate()
+        </if>
+        <!--活动已结束-->
+        <if test="afterEndTime!= null">
+            <![CDATA[AND A.END_TIME<sysdate()]]>
+        </if>
+        <!--活动进行中-->
+        <if test="nowTime != null">
+            <![CDATA[AND A.START_TIME <= sysdate()]]>
+            AND A.END_TIME>sysdate()
+        </if>
+        <!-- 区间判断是否重叠-->
+        <if test="beginDt!= null">
+            AND A.START_TIME>=#{beginDt,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDt!= null">
+            <![CDATA[AND A.START_TIME<=#{endDt,jdbcType=TIMESTAMP}]]>
+        </if>
+        <!-- 区间判断是否重叠-->
+        <if test="statusCd!= null">
+            AND A.STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+        </if>
+        <if test="activityMode != null">
+            AND A.ACTIVITY_MODE=#{activityMode,jdbcType=VARCHAR}
+        </if>
+        <if test="seckillType != null">
+            AND A.SECKILL_TYPE=#{seckillType,jdbcType=VARCHAR}
+        </if>
+        <if test="activityTitle != null">
+            AND A.ACTIVITY_TITLE LIKE CONCAT('%',#{activityTitle},'%')
+        </if>
+        <if test="parentId!= null">
+            AND A.PARENT_ID =#{parentId,jdbcType=NUMERIC}
+        </if>
+        ORDER BY A.ADD_TIME DESC
+    </select>
+    <select id="queryActRules" parameterType="java.util.Map" resultMap="actRuleResult">
+        SELECT RULE_ID,ACTIVITY_ID,RULE_CODE,RULE_TITLE,RULE_DESC,RULE_TYPE,RULE_DATA,RULE_MODE,IS_SHOW
+        FROM CO_ACT_RULE
+        WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        <![CDATA[AND STATUS_CD <> '102']]>
+        <if test="statusCd!= null">
+            AND STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+        </if>
+        <if test="ruleCode != null">
+            AND RULE_CODE=#{ruleCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!--统计抽奖的参与人数-->
+    <select id="queryActUserCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  CO_ACT_USER
+        WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        <if test="statusCd!= null">
+            AND STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!--统计秒杀的参与人数-->
+    <select id="querySekillUserCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  CO_ACT_USER
+        WHERE ACTIVITY_ID IN(
+           SELECT ACTIVITY_ID FROM CO_ACTIVITY WHERE PARENT_ID=#{activityId,jdbcType=NUMERIC} AND STATUS_CD='101'
+        )
+        AND STATUS_CD='101'
+    </select>
+    <select id="queryProBuyCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM CO_SUB_ORDER R WHERE R.PRODUCT_CODE IN(
+          SELECT B.PRODUCT_CODE FROM CO_ACTIVITY A,CO_ACT_SECKILL B WHERE A.ACTIVITY_ID=B.ACTIVITY_ID
+          AND A.PARENT_ID=#{activityId,jdbcType=NUMERIC}
+        )
+    </select>
+    <insert id="insertActRule" parameterType="com.web.model.CoActRule"  useGeneratedKeys="true" keyProperty="ruleId">
+        INSERT INTO CO_ACT_RULE(ACTIVITY_ID,RULE_CODE,RULE_TITLE,RULE_DESC,ADD_TIME,
+          STATUS_DATE,UPDATE_DATE,STATUS_CD,RULE_TYPE,RULE_DATA,SORT_SEQ,IS_SHOW
+        )VALUES (#{activityId,jdbcType=NUMERIC},#{ruleCode,jdbcType=VARCHAR},#{ruleTitle,jdbcType=VARCHAR},
+            #{ruleTitle,jdbcType=VARCHAR},NOW(),NOW(),NOW(),#{statusCd,jdbcType=VARCHAR},#{ruleType,jdbcType=VARCHAR},#{ruleData,jdbcType=VARCHAR},
+            #{sortSeq,jdbcType=NUMERIC},#{isShow,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertActImg" parameterType="com.web.model.CoActivityImg">
+        INSERT INTO CO_ACTIVITY_IMG(ACTIVITY_ID,IMG_ID,CLASS_CODE,ADD_TIME,STATUS_DATE,UPDATE_DATE,
+          STATUS_CD,IMG_CODE,SORT_SEQ
+        )VALUES(#{activityId,jdbcType=NUMERIC},#{imgId,jdbcType=NUMERIC},#{classCode,jdbcType=VARCHAR},
+          NOW(),NOW(),NOW(),#{statusCd,jdbcType=VARCHAR},#{imgCode,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC}
+        )
+    </insert>
+    <insert id="insertActivity" parameterType="com.web.model.CoActivity"  useGeneratedKeys="true" keyProperty="activityId">
+       INSERT INTO CO_ACTIVITY(
+           PARENT_ID,ACTIVITY_CD,ACTIVITY_TITLE,ACTIVITY_DESC,PROBABILITY,
+           ACTIVITY_RULE,ADD_TIME,STATUS_DATE,UPDATE_DATE,STATUS_CD,SHOW_TIME,START_TIME,END_TIME,
+           ACTIVITY_MODE,RULE_MODE,SHOW_RULE_MODE,CLICK_COUNT,SECKILL_TYPE,STAFF_ID,EDIT_STAFF_ID,SSO_URL
+       )VALUES (#{parentId,jdbcType=NUMERIC},#{activityCd,jdbcType=VARCHAR},#{activityTitle,jdbcType=VARCHAR},
+           #{activityDesc,jdbcType=VARCHAR},#{probability,jdbcType=VARCHAR},#{activityRule,jdbcType=VARCHAR},NOW(),NOW(),NOW(),
+           #{statusCd,jdbcType=VARCHAR},#{showTime,jdbcType=TIMESTAMP},#{startTime,jdbcType=TIMESTAMP},
+           #{endTime,jdbcType=TIMESTAMP},#{activityMode,jdbcType=VARCHAR},#{ruleMode,jdbcType=VARCHAR},
+           #{showRuleMode,jdbcType=VARCHAR},0,#{seckillType,jdbcType=VARCHAR},#{staffId,jdbcType=NUMERIC},
+           #{editStaffId,jdbcType=NUMERIC},#{ssoUrl,jdbcType=VARCHAR}
+       )
+    </insert>
+    
+    <insert id="insertActRules" parameterType="com.web.model.CoActRule" useGeneratedKeys="true" keyProperty="ruleId">
+        INSERT INTO CO_ACT_RULE(ACTIVITY_ID,RULE_CODE,RULE_TITLE,RULE_DESC,ADD_TIME,STATUS_DATE,UPDATE_DATE,STATUS_CD,
+        	RULE_TYPE,RULE_DATA,RULE_MODE,SORT_SEQ,IS_SHOW) 
+        VALUES(#{activityId,jdbcType=NUMERIC},#{ruleCode,jdbcType=VARCHAR},#{ruleTitle,jdbcType=VARCHAR},#{ruleDesc,jdbcType=VARCHAR},
+        	now(),now(),now(),#{statusCd,jdbcType=VARCHAR},#{ruleType,jdbcType=VARCHAR},#{ruleData,jdbcType=VARCHAR},
+        	#{ruleMode,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC},#{isShow,jdbcType=VARCHAR})
+    </insert>
+    
+    <insert id="insertCoPrize" parameterType="com.web.model.CoPrize" useGeneratedKeys="true" keyProperty="prizeId">
+        INSERT INTO CO_PRIZE(PRIZE_TITLE,PRIZE_TYPE,PRIZE_DESC,PRIZE_COUNT,PRIZE_USE,PRODUCT_CODE,PROD_SUPPLIER,PRIZE_VAL,ADD_TIME,
+        	STATUS_DATE,UPDATE_DATE,STATUS_CD,STAFF_ID,EDIT_STAFF_ID,PRIZE_STOCK,START_TIME,END_TIME,SELL_COUNT)
+		VALUES(#{prizeTitle,jdbcType=VARCHAR},#{prizeType,jdbcType=VARCHAR},#{prizeDesc,jdbcType=VARCHAR},#{prizeCount,jdbcType=NUMERIC},
+			#{prizeUse,jdbcType=VARCHAR},#{productCode,jdbcType=VARCHAR},#{prodSupplier,jdbcType=VARCHAR},#{prizeVal,jdbcType=VARCHAR},
+			now(),now(),now(),#{statusCd,jdbcType=VARCHAR},#{staffId,jdbcType=NUMERIC},#{editStaffId,jdbcType=NUMERIC},#{prizeStock,jdbcType=NUMERIC},
+			DATE_FORMAT(#{startTime},'%Y-%m-%d %H:%i:%s'),DATE_FORMAT(#{endTime},'%Y-%m-%d %H:%i:%s'),#{sellCount,jdbcType=NUMERIC})
+    </insert>
+    
+    <insert id="insertCoActLuck" parameterType="com.web.model.CoActLuck" useGeneratedKeys="true" keyProperty="luckId">
+        INSERT INTO CO_ACT_LUCK(ACTIVITY_ID,LUCK_LEVEL,LUCK_TITLE,LUCK_DESC,WEIGHT_VAL,ADD_TIME,STATUS_DATE,UPDATE_DATE,STATUS_CD,SORT_SEQ,STAFF_ID,EDIT_STAFF_ID) 
+        VALUES(#{activityId,jdbcType=NUMERIC},#{luckLevel,jdbcType=VARCHAR},#{luckTitle,jdbcType=VARCHAR},#{luckDesc,jdbcType=VARCHAR},
+        #{weightVal,jdbcType=NUMERIC},now(),now(),now(),#{statusCd,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC},#{staffId,jdbcType=NUMERIC},
+           #{editStaffId,jdbcType=NUMERIC})
+    </insert>
+    
+   <insert id="insertCoActPrize" parameterType="com.web.model.CoActPrize" useGeneratedKeys="true" keyProperty="rewardId">
+       INSERT INTO CO_ACT_PRIZE(PRIZE_ID,LUCK_ID,USER_PRIZE_COUNT,ADD_TIME,STATUS_DATE,UPDATE_DATE,STATUS_CD,STAFF_ID,EDIT_STAFF_ID) 
+       VALUES(#{prizeId,jdbcType=NUMERIC},#{luckId,jdbcType=NUMERIC},#{userPrizeCount,jdbcType=NUMERIC},now(),now(),now(),
+       #{statusCd,jdbcType=VARCHAR},#{staffId,jdbcType=NUMERIC},#{editStaffId,jdbcType=NUMERIC})
+    </insert>
+    
+    <select id="queryPrizeList" parameterType="java.lang.Long" resultType="java.util.Map">
+    	SELECT A.LUCK_ID,A.ACTIVITY_ID,A.LUCK_LEVEL,A.WEIGHT_VAL,B.USER_PRIZE_COUNT,C.PRIZE_ID,C.PRODUCT_CODE,C.PROD_SUPPLIER,C.PRIZE_VAL, 
+    	C.PRIZE_TITLE,C.PRIZE_TYPE,C.PRIZE_DESC,C.PRIZE_COUNT,C.PRIZE_USE,C.PRIZE_STOCK FROM  CO_ACT_LUCK A,CO_ACT_PRIZE B,CO_PRIZE C
+		WHERE A.LUCK_ID = B.LUCK_ID AND B.PRIZE_ID = C.PRIZE_ID	AND A.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}        
+    </select>
+    
+    <delete id="deleteActivity" parameterType="java.lang.Long">
+    	DELETE FROM CO_ACTIVITY WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+    </delete>
+    
+    <delete id="deleteActRules" parameterType="java.util.Map">
+    	DELETE FROM CO_ACT_RULE WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+    	<if test="ruleId != null">
+            AND RULE_ID = #{ruleId,jdbcType=NUMERIC}
+        </if>
+    </delete>
+    
+    <delete id="deleteCoActPrize" parameterType="java.lang.Long">
+    	DELETE FROM CO_ACT_PRIZE WHERE LUCK_ID=#{luckId,jdbcType=NUMERIC}
+    </delete>
+    
+    <delete id="deleteCoPrize" parameterType="java.lang.Long">
+    	DELETE FROM CO_PRIZE WHERE PRIZE_ID=#{prizeId,jdbcType=NUMERIC}
+    </delete>
+	
+	<delete id="deleteCoActLuck" parameterType="java.util.Map">
+    	DELETE FROM CO_ACT_LUCK WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+    	<if test="luckId != null">
+            AND LUCK_ID = #{luckId,jdbcType=NUMERIC}
+        </if>
+    </delete>
+	
+	<delete id="deleteActImg" parameterType="java.util.Map">
+    	DELETE FROM CO_ACTIVITY_IMG WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+    	<if test="actImgId != null">
+            AND ACT_IMG_ID = #{actImgId,jdbcType=NUMERIC}
+        </if>
+    </delete>
+    
+    <update id="updateActRule" parameterType="com.web.model.CoActRule">
+        UPDATE CO_ACT_RULE SET UPDATE_DATE=NOW()
+        <if test="statusCd!= null">
+            ,STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+            ,STATUS_DATE=NOW()
+        </if>
+        <if test="ruleData!= null">
+            ,RULE_DATA=#{ruleData,jdbcType=VARCHAR}
+        </if>
+        <where>
+            <if test="ruleId!= null and ruleId!= 0">
+                AND RULE_ID=#{ruleId,jdbcType=NUMERIC}
+            </if>
+            <if test="activityId!= null and activityId!= 0">
+                AND ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+            </if>
+            <if test="ruleCode!= null">
+                AND RULE_CODE=#{ruleCode,jdbcType=VARCHAR}
+            </if>
+            AND <![CDATA[STATUS_CD <>'102']]>
+        </where>
+    </update>
+    <update id="updateActImg" parameterType="com.web.model.CoActivityImg">
+        UPDATE CO_ACTIVITY_IMG SET UPDATE_DATE=NOW()
+        <if test="statusCd!= null">
+            ,STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+            ,STATUS_DATE=NOW()
+        </if>
+        <if test="imgCode!= null">
+            ,IMG_CODE=#{imgCode,jdbcType=VARCHAR}
+        </if>
+        <if test="imgId!= null and  imgId!=0">
+           ,IMG_ID=#{imgId,jdbcType=NUMERIC}
+        </if>
+        <where>
+            <if test="classCode!= null">
+                AND CLASS_CODE=#{classCode,jdbcType=VARCHAR}
+            </if>
+            <if test="activityId!= null and  activityId!=0">
+                AND ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+            </if>
+            <if test="actImgId!= null and  actImgId!=0">
+                AND ACT_IMG_ID=#{actImgId,jdbcType=NUMERIC}
+            </if>
+            AND <![CDATA[STATUS_CD <>'102']]>
+        </where>
+    </update>
+    <update id="updateActivity" parameterType="com.web.model.CoActivity">
+        UPDATE CO_ACTIVITY SET UPDATE_DATE=NOW()
+        <if test="statusCd!= null">
+            ,STATUS_CD=#{statusCd,jdbcType=VARCHAR}
+            ,STATUS_DATE=NOW()
+        </if>
+        <if test="activityTitle!= null">
+          ,ACTIVITY_TITLE=#{activityTitle,jdbcType=VARCHAR}
+        </if>
+        <if test="activityDesc!= null">
+            ,ACTIVITY_DESC=#{activityDesc,jdbcType=VARCHAR}
+        </if>
+        <if test="activityRule!= null">
+            ,ACTIVITY_RULE=#{activityRule,jdbcType=VARCHAR}
+        </if>
+        <if test="showTime!= null">
+            ,SHOW_TIME=#{showTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="startTime!= null">
+            ,START_TIME=#{startTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endTime!= null">
+            ,END_TIME=#{endTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="ruleMode!= null">
+            ,RULE_MODE=#{ruleMode,jdbcType=VARCHAR}
+        </if>
+        <if test="showRuleMode!= null">
+            ,SHOW_RULE_MODE=#{ruleMode,jdbcType=VARCHAR}
+        </if>
+        <if test="editStaffId!=null">
+            ,EDIT_STAFF_ID=#{editStaffId,jdbcType=NUMERIC}
+        </if>
+        <if test="probability!=null">
+            ,PROBABILITY=#{probability,jdbcType=VARCHAR}
+        </if>
+        <if test="ssoUrl!=null">
+            ,SSO_URL=#{ssoUrl,jdbcType=VARCHAR}
+        </if>
+        WHERE ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+    </update>
+    
+    <update id="updateActRules" parameterType="com.web.model.CoActRule">
+       UPDATE CO_ACT_RULE 
+        <set>
+            <if test="ruleCode != null">
+                RULE_CODE = #{ruleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleTitle != null">
+                RULE_TITLE = #{ruleTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleDesc != null">
+                RULE_DESC = #{ruleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+                STATUS_DATE = NOW(),
+            </if>
+            <if test="ruleType != null">
+                RULE_TYPE = #{ruleType,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleData != null">
+                RULE_DATA = #{ruleData,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleMode != null">
+                RULE_MODE = #{ruleMode,jdbcType=VARCHAR},
+            </if>
+            <if test="sortSeq != null">
+                SORT_SEQ = #{sortSeq,jdbcType=NUMERIC},
+            </if>
+            <if test="isShow != null">
+                IS_SHOW = #{isShow,jdbcType=VARCHAR},
+            </if>
+            UPDATE_DATE = NOW(),
+        </set>
+        WHERE RULE_ID=#{ruleId,jdbcType=NUMERIC}
+    </update>
+    
+    <update id="updateCoPrize" parameterType="com.web.model.CoPrize">
+       UPDATE CO_PRIZE 
+        <set>
+            <if test="prizeTitle != null">
+                PRIZE_TITLE = #{prizeTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeType != null">
+                PRIZE_TYPE = #{prizeType,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeDesc != null">
+                PRIZE_DESC = #{prizeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeCount != null and prizeCount!= 0">
+                PRIZE_COUNT = #{prizeCount,jdbcType=NUMERIC},
+            </if>
+            <if test="prizeUse != null">
+                PRIZE_USE = #{prizeUse,jdbcType=VARCHAR},
+            </if>
+            <if test="productCode != null">
+                PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+            </if>
+            <if test="prodSupplier != null">
+                PROD_SUPPLIER = #{prodSupplier,jdbcType=VARCHAR},
+            </if>
+            <if test="prizeVal != null">
+                PRIZE_VAL = #{prizeVal,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+                STATUS_DATE = NOW(),
+            </if>
+            <if test="prizeStock != null and prizeStock!= 0">
+                PRIZE_STOCK = #{prizeStock,jdbcType=NUMERIC},
+            </if>
+            <if test="editStaffId != null">
+                EDIT_STAFF_ID = #{editStaffId,jdbcType=NUMERIC},
+            </if>
+            <if test="startTime != null">
+                START_TIME = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                END_TIME = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            UPDATE_DATE = NOW(),
+        </set>
+        WHERE PRIZE_ID=#{prizeId,jdbcType=NUMERIC}
+    </update>
+        
+    <update id="updateCoActLuck" parameterType="com.web.model.CoActLuck">        
+       UPDATE CO_ACT_LUCK 
+        <set>
+            <if test="luckLevel != null">
+                LUCK_LEVEL = #{luckLevel,jdbcType=VARCHAR},
+            </if>
+            <if test="luckTitle != null">
+                LUCK_TITLE = #{luckTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="luckDesc != null">
+                LUCK_DESC = #{luckDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="weightVal != null">
+                WEIGHT_VAL = #{weightVal,jdbcType=NUMERIC},
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+                STATUS_DATE = NOW(),
+            </if>            
+            <if test="sortSeq != null">
+                SORT_SEQ = #{sortSeq,jdbcType=NUMERIC},
+            </if>
+            <if test="editStaffId != null">
+	            EDIT_STAFF_ID=#{editStaffId,jdbcType=NUMERIC},
+	        </if>
+            UPDATE_DATE = NOW(),
+        </set>
+        WHERE LUCK_ID=#{luckId,jdbcType=NUMERIC}
+    </update>
+    
+    <update id="updateCoActPrize" parameterType="com.web.model.CoActPrize">  
+       UPDATE CO_ACT_PRIZE 
+        <set>
+            <if test="userPrizeCount != null and userPrizeCount!=0">
+                USER_PRIZE_COUNT = #{userPrizeCount,jdbcType=NUMERIC},
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+                STATUS_DATE = NOW(),
+            </if>   
+            <if test="editStaffId != null">
+                EDIT_STAFF_ID = #{editStaffId,jdbcType=NUMERIC},
+            </if>
+            UPDATE_DATE = NOW(),
+        </set>
+        WHERE LUCK_ID=#{luckId,jdbcType=NUMERIC} AND PRIZE_ID=#{prizeId,jdbcType=NUMERIC}
+    </update>
+
+    <select id="findParentActivitycd" parameterType="java.util.Map" resultType="java.lang.String" >
+        SELECT ACTIVITY_CD FROM co_activity WHERE ACTIVITY_ID IN(SELECT PARENT_ID FROM co_activity WHERE #{activityCd,jdbcType=VARCHAR})
+    </select>
+
+    <select id="queryActRuleData" parameterType="java.util.Map" resultMap="actRuleDataResult">
+        SELECT A.RULE_ID,A.RULE_DATA,A.EXP_ID FROM CO_ACT_RULE_DATA A,CO_ACT_RULE B WHERE A.RULE_ID=B.RULE_ID
+        <if test="activityId != null">
+            AND B.ACTIVITY_ID=#{activityId,jdbcType=NUMERIC}
+        </if>
+        <if test="ruleType != null">
+            AND B.RULE_TYPE=#{ruleType,jdbcType=VARCHAR}
+        </if>
+        <![CDATA[AND A.STATUS_CD <>'102'
+        AND B.STATUS_CD <>'102']]>
+    </select>
+
+    <insert id="insertActRuleData" parameterType="com.web.model.CoActRuleData">
+        INSERT INTO CO_ACT_RULE_DATA(RULE_ID,RULE_TYPE,RULE_DATA,ADD_TIME,STATUS_DATE,UPDATE_DATE,
+        STATUS_CD,SORT_SEQ)VALUES (#{ruleId,jdbcType=NUMERIC},#{ruleType,jdbcType=VARCHAR},
+        #{ruleData,jdbcType=VARCHAR},now(),now(),now(),#{statusCd,jdbcType=VARCHAR},#{sortSeq,jdbcType=NUMERIC})
+    </insert>
+
+    <delete id="deleteActRuleData" parameterType="java.lang.Long">
+        DELETE FROM CO_ACT_RULE_DATA WHERE EXP_ID=#{expId,jdbcType=NUMERIC}
+    </delete>
+    
+    <update id="updateActRuleData" parameterType="com.web.model.CoActRuleData">
+       UPDATE CO_ACT_RULE_DATA 
+        <set>
+            <if test="ruleType != null">
+                RULE_TYPE = #{ruleType,jdbcType=VARCHAR},
+            </if>
+            <if test="ruleData != null">
+                RULE_DATA = #{ruleData,jdbcType=VARCHAR},
+            </if>
+            <if test="statusCd != null">
+                STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+                STATUS_DATE = NOW(),
+            </if>            
+            <if test="sortSeq != null">
+                SORT_SEQ = #{sortSeq,jdbcType=NUMERIC},
+            </if>
+            UPDATE_DATE = NOW(),
+        </set>
+        WHERE EXP_ID=#{expId,jdbcType=NUMERIC}
+    </update>
+</mapper>

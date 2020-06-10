@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>权益平台</title>
+  <link rel="stylesheet" type="text/css" href=" https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css" >
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+  <div class="layui-header">
+    <div class="layui-logo">权益平台</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-left">
+      <li class="layui-nav-item"><a href="">控制台</a></li>
+      <li class="layui-nav-item"><a href="">商品管理</a></li>
+      <li class="layui-nav-item"><a href="">用户</a></li>
+      <li class="layui-nav-item">
+        <a href="javascript:;">其它系统</a>
+        <dl class="layui-nav-child">
+          <dd><a href="">邮件管理</a></dd>
+          <dd><a href="">消息管理</a></dd>
+          <dd><a href="">授权管理</a></dd>
+        </dl>
+      </li>
+    </ul>
+    <ul class="layui-nav layui-layout-right">
+      <li class="layui-nav-item">
+        <a href="javascript:;">
+          <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+          贤心
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="">基本资料</a></dd>
+          <dd><a href="">安全设置</a></dd>
+        </dl>
+      </li>
+      <li class="layui-nav-item"><a href="">退了</a></li>
+    </ul>
+  </div>
+  
+  <div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+      <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+        <li class="layui-nav-item layui-nav-itemed">
+          <a class="" href="javascript:;">所有商品</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="javascript:;">列表三</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item">
+          <a href="javascript:;">解决方案</a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">列表一</a></dd>
+            <dd><a href="javascript:;">列表二</a></dd>
+            <dd><a href="">超链接</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">云市场</a></li>
+        <li class="layui-nav-item"><a href="">发布商品</a></li>
+        <li class="layui-nav-item"><a href="http://www.baidu.com" target="iframe">iframe</a></li>
+       <!-- <li class="layui-nav-item">百度</li>
+        <li class="layui-nav-item">Google</li>-->
+
+      </ul>
+      <div class="layui-btn-group">
+        <button type="button" class="layui-btn" id="addBaiDu">Baidu</button>
+        <button type="button" class="layui-btn" id="addGoogle">Google</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="layui-body">
+    <!-- 内容主体区域 -->
+    <!--<div style="padding: 15px;">内容主体区域</div>-->
+    <!--可删除的选项卡-->
+    <div lay-filter="demo" class="layui-tab" lay-allowClose="true">
+      <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="1" id="baidu" >百度</li>
+        <li lay-id="2" id="google">Google </li>
+      </ul>
+      <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" >
+          <iframe src="http://www.baidu.com"  width="1300" height="600" ></iframe>
+        </div>
+        <div class="layui-tab-item">
+          <iframe src="http://www.google.com" width="1300" height="600"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+  </div>
+</div>
+<script src=" https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"></script>
+<script>
+//JavaScript代码区域
+/*layui.use('element', function(){
+  var element = layui.element;
+  
+});*/
+layui.use(['element','jquery'], function(){
+  var element = layui.element;
+  var $=layui.jquery;
+  var baidu_id=1;
+  var google_id=2;
+
+  $("#addBaiDu").click(function () {
+    if (document.getElementById("baidu")){
+
+      element.tabChange('demo',baidu_id);
+    }
+    else {
+      element.tabAdd('demo', {
+        title: 'Baidu'
+        ,content: '<iframe src="http://www.baidu.com"  width="1300" height="600" id="baidu"></iframe>'
+      ,id:'3'});
+      baidu_id=3;
+      element.tabChange('demo','3');
+    }
+  });
+  $("#addGoogle").click(function () {
+    if (document.getElementById("google")){
+      element.tabChange('demo',google_id);
+    }
+    else {
+      element.tabAdd('demo', {
+        title: 'Google'
+        ,content: '<iframe src="http://www.google.com"  width="1300" height="600" id="google"></iframe>'
+        ,id:'4'});
+      google_id=4;
+      element.tabChange('demo','4');
+    }
+  });
+
+});
+
+</script>
+</body>
+</html>

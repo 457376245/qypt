@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- <beans:bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+		<beans:property name="captchaEngine">
+			<beans:bean class="com.web.filter.GMailEngine"/>
+		</beans:property>
+		默认生成的图片180秒过期 , 可另行设置
+		<beans:property name="minGuarantedStorageDelayInSeconds" value="180"/>
+	</beans:bean>
+	
+	验证码过滤器配置 
+ 	<beans:bean id="jcaptchaFilter" class="com.web.filter.JCaptchaFilter">
+		验证失败跳转页面
+		<beans:property name="failureUrl" value="/"/>
+		表单提交路径
+		<beans:property name="filterProcessesUrl" value="/login/login"/>
+		<beans:property name="captchaService" ref="captchaService"/>
+	</beans:bean> -->
+
+
+</beans>

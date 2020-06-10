@@ -1,0 +1,99 @@
+<@override name="title">活动中奖记录报表</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/report/userPrivilege-list.js"></script>
+</@override> <@override name="content">
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="1">按奖品</li>
+        <li  lay-id="2">按会员</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <blockquote class="layui-elem-quote news_search">
+                <div class="layui-inline layui-form-item pad10">
+                    <form class="layui-form">
+                        <div class="layui-input-inline">
+                            <input value="" placeholder="请选择活动" class="layui-input search_input" type="text" id="chooseAct" readonly>
+                        </div>
+                        <div class="layui-input-inline">
+                            <input value="" placeholder="请选择查询时间" class="layui-input search_input" type="text" id="times">
+                        </div>
+                        <div class="layui-input-inline" style="width: 250px">
+                            <a class="layui-btn search_btn">查询</a>
+                            <a class="layui-btn export_btn">导出中奖记录(全部)</a>
+                        </div>
+                    </form>
+                </div>
+            </blockquote>
+            <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+                <div class="title-box">
+                    <ul>
+                        <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 奖品列表（点击奖品名称查看中奖列表）</p></li>
+                    </ul>
+                </div>
+                <!-- table -->
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table table-hover sortable" lay-filter="prizetable" lay-skin="nob" id="prizetable">
+                    </table>
+                </div>
+                <div class="title-box">
+                    <ul>
+                        <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 中奖会员列表</p></li>
+                    </ul>
+                </div>
+                <!-- table -->
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table table-hover sortable" lay-filter="prizeUsertable" lay-skin="nob" id="prizeUsertable">
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <blockquote class="layui-elem-quote news_search">
+                <div class="layui-inline layui-form-item pad10">
+                    <form class="layui-form">
+                        <div class="layui-input-inline">
+                            <input value="" placeholder="请选择活动" class="layui-input search_input" type="text" id="chooseTwoAct" readonly>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-inline">
+                                <input value="" placeholder="请输入手机号码" class="layui-input search_input" type="text" id="mobilePhone">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input value="" placeholder="请选择查询时间" class="layui-input search_input" type="text" id="timeTwos">
+                            </div>
+                            <div class="layui-input-inline" style="width: 250px">
+                                <a class="layui-btn searchTwo_btn">查询</a>
+                                <a class="layui-btn exportTwo_btn">导出中奖记录(全部)</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </blockquote>
+            <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+                <div class="title-box">
+                    <ul>
+                        <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 会员列表（点击会员名称查看奖品列表）</p></li>
+                    </ul>
+                </div>
+                <!-- table -->
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table table-hover sortable" lay-filter="memberTable" lay-skin="nob" id="memberTable">
+                    </table>
+                </div>
+                <div class="title-box">
+                    <ul>
+                        <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 中奖奖品列表</p></li>
+                    </ul>
+                </div>
+                <!-- table -->
+                <div class="layui-tab-item layui-show">
+                    <table class="layui-table table-hover sortable" lay-filter="memberPrizeTable" lay-skin="nob" id="memberPrizeTable">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</@override>
+<@extends name="/main/main-template.html"/>

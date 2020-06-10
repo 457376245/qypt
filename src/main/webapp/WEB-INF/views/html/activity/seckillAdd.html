@@ -1,0 +1,206 @@
+<@override name="title">编辑秒杀活动</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/activity/seckillAdd.js"></script>
+<script type="text/javascript" src="${contextPath}/js/common/time.js"></script>
+</@override> <@override name="content">
+<form class="layui-form com-form"  id="contentDiv" data-id="${coActivity.activityId}" data-type="${flag}">
+	<#if resultCode??&&resultCode==0>
+	<#assign style='' />
+	<#if flag=='detail'>
+		<#assign style='disabled' />
+    </#if>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label"><span class="red">*</span>活动标题：</label>
+			<div class="layui-inline">
+				<input class="layui-input" lay-verify="required" lay-reqtext="请输入活动标题" placeholder="请输入活动标题" type="text" id="actTitle"  style="width:500px" ${style}>
+			</div>
+			<#if flag=='add'>
+				<div class="layui-inline">
+					<input type="button" value="导入活动" class="seckill-time" id="importAct">
+				</div>
+			</#if>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示时间：</label>
+		<div class="layui-input-block">
+			<input type="text" readonly class="seckill-day"  id="showTime" placeholder="${coActivity.showTimeStr}" value="${coActivity.showTimeStr}" ${style}>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>活动类别：</label>
+		<div class="layui-input-block">
+			<input type="radio" name="actType" title="时会场" value="1" checked lay-filter="isCheckType" ${style}>
+			<input type="radio" name="actType" title="日会场" value="2" lay-filter="isCheckType" ${style}>
+		</div>
+	</div>
+	<div  id="hourTimes">
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label"><span class="red">*</span>活动日期：</label>
+				<div class="layui-input-block">
+					<input type="text" readonly   class="seckill-day" id="startTime" placeholder="${coActivity.startTimeStr}" value="${coActivity.startTimeStr}" ${style}>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label"><span class="red">*</span>秒杀节点：</label>
+			<div class="layui-input-block">
+				<#list 0..23 as t>
+				<#if t lt 10>
+				<input type="checkbox" name="hourTime" title="${t}时&nbsp;&nbsp;" value="${t}" lay-filter="isCheckHour" ${style}>
+				<#else>
+				<input type="checkbox" name="hourTime" title="${t}时" value="${t}" lay-filter="isCheckHour" ${style}>
+			    </#if>
+			   </#list>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label"><span class="red">*</span>持续时间：</label>
+				<div class="layui-input-inline">
+					<input class="layui-input"  placeholder="0" type="text" id="continueTime" ${style}><span style="color:#999; position: absolute;right:6px;top:6px">分钟</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div  id="dayTimes"  style="display: none;">
+		<div class="layui-form-item">
+			<label class="layui-form-label"><span class="red">*</span>活动日期：</label>
+			<div class="layui-input-block">
+				<input type="text" readonly   class="seckill-day" id="addTime" placeholder="添加日期" ${style}>
+			</div>
+			<div class="layui-input-block" id="dateTimeShow">
+
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label"><span class="red">*</span>时间范围：</label>
+			<div class="layui-input-block">
+				<input type="text" class="layui-input" id="dayTimeRang" readonly style="width:150px" ${style}>
+			</div>
+		</div>
+	</div>
+	<#if (coRegionList)?? &&((coRegionList)?size>0)>
+	<div class="layui-form-item">
+        <label class="layui-form-label"><span class="red">*</span>活动地区：</label>
+        <div class="layui-input-block">
+        <div class="layui-inline">
+            <input type="checkbox" name="areaRelAll" lay-skin="primary" title="全选"  lay-filter="checkAreaAll" ${style}>
+        </div>
+        <div class="layui-inline">
+            <#list coRegionList as region>
+            <input type="checkbox" name="areaRel" title="${region.regionName}" value="${region.regionCode}" ruleId="" ${style}>
+            </#list>
+        </div>
+    </div>
+	</div>
+    </#if>
+	<div class="layui-form-item">
+		<label class="layui-form-label">定向推送：</label>
+		<div class="layui-input-block">
+			<span class="yellow tip-info">注：系统默认推向全部用户</span>
+			<div class="block bottom15">
+				<div class="tip-tit left"> 条件一：</div>
+				<div class="layui-input-block" style="margin-left: 70px">
+					<input type="checkbox" name="ruleType" title="星级用户" value="1" lay-filter="isCheckXj" ${style}>
+					<input type="checkbox" name="ruleType" title="5G终端用户" value="5" ${style}>
+					<input type="checkbox" name="ruleType" title="5G专属" value="12" ${style}>
+				</div>
+			</div>
+			<div class="block bottom15">
+				<div class="tip-tit left"> 条件二：</div>
+				<div class="layui-input-block" style="margin-left: 70px">
+					<input type="radio" name="ruleContion" title="满足一个条件-即可" value="OR" checked ${style}>
+					<input type="radio" name="ruleContion" title="满足所有条件-的用户" value="AND" ${style}>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<div class="layui-form-item" id="ruleDataDiv1" style="display: none">
+		<label class="layui-form-label">星级要求：</label>
+		<div class="layui-input-block" style="width:200px">
+			<select id="ruleData1" ${style}>
+				<#list 0..7 as t>
+				<option value="${t}">${t}级</option>
+			</#list>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">活动简介：</label>
+		<div class="layui-input-block"  style="width:600px">
+			<textarea placeholder="请输入活动简介" class="layui-textarea" id="activityDesc" cols="2" ${style}></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">活动说明：</label>
+		<div class="layui-input-block"  style="width:600px">
+			<textarea placeholder="请输入活动说明" class="layui-textarea" id="activityRule" style="display: none" ${style}></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示位置：</label>
+		<div class="layui-input-block">
+			<span class="yellow tip-info">注：系统默认抽奖入口位于活动列表</span>
+			<!--<div class="block bottom15">-->
+				<!--<div class="layui-inline" style="width: 150px">-->
+					<!--<input type="checkbox" lay-skin="primary" name="banners" title="活动列表banner" value="101">-->
+				<!--</div>-->
+				<!--<div class="layui-inline">-->
+					<!--<button type="button" class="layui-btn" id="banner101">-->
+						<!--<i class="layui-icon">&#xe67c;</i>上传图片-->
+					<!--</button>-->
+				<!--</div>-->
+			<!--</div>-->
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="checkbox" lay-skin="primary" name="banners" title="首页顶部banner" value="102" ${style} lay-filter="delPic">
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn" id="banner102">
+						<i class="layui-icon">&#xe67c;</i>上传图片
+					</button>
+				</div>
+			</div>
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="checkbox" lay-skin="primary" name="banners" title="首页活动宣传banner" value="103" ${style} lay-filter="delPic">
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn" id="banner103">
+						<i class="layui-icon">&#xe67c;</i>上传图片
+					</button>
+				</div>
+			</div>
+			<div class="block bottom15">
+				<div class="layui-inline" style="width: 150px">
+					<input type="checkbox" lay-skin="primary" name="banners" title="首页活动弹窗banner" value="105" ${style} lay-filter="delPic">
+				</div>
+				<div class="layui-inline">
+					<button type="button" class="layui-btn" id="banner105">
+						<i class="layui-icon">&#xe67c;</i>上传图片
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <#if flag!='detail'>
+        <div class="layui-form-item" id="bottomTool">
+            <div class="layui-input-block">
+                <button class="layui-btn"  lay-submit="" lay-filter="saveAct">保存</button>
+                <#if flag=='edit'>
+                <button class="layui-btn" lay-submit="" lay-filter="publishAct">发布</button>
+                </#if>
+                <button class="layui-btn" lay-submit=""  lay-filter="saveAndNext">下一步</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="resetData">重置</button>
+            </div>
+        </div>
+    </#if>
+</#if>
+</form>
+</@override>
+<@extends name="/main/main-template.html"/>

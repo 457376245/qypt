@@ -1,0 +1,193 @@
+<@override name="title">河北电信天翼会员中心-任务配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskInfoEdit.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="taskId" value="${taskId}" name="taskId"/>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>任务名称：</label>
+		<div class="layui-inline" style="width:420px;">
+			<input type="text" id="groupTitle" required lay-verify="required" lay-reqText="请输入任务名称" placeholder="请输入任务名称（必填）" name="taskName" autocomplete="off" class="layui-input" value="${taskInfo.taskName}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>任务描述：</label>
+		<div class="layui-inline" style="width:420px;">
+			<input type="text" required lay-verify="required" lay-reqText="请输入任务描述" placeholder="请输入任务描述（必填）" name="taskDesc" autocomplete="off" class="layui-input" value="${taskInfo.taskDesc}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>奖励描述：</label>
+		<div class="layui-inline" style="width:420px;">
+			<input type="text" required lay-verify="required" lay-reqText="请输入任务奖励描述" placeholder="请输入奖励描述（必填）" name="prizeDesc" autocomplete="off" class="layui-input" value="${taskInfo.prizeDesc}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>任务分类：</label>
+		<div class="layui-inline"  style="width:420px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择任务分类" id="taskType" name="taskType" <#if (editType??) && (editType=='EDIT')>disabled="disabled" </#if>>
+			    <option value="">请选择任务分类</option>
+			    <option value="2" <#if (taskInfo??) && (taskInfo.taskType=='2')>selected="selected" </#if>>任务类</option>
+			    <option value="1" <#if (taskInfo??) && (taskInfo.taskType=='1')>selected="selected" </#if>>签到类</option>
+			    <option value="3" <#if (taskInfo??) && (taskInfo.taskType=='3')>selected="selected" </#if>>分享类</option>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>周期：</label>
+		<div class="layui-inline" >
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择任务循环周期" id="cycleType" name="cycleType" >
+			    <option value="">请选择周期类型</option>
+				<option value="1" <#if (taskInfo??) && (taskInfo.cycleType=='1')>selected="selected" </#if>>开始结束时间为周期</option>
+				<option value="2" <#if (taskInfo??) && (taskInfo.cycleType=='2')>selected="selected" </#if>>以天为周期</option>
+				<option value="3" <#if (taskInfo??) && (taskInfo.cycleType=='3')>selected="selected" </#if>>以月为周期</option>
+				<option value="4" <#if (taskInfo??) && (taskInfo.cycleType=='4')>selected="selected" </#if>>以周为周期</option>
+		    </select>
+		</div>
+		
+		<div class="layui-inline" >
+			<input type="number" required lay-verify="required" lay-reqText="请输入循环周期值" placeholder="请输入循环周期值" name="cycleVal" autocomplete="off" class="layui-input" value="${taskInfo.cycleVal}" > 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>参与类型：</label>
+		
+		<div class="layui-inline" >
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择参与形式" id="inType" name="inType">
+			    <option value="">请选择参与类型</option>
+				<option value="1" <#if (taskInfo??) && (taskInfo.inType=='1')>selected="selected" </#if>>任务只能参与一次</option>
+				<option value="2" <#if (taskInfo??) && (taskInfo.inType=='2')>selected="selected" </#if>>按周期循环参与</option>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示图标：</label>
+		
+		<div class="layui-inline" >
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择小图标" id="imgCode" name="imgCode">
+			    <option value="">请选择任务小图标</option>
+			    <option value="task-icon01.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon01.png')>selected="selected" </#if>>图标1(充值)</option>
+			    <option value="task-icon02.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon02.png')>selected="selected" </#if>>图标2(爱心)</option>
+			    <option value="task-icon03.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon03.png')>selected="selected" </#if>>图标3(号卡)</option>
+			    <option value="task-icon04.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon04.png')>selected="selected" </#if>>图标4(菱形打勾)</option>
+			    <option value="task-icon05.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon05.png')>selected="selected" </#if>>图标5(手机)</option>
+				<option value="task-icon06.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon06.png')>selected="selected" </#if>>图标6(日常)</option>
+				<option value="task-icon07.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon07.png')>selected="selected" </#if>>图标7(兑换)</option>
+				<option value="task-icon08.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon08.png')>selected="selected" </#if>>图标8(圆形打勾)</option>
+				<option value="task-icon09.png" <#if (taskInfo??) && (taskInfo.imgCode=='task-icon09.png')>selected="selected" </#if>>图标9(分享)</option>
+		    </select>
+		</div>
+		
+		<div class="layui-inline">
+			<button type="button" class="layui-btn" onclick="taskInfoEdit.showImgInfo();">查看小图标</button>
+		</div>
+	</div>
+	
+	<div class="layui-form-item" >
+		<label class="layui-form-label">跳转地址：</label>
+		
+		<div class="layui-inline" style="width:420px;">
+			<input type="text" placeholder="任务去完成跳转地址（非必填）" name="taskUrl" autocomplete="off" class="layui-input" value="${taskInfo.taskUrl}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>按钮展示文字：</label>
+		
+		<div class="layui-inline" >
+			<input type="text" required lay-verify="required" lay-reqText="请输入未完成按钮展示文字" placeholder="未完成展示文字（必填）" name="actTabTitle" autocomplete="off" class="layui-input" value="${taskInfo.actTabTitle}"> 
+		</div>
+		
+		<div class="layui-inline" >
+			<input type="text" required lay-verify="required" lay-reqText="请输入已完成按钮展示文字" placeholder="任务完成展示文字（必填）" name="comTabTitle" autocomplete="off" class="layui-input" value="${taskInfo.comTabTitle}"> 
+		</div>
+		
+		<div class="layui-inline" >
+			<input type="text"  placeholder="促销文字（非必填）" name="sellTabTitle" autocomplete="off" class="layui-input" value="${taskInfo.sellTabTitle}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>排序号：</label>
+		<div class="layui-inline" style="width:420px;">
+			<input type="number" required lay-verify="required" lay-reqText="请输入任务排序" placeholder="越小任务排序越靠前（必填）" name="sortSeq" autocomplete="off" class="layui-input" value="${taskInfo.sortSeq}"> 
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>归属分组：</label>
+		<div class="layui-inline" style="width:420px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择任务归属分组" id="groupId" name="groupId">
+			    <option value="">请选择归属分组</option>
+			    <#if (taskGroups??) && (taskGroups?size>0)>
+			    <#list taskGroups as taskGroupInfo>
+			    	<option value="${taskGroupInfo.groupId}" <#if (taskInfo??) && (taskInfo.groupId==taskGroupInfo.groupId)>selected="selected" </#if> >${taskGroupInfo.groupTitle}</option>
+			    </#list>
+			    </#if>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item" style="display: none;">
+		<label class="layui-form-label"><span class="red">*</span>状态：</label>
+		<div class="layui-inline" style="width:420px;">
+			<select class="newsLook" required lay-verify="required" lay-reqText="请选择初始状态" id="statusCd" name="statusCd">
+			    <#if (taskInfo??) && (taskInfo.statusCd??)>
+				    <#if (taskInfo.statusCd=='100')>
+				    	<option value="100" selected="selected">待启用</option>
+		        		<option value="101">已启用</option>
+				    <#else>
+				    	<option value="100">待启用</option>
+		        		<option value="101" selected="selected">已启用</option>
+				    </#if>
+				<#else>
+					<option value="100">待启用</option>
+			        <option value="101">已启用</option>
+			    </#if>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>展示时间：</label>
+		<div class="layui-inline" style="width:420px;">
+			<div class="layui-input-inline">
+				<input type="text" required lay-verify="required" lay-reqText="请选择任务开始展示时间" placeholder="请选择展示时间" readonly="readonly"  class="layui-input" id="showTime" name="showTime" value="${taskInfo.showDate}">
+			</div>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label"><span class="red">*</span>起止时间：</label>
+		<div class="layui-inline" >
+			<div class="layui-input-inline">
+				<input type="text" required lay-verify="required" lay-reqText="请选择任务开始时间" placeholder="请选择开始时间" readonly="readonly"  class="layui-input" id="startTime" name="startTime" value="${taskInfo.startDate}">
+			</div>
+		</div>
+		
+		<div class="layui-inline" >
+			<div class="layui-input-inline">
+				<input type="text" required lay-verify="required" lay-reqText="请选择任务结束时间" placeholder="请选择结束时间" readonly="readonly"  class="layui-input" id="endTime" name="endTime" value="${taskInfo.endDate}">
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

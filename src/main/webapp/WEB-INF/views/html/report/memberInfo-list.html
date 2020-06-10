@@ -1,0 +1,46 @@
+<@override name="title">新增客户统计报表</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/report/memberInfo-list.js"></script>
+<script type="text/javascript" src="${contextPath}/js/common/time.js"></script>
+</@override> <@override name="content">
+<div class="larry-personal">
+    <div class="layui-tab">
+        <blockquote class="layui-elem-quote news_search">
+            <div class="layui-inline layui-form-item pad10">
+                <form class="layui-form">
+                    <div class="layui-input-inline">
+                        <input value="" placeholder="请选择查询日期" class="layui-input search_input" type="text" id="times">
+                    </div>
+                    <div class="layui-input-inline">
+                        <a class="layui-btn search_btn">查询</a>
+                    </div>
+                </form>
+            </div>
+        </blockquote>
+        <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+            <div class="title-box">
+                <ul>
+                    <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 新增客户统计（点击统计数字查看客户详情）</p></li>
+                </ul>
+            </div>
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table table-hover sortable" lay-filter="custByTime" lay-skin="nob" id="custByTime" valign="top">
+                </table>
+            </div>
+            <div class="title-box">
+                <ul>
+                    <li class="left"><p class="title-p"><i class="iconfont icon-edit2"></i> 客户详情列表
+                        <a class="layui-btn export_btn">导出</a></p>
+                    </li>
+                </ul>
+            </div>
+            <!-- table -->
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table table-hover sortable" lay-filter="custDetail" lay-skin="nob" id="custDetail">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</@override>
+<@extends name="/main/main-template.html"/>

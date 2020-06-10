@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="safeRowBoundsEnabled" value="false" />
+	</settings>
+
+	<!-- 实体别名定义 -->
+	<typeAliases>
+		<typeAlias alias="CoTaskGroup" type="com.web.model.CoTaskGroup"/>
+		<typeAlias alias="CoTask" type="com.web.model.CoTask"/>
+		<typeAlias alias="CoTaskRule" type="com.web.model.CoTaskRule"/>
+		<typeAlias alias="CoTaskRd" type="com.web.model.CoTaskRd"/>
+		<typeAlias alias="CoTaskReward" type="com.web.model.CoTaskReward"/>
+		<typeAlias alias="RuleGroupCommonBean" type="com.web.model.RuleGroupCommonBean"/>
+		<typeAlias alias="RuleCommonBean" type="com.web.model.RuleCommonBean"/>
+		<typeAlias alias="CoLogSign" type="com.web.model.CoLogSign"/>
+		<typeAlias alias="CoTaskImg" type="com.web.model.CoTaskImg"/>
+		<typeAlias alias="CoRuleData" type="com.web.model.CoRuleData"/>
+		<typeAlias alias="CoRegion" type="com.web.model.CoRegion"/>
+	</typeAliases>
+</configuration>

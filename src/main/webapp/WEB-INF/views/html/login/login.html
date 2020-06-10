@@ -1,0 +1,96 @@
+<@override name="title">河北电信天翼会员中心登录</@override>
+<link type="text/css" rel="stylesheet" href="${contextPath}/css/style.css">
+<link type="text/css" rel="stylesheet" href="${contextPath}/css/login.css">
+<style>
+    #tip .pack {
+        border-radius: 20px;
+    }
+</style>
+<@override name="content">
+
+	<!-- ====================================loading -->
+		<!-- ====================================页面开始 -->
+		<!--登录-->
+		<div class="login-bg">
+		<div class="login-logo"></div>
+		<section id="JValidate" class="acc_login">
+			<ul>
+				<li>
+					<input autocomplete="off" placeholder="请输入手机号" class="tc acc_input" type="text" id="iphone" />
+				</li>
+				<li class="axc_yzm clearfix">
+					<input autocomplete="off" type="text" placeholder="验证码" id="pwd" name="short" class="fl axc_yzm01" />
+					<input autocomplete="off" type="button"  value="点击获取" id="loginPageSendBt" class="axc_yzm02 fr" />
+				</li>
+				<li>
+                    <button  class="login_icon tc " type="button" id="loginBtn" style="width: 100%;">登录</button>
+				</li>
+			</ul>
+		</section>
+		</div>
+		<!--弹出层-->
+		<article id="tip">
+			<div class="pack">
+				<h1 class="tc">温馨提示</h1>
+				<p class="tc"></p>
+				<a href="#">确定</a>
+			</div>
+		</article>
+</@override>
+<@extends name="/main/main-template-login.html"/>
+<script type="text/javascript">
+    $(function() {
+        $(window).on("load", function() {
+            $("#loading").fadeOut();
+        })
+        // ========================================浮层控制
+        $("#tip .pack a").on("click", function() {
+            $("#tip").fadeOut()
+            $("#tip .pack p").html("")
+            $("#submit").css({
+                "pointer-events": "auto"
+            });
+            return false;
+        })
+
+        function alerths(str) {
+            $("#tip").fadeIn()
+            $("#tip .pack p").html(str)
+            return false;
+        }
+
+        $(".login_icon").on("click", function() {
+            var str = $("#iphone").val()
+            $("#submit").css({
+                "pointer-events": "none"
+            });
+            if (str.length == 11 && checkPhone(str)) {
+                // 判断是不是11位手机号，为真提交
+            } else {
+                alerths("请正确输入手机号！")
+            }
+            return false;
+        })
+        /*登录按钮的颜色*/
+        $("input").change(function() {
+            var str = $("#iphone").val();
+            var pass = $("#btn_yzm").val();
+
+            if (pass != "" || str != "") {
+                $(".login_icon").addClass("login_iconon");
+            } else {
+
+                $(".login_icon").removeClass("login_iconon");
+            }
+        })
+    })
+</script>
+<script type="text/javascript">
+    var exponent="${empoent}",modulus="${modulus}";
+    var contextPath="${contextPath}";
+</script>
+<script src="${contextPath}/js/common/swiperlist.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8" src="${contextPath}/js/common/flexible.js"></script>
+<script src="${contextPath}/js/common/swiperImage.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="${contextPath}/js/util/security.js?d=${.now?string('yyyyMMddhhmmssSSS')}"></script>
+<script src="${contextPath}/js/login/login.js?d=${.now?string('yyyyMMddhhmmssSSS')}"></script>

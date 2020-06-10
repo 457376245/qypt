@@ -1,0 +1,34 @@
+<#if (taskGroupList??) && (taskGroupList?size>0)>
+<#list taskGroupList as taskGroupInfo>
+<div class="index-box index-zq-pad homePageTaskShowCla">
+     <div class="index-xtitle"><img src="${contextPath}/images/index-title-kbgl.png"><a href="javascript:void(0);">${taskGroupInfo.groupTitle}</a><img src="${contextPath}/images/index-title-kbgl.png"><a href="${contextPath}/qy/taskCenter/taskIndex" class="more-btn">查看全部></a></div>
+     <div class="index-zq">
+     	<#if (taskGroupInfo.taskList??) && (taskGroupInfo.taskList?size!=0)>
+		<#list taskGroupInfo.taskList as taskInfo>
+		<#if (taskInfo_index<2)>
+     	<div class="zq-list">
+			<img src="${contextPath}/images/index-zq-img.png" class="pro-img">
+			<div class="pro-txt">
+            	<p>${taskInfo.taskName}</p>    
+                <p>${taskInfo.taskDesc}<span>${taskInfo.prizeDesc}</span></p>      
+            </div>
+            
+            <!-- 判断任务是否真正开始 -->
+			<#if (taskInfo.isTaskStart!="Y")>
+				<div class="pro-btn" id="taskHomeBtn_${taskInfo.taskId}"><a href="javascript:void(0);" >未开始</a></div>
+			<#else>
+				<!-- 判断是否已经完成 -->
+				<#if (taskInfo.isReceiveReward!='Y')>
+				<div class="pro-btn on" id="taskHomeBtn_${taskInfo.taskId}"><a href="javascript:void(0);" onclick="taskIndex.receiveReward(${taskInfo.taskId});">${taskInfo.actTabTitle}</a></div>
+				<#else>
+				<div class="pro-btn" id="taskHomeBtn_${taskInfo.taskId}"><a href="javascript:void(0);" >${taskInfo.comTabTitle}</a></div>
+				</#if>
+			</#if>
+		</div>
+		</#if>
+		</#list>
+		</#if>
+     </div>	 
+</div>
+</#list>
+</#if>

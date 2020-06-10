@@ -1,0 +1,26 @@
+<@override name="title">河北电信天翼会员中心-任务规则配置</@override>
+<@override name="header">
+<script type="text/javascript" src="${contextPath}/js/common/common.js"></script>
+<script type="text/javascript" src="${contextPath}/js/task/taskRewardEdit.js"></script>
+</@override> 
+<@override name="content">
+<form class="com-form layui-form" id="editForm">
+	<input type="hidden" id="editType" value="${editType}" name="editType"/>
+	<input type="hidden" id="rewardId" value="${rewardId}" name="rewardId"/>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">每次奖励数量：</label>
+		<div class="layui-inline" style="width:450px;">
+			<input type="number" required lay-verify="required" lay-reqText="请输入任务完成每次奖励数量" name="userPrizeCount" autocomplete="off" class="layui-input" value="${taskRewardInfo.userPrizeCount}"> 
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" type="button" lay-submit lay-filter="saveInfoBtn">保存提交</button>
+			<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		</div>
+	</div>
+</form>
+</@override> 
+<@extends name="/main/main-template.html"/>

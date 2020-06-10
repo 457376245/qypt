@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 配置mybatis的sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!-- 指定sqlMapConfig总配置文件，订制的environment在spring容器中不再生效-->
+		<property name="configLocation" value="classpath:mybatis/configuration-dao.xml" />
+		<!--指定实体类映射文件，可以同时指定某一包以及子包下面的所有配置文件，mapperLocations和configLocation有一个即可，当需要为实体类指定别名时，可指定configLocation属性，再在mybatis总配置文件中采用mapper引入实体类映射文件 -->
+		<property name="mapperLocations" value="classpath:/com/web/dao/*Mapper.xml" />
+		<property name = "plugins">
+			<array>
+				<bean class = "com.github.pagehelper.PageInterceptor">
+					<property name = "properties">
+						<value>
+							dialet = mysql
+							rowBoundsWithCount = true
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+	<!-- 配置mybatis Mapper文件扫描器 -->
+	<bean  class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.web.dao"></property>
+	</bean>
+
+
+</beans>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoProductDao">
+  <resultMap id="BaseResultMap" type="com.web.model.CoProduct">
+    <!--@mbg.generated-->
+    <!--@Table co_product-->
+    <id column="PRODUCT_ID" jdbcType="BIGINT" property="productId" />
+    <result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+    <result column="PRODUCT_TITLE" jdbcType="VARCHAR" property="productTitle" />
+    <result column="CLASS_CODE" jdbcType="VARCHAR" property="classCode" />
+    <result column="BRAND_CODE" jdbcType="VARCHAR" property="brandCode" />
+    <result column="GROUP_ID" jdbcType="INTEGER" property="groupId" />
+    <result column="O_PRODUCT_CODE" jdbcType="VARCHAR" property="oProductCode" />
+    <result column="PROD_SUPPLIER" jdbcType="VARCHAR" property="prodSupplier" />
+    <result column="PRODUCT_TITLE_SUB" jdbcType="VARCHAR" property="productTitleSub" />
+    <result column="ATTR_TAB" jdbcType="VARCHAR" property="attrTab" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <result column="SHOW_TIME" jdbcType="TIMESTAMP" property="showTime" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="STOCK_TYPE" jdbcType="VARCHAR" property="stockType" />
+    <result column="PRODUCT_TYPE" jdbcType="VARCHAR" property="productType" />
+    <result column="GROUP_TYPE" jdbcType="VARCHAR" property="groupType" />
+    <result column="OLD_PRICE" jdbcType="VARCHAR" property="oldPrice" />
+    <result column="STAFF_ID" jdbcType="INTEGER" property="staffId" />
+    <result column="EDIT_STAFF_ID" jdbcType="INTEGER" property="editStaffId" />
+    <result column="LINK_TYPE" jdbcType="VARCHAR" property="linkType" />
+    <result column="PLATFORM_CODE" jdbcType="VARCHAR" property="platformCode" />
+    <result column="LIST_IMG_CODE" jdbcType="VARCHAR" property="listImgCode" />
+    <result column="IMG_CODE" jdbcType="VARCHAR" property="imgCode" />
+    <result column="VERSION_NO" jdbcType="BIGINT" property="versionNo" />
+    <result column="PRODUCT_DES" jdbcType="LONGVARCHAR" property="productDes" />
+    <result column="STOCK_INST" jdbcType="VARCHAR" property="stockInst" />
+        <association property="coProductStock"  javaType="com.web.model.CoProductStock">
+            <!-- id：关联查询用户的唯 一标识
+            column：指定唯 一标识用户信息的列
+            javaType：映射到user的哪个属性
+             -->
+             <result column="PRODUCT_STOCK" jdbcType="DECIMAL" property="productStock" />
+            <result column="PRODUCT_USE" jdbcType="DECIMAL" property="productUse" />
+            <result column="PRODUCT_PREEMPTION" jdbcType="DECIMAL" property="productPreemption" />
+            <result column="PRODUCT_WARN" jdbcType="DECIMAL" property="productWarn" />
+
+        </association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    PRODUCT_ID, PRODUCT_CODE, PRODUCT_TITLE, CLASS_CODE, BRAND_CODE, GROUP_ID, O_PRODUCT_CODE, 
+    PROD_SUPPLIER, PRODUCT_TITLE_SUB, ATTR_TAB, ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD, 
+    SHOW_TIME, START_TIME, END_TIME, STOCK_TYPE, PRODUCT_TYPE, GROUP_TYPE, OLD_PRICE, 
+    STAFF_ID, EDIT_STAFF_ID, LINK_TYPE, PLATFORM_CODE, LIST_IMG_CODE, IMG_CODE, VERSION_NO, 
+    PRODUCT_DES, STOCK_INST
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from co_product
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from co_product
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insertSelective" keyColumn="PRODUCT_ID" keyProperty="productId" parameterType="com.web.model.CoProduct" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into co_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productCode != null">
+        PRODUCT_CODE,
+      </if>
+      <if test="productTitle != null">
+        PRODUCT_TITLE,
+      </if>
+      <if test="classCode != null">
+        CLASS_CODE,
+      </if>
+      <if test="brandCode != null">
+        BRAND_CODE,
+      </if>
+      <if test="groupId != null">
+        GROUP_ID,
+      </if>
+      <if test="oProductCode != null">
+        O_PRODUCT_CODE,
+      </if>
+      <if test="prodSupplier != null">
+        PROD_SUPPLIER,
+      </if>
+      <if test="productTitleSub != null">
+        PRODUCT_TITLE_SUB,
+      </if>
+      <if test="attrTab != null">
+        ATTR_TAB,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+      <if test="showTime != null">
+        SHOW_TIME,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+      <if test="stockType != null">
+        STOCK_TYPE,
+      </if>
+      <if test="productType != null">
+        PRODUCT_TYPE,
+      </if>
+      <if test="groupType != null">
+        GROUP_TYPE,
+      </if>
+      <if test="oldPrice != null">
+        OLD_PRICE,
+      </if>
+      <if test="staffId != null">
+        STAFF_ID,
+      </if>
+      <if test="editStaffId != null">
+        EDIT_STAFF_ID,
+      </if>
+      <if test="linkType != null">
+        LINK_TYPE,
+      </if>
+      <if test="platformCode != null">
+        PLATFORM_CODE,
+      </if>
+      <if test="listImgCode != null">
+        LIST_IMG_CODE,
+      </if>
+      <if test="imgCode != null">
+        IMG_CODE,
+      </if>
+      <if test="versionNo != null">
+        VERSION_NO,
+      </if>
+      <if test="productDes != null">
+        PRODUCT_DES,
+      </if>
+      <if test="stockInst != null">
+        STOCK_INST,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productTitle != null">
+        #{productTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="classCode != null">
+        #{classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCode != null">
+        #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="oProductCode != null">
+        #{oProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="prodSupplier != null">
+        #{prodSupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="productTitleSub != null">
+        #{productTitleSub,jdbcType=VARCHAR},
+      </if>
+      <if test="attrTab != null">
+        #{attrTab,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="showTime != null">
+        #{showTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stockType != null">
+        #{stockType,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="groupType != null">
+        #{groupType,jdbcType=VARCHAR},
+      </if>
+      <if test="oldPrice != null">
+        #{oldPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null">
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="editStaffId != null">
+        #{editStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="linkType != null">
+        #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="platformCode != null">
+        #{platformCode,jdbcType=VARCHAR},
+      </if>
+      <if test="listImgCode != null">
+        #{listImgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="imgCode != null">
+        #{imgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNo != null">
+        #{versionNo,jdbcType=BIGINT},
+      </if>
+      <if test="productDes != null">
+        #{productDes,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stockInst != null">
+        #{stockInst,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoProduct">
+    <!--@mbg.generated-->
+    update co_product
+    <set>
+      <if test="productCode != null">
+        PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productTitle != null">
+        PRODUCT_TITLE = #{productTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="classCode != null">
+        CLASS_CODE = #{classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="brandCode != null">
+        BRAND_CODE = #{brandCode,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        GROUP_ID = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="oProductCode != null">
+        O_PRODUCT_CODE = #{oProductCode,jdbcType=VARCHAR},
+      </if>
+      <if test="prodSupplier != null">
+        PROD_SUPPLIER = #{prodSupplier,jdbcType=VARCHAR},
+      </if>
+      <if test="productTitleSub != null">
+        PRODUCT_TITLE_SUB = #{productTitleSub,jdbcType=VARCHAR},
+      </if>
+      <if test="attrTab != null">
+        ATTR_TAB = #{attrTab,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+      <if test="showTime != null">
+        SHOW_TIME = #{showTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stockType != null">
+        STOCK_TYPE = #{stockType,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        PRODUCT_TYPE = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="groupType != null">
+        GROUP_TYPE = #{groupType,jdbcType=VARCHAR},
+      </if>
+      <if test="oldPrice != null">
+        OLD_PRICE = #{oldPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null">
+        STAFF_ID = #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="editStaffId != null">
+        EDIT_STAFF_ID = #{editStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="linkType != null">
+        LINK_TYPE = #{linkType,jdbcType=VARCHAR},
+      </if>
+      <if test="platformCode != null">
+        PLATFORM_CODE = #{platformCode,jdbcType=VARCHAR},
+      </if>
+      <if test="listImgCode != null">
+        LIST_IMG_CODE = #{listImgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="imgCode != null">
+        IMG_CODE = #{imgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNo != null">
+        VERSION_NO = #{versionNo,jdbcType=BIGINT},
+      </if>
+      <if test="productDes != null">
+        PRODUCT_DES = #{productDes,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="stockInst != null">
+        STOCK_INST = #{stockInst,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PRODUCT_ID = #{productId,jdbcType=BIGINT}
+  </update>
+
+  <insert id="batchInsert" keyColumn="PRODUCT_ID" keyProperty="productId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into co_product
+    (PRODUCT_CODE, PRODUCT_TITLE, CLASS_CODE, BRAND_CODE, GROUP_ID, O_PRODUCT_CODE, PROD_SUPPLIER, 
+      PRODUCT_TITLE_SUB, ATTR_TAB, ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD, SHOW_TIME, 
+      START_TIME, END_TIME, STOCK_TYPE, PRODUCT_TYPE, GROUP_TYPE, OLD_PRICE, STAFF_ID, 
+      EDIT_STAFF_ID, LINK_TYPE, PLATFORM_CODE, LIST_IMG_CODE, IMG_CODE, VERSION_NO, PRODUCT_DES, 
+      STOCK_INST)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.productCode,jdbcType=VARCHAR}, #{item.productTitle,jdbcType=VARCHAR}, #{item.classCode,jdbcType=VARCHAR}, 
+        #{item.brandCode,jdbcType=VARCHAR}, #{item.groupId,jdbcType=INTEGER}, #{item.oProductCode,jdbcType=VARCHAR}, 
+        #{item.prodSupplier,jdbcType=VARCHAR}, #{item.productTitleSub,jdbcType=VARCHAR}, 
+        #{item.attrTab,jdbcType=VARCHAR}, #{item.addTime,jdbcType=TIMESTAMP}, #{item.statusDate,jdbcType=TIMESTAMP}, 
+        #{item.updateDate,jdbcType=TIMESTAMP}, #{item.statusCd,jdbcType=VARCHAR}, #{item.showTime,jdbcType=TIMESTAMP}, 
+        #{item.startTime,jdbcType=TIMESTAMP}, #{item.endTime,jdbcType=TIMESTAMP}, #{item.stockType,jdbcType=VARCHAR}, 
+        #{item.productType,jdbcType=VARCHAR}, #{item.groupType,jdbcType=VARCHAR}, #{item.oldPrice,jdbcType=VARCHAR}, 
+        #{item.staffId,jdbcType=INTEGER}, #{item.editStaffId,jdbcType=INTEGER}, #{item.linkType,jdbcType=VARCHAR}, 
+        #{item.platformCode,jdbcType=VARCHAR}, #{item.listImgCode,jdbcType=VARCHAR}, #{item.imgCode,jdbcType=VARCHAR}, 
+        #{item.versionNo,jdbcType=BIGINT}, #{item.productDes,jdbcType=LONGVARCHAR}, #{item.stockInst,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+  <select id="queryProduct" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    p.PRODUCT_ID, p.PRODUCT_CODE, p.PRODUCT_TITLE, p.CLASS_CODE, p.BRAND_CODE, p.GROUP_ID, p.O_PRODUCT_CODE,
+    p.PROD_SUPPLIER, p.PRODUCT_TITLE_SUB, p.ATTR_TAB, p.ADD_TIME, p.STATUS_DATE, p.UPDATE_DATE, p.STATUS_CD,
+    p.SHOW_TIME, p.START_TIME, p.END_TIME, p.STOCK_TYPE, p.PRODUCT_TYPE, p.GROUP_TYPE, p.OLD_PRICE,
+    p.STAFF_ID, p.EDIT_STAFF_ID, p.LINK_TYPE, p.PLATFORM_CODE, p.LIST_IMG_CODE, p.IMG_CODE, p.VERSION_NO,
+    p.PRODUCT_DES, p.STOCK_INST
+    ,ps.PRODUCT_STOCK, ps.PRODUCT_USE, ps.PRODUCT_PREEMPTION, ps.PRODUCT_WARN
+    FROM co_product p
+    INNER JOIN co_product_stock ps ON p.PRODUCT_ID = ps.PRODUCT_ID
+    WHERE 1=1
+    <include refid="queryProductCondition" />
+    ORDER BY PRODUCT_ID
+  </select>
+  <sql id="queryProductCondition">
+    <if test="productTitle != null and productTitle != ''">
+        AND p.PRODUCT_TITLE LIKE CONCAT('%',#{productTitle,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="productCode != null and productCode != ''">
+        AND p.PRODUCT_CODE = LIKE CONCAT('%',#{productCode,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="statusCd != null">
+        AND p.STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+    </if>
+    <if test="isCommodity != null and isCommodity == 1">
+        AND p.PRODUCT_ID NOT IN (SELECT PRODUCT_ID FROM co_exc_obj e WHERE 1=1
+        <if test="productId  != null ">
+            AND e.PRODUCT_ID !=  #{productId,jdbcType=BIGINT}
+        </if>
+
+        )
+    </if>
+
+  </sql>
+
+  <select id="selectByProductCodeCount" parameterType="map" resultType="java.lang.Integer">
+    SELECT COUNT(0) FROM co_product WHERE PRODUCT_CODE = #{productCode,jdbcType=VARCHAR}
+    <if test="oldProductCode != null">
+        AND PRODUCT_CODE != #{oldProductCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,22 @@
+<@override name="title">秒杀活动详情</@override>
+<@override name="header">
+</@override> <@override name="content">
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">活动详情</li>
+        <li>商品详情</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div class="layui-tab-item layui-show">
+            <iframe style="width: 100%; min-height: 550px;" scrolling="yes" frameborder="no" src="${contextPath}/seckill/detail?activityId=${activityId}"></iframe>
+        </div>
+        <div class="layui-tab-item">
+            <iframe style="width: 100%; min-height: 550px;" scrolling="yes" frameborder="no" src="${contextPath}/seckill/proSet?activityId=${activityId}&flag=detail"></iframe>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use('element');
+</script>
+</@override>
+<@extends name="/main/main-template.html"/>

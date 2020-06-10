@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoExcTypeDao">
+  <resultMap id="BaseResultMap" type="com.web.model.CoExcType">
+    <!--@mbg.generated-->
+    <!--@Table co_exc_type-->
+    <id column="TYPE_ID" jdbcType="BIGINT" property="typeId" />
+    <result column="TYPE_CODE" jdbcType="VARCHAR" property="typeCode" />
+    <result column="TYPE_DESC" jdbcType="VARCHAR" property="typeDesc" />
+    <result column="SORT_SEQ" jdbcType="DECIMAL" property="sortSeq" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    TYPE_ID, TYPE_CODE, TYPE_DESC, SORT_SEQ, ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select
+    <include refid="Base_Column_List" />
+    from co_exc_type
+    where TYPE_ID = #{typeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from co_exc_type
+    where TYPE_ID = #{typeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" keyColumn="TYPE_ID" keyProperty="typeId" parameterType="com.web.model.CoExcType" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into co_exc_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="typeCode != null">
+        TYPE_CODE,
+      </if>
+      <if test="typeDesc != null">
+        TYPE_DESC,
+      </if>
+      <if test="sortSeq != null">
+        SORT_SEQ,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="typeDesc != null">
+        #{typeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortSeq != null">
+        #{sortSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoExcType">
+    <!--@mbg.generated-->
+    update co_exc_type
+    <set>
+      <if test="typeCode != null">
+        TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="typeDesc != null">
+        TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sortSeq != null">
+        SORT_SEQ = #{sortSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TYPE_ID = #{typeId,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" keyColumn="TYPE_ID" keyProperty="typeId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into co_exc_type
+    (TYPE_CODE, TYPE_DESC, SORT_SEQ, ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.typeCode,jdbcType=VARCHAR}, #{item.typeDesc,jdbcType=VARCHAR}, #{item.sortSeq,jdbcType=DECIMAL},
+        #{item.addTime,jdbcType=TIMESTAMP}, #{item.statusDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP},
+        #{item.statusCd,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <select id="queryExcType" parameterType="map" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM co_exc_type
+    WHERE 1=1
+    <include refid="queryExcTypeCondition" />
+    ORDER BY TYPE_ID,STATUS_CD,SORT_SEQ
+  </select>
+  <sql id="queryExcTypeCondition">
+    <if test="typeCode != null and typeCode != ''">
+      AND TYPE_CODE LIKE CONCAT('%',#{typeCode,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="typeDesc != null and typeDesc != ''">
+      AND TYPE_DESC LIKE CONCAT('%',#{typeDesc,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="statusCd != null and statusCd != ''">
+      AND STATUS_CD = #{statusCd,jdbcType=VARCHAR}
+    </if>
+
+  </sql>
+
+  <select id="selectCountByTypeCode" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <!--@mbg.generated-->
+    SELECT
+    count(0)
+    FROM co_exc_type
+    WHERE TYPE_CODE = #{typeCode,jdbcType=VARCHAR}
+    <if test="oldTypeCode != null and oldTypeCode != ''">
+      AND TYPE_CODE != #{oldTypeCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.dao.CoExcTypeRelaDao">
+  <resultMap id="BaseResultMap" type="com.web.model.CoExcTypeRela">
+    <!--@mbg.generated-->
+    <!--@Table co_exc_type_rela-->
+    <id column="OBJ_TYPE_ID" jdbcType="BIGINT" property="objTypeId" />
+    <result column="OBJ_ID" jdbcType="BIGINT" property="objId" />
+    <result column="TYPE_ID" jdbcType="BIGINT" property="typeId" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="STATUS_DATE" jdbcType="TIMESTAMP" property="statusDate" />
+    <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd" />
+    <association property="coExcObj"  javaType="com.web.model.CoExcObj">
+        <id column="OBJ_ID" jdbcType="BIGINT" property="objId"/>
+        <result column="OBJ_CODE" jdbcType="VARCHAR" property="objCode"/>
+        <result column="PRODUCT_ID" jdbcType="BIGINT" property="productId"/>
+        <result column="PAY_TYPE" jdbcType="VARCHAR" property="payType"/>
+        <result column="PAY_VAL" jdbcType="DECIMAL" property="payVal"/>
+        <result column="PAY_MONEY" jdbcType="DECIMAL" property="payMoney"/>
+        <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="EFF_DATE" jdbcType="TIMESTAMP" property="effDate"/>
+        <result column="EXP_DATE" jdbcType="TIMESTAMP" property="expDate"/>
+        <result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="STATUS_CD" jdbcType="VARCHAR" property="statusCd"/>
+        <result column="STAFF_ID" jdbcType="INTEGER" property="staffId"/>
+        <result column="EDIT_STAFF_ID" jdbcType="INTEGER" property="editStaffId"/>
+        <result column="SORT_SEQ" jdbcType="DECIMAL" property="sortSeq"/>
+    </association>
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    OBJ_TYPE_ID, OBJ_ID, TYPE_ID, ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from co_exc_type_rela
+    where OBJ_TYPE_ID = #{objTypeId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from co_exc_type_rela
+    where OBJ_TYPE_ID = #{objTypeId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertSelective" keyColumn="OBJ_TYPE_ID" keyProperty="objTypeId" parameterType="com.web.model.CoExcTypeRela" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into co_exc_type_rela
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="objId != null">
+        OBJ_ID,
+      </if>
+      <if test="typeId != null">
+        TYPE_ID,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE,
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE,
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="objId != null">
+        #{objId,jdbcType=BIGINT},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.web.model.CoExcTypeRela">
+    <!--@mbg.generated-->
+    update co_exc_type_rela
+    <set>
+      <if test="objId != null">
+        OBJ_ID = #{objId,jdbcType=BIGINT},
+      </if>
+      <if test="typeId != null">
+        TYPE_ID = #{typeId,jdbcType=BIGINT},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null">
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        UPDATE_DATE = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusCd != null">
+        STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where OBJ_TYPE_ID = #{objTypeId,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsert" keyColumn="OBJ_TYPE_ID" keyProperty="objTypeId" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into co_exc_type_rela
+    (OBJ_ID, TYPE_ID, ADD_TIME, STATUS_DATE, UPDATE_DATE, STATUS_CD)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.objId,jdbcType=BIGINT}, #{item.typeId,jdbcType=BIGINT}, #{item.addTime,jdbcType=TIMESTAMP}, 
+        #{item.statusDate,jdbcType=TIMESTAMP}, #{item.updateDate,jdbcType=TIMESTAMP}, #{item.statusCd,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+  <select id="queryExcObjByTypeId" resultMap="BaseResultMap">
+    SELECT r.OBJ_ID, r.OBJ_CODE, r.PRODUCT_ID, r.PAY_TYPE, r.PAY_VAL, r.PAY_MONEY, r.ADD_TIME, r.EFF_DATE, r.EXP_DATE,
+        r.UPDATE_DATE, r.STATUS_CD, r.STAFF_ID, r.EDIT_STAFF_ID, r.SORT_SEQ,
+          o.OBJ_TYPE_ID, o.OBJ_ID, TYPE_ID, o.ADD_TIME, o.STATUS_DATE, o.UPDATE_DATE, o.STATUS_CD
+         FROM co_exc_type_rela o INNER JOIN co_exc_obj r ON r.OBJ_ID = o.OBJ_ID
+         WHERE 1=1
+        <if test="typeId != null">
+            AND TYPE_ID = #{typeId,jdbcType=BIGINT}
+        </if>
+
+    </select>
+    <select id="selectCountByTypeIdAndObjId" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <!--@mbg.generated-->
+    SELECT
+    count(0)
+    FROM co_exc_type_rela
+    WHERE TYPE_ID = #{typeId,jdbcType=BIGINT} AND OBJ_ID = #{objId,jdbcType=BIGINT}
+
+  </select>
+
+</mapper>
