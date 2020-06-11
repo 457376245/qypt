@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service("com.web.bmo.CoMenuImpl")
-public class CoMenuImpl  implements CoMenu{
+public class CoMenuServiceImpl implements CoMenuService {
     @Autowired
     private CoMenuDao coMenuDao;
     @Override

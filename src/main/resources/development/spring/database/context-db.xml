@@ -13,14 +13,14 @@
 		</property>
 
 		<property name="jdbcUrl">
-			<value>jdbc:mysql://localhost:3306/asia?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8</value>
+			<value>jdbc:mysql://10.19.83.29:3306/qypt?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=GMT%2B8</value>
 			<!--			<value>jdbc:mysql://192.168.137.5:13306/qypt?useUnicode=true&amp;characterEncoding=utf8&amp;useSSL=false</value>-->
 		</property>
 		<property name="username">
-			<value>root</value>
+			<value>test</value>
 		</property>
 		<property name="password">
-			<value>root</value>
+			<value>123456</value>
 		</property>
 		<!-- 连接只读数据库时配置为true， 保证安全 -->
 		<property name="readOnly">
