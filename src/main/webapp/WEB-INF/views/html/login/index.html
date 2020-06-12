@@ -40,10 +40,12 @@
   </div>
   
   <div class="layui-side layui-bg-black">
-    <div class="layui-side-scroll">
+    <div class="layui-side-scroll" >
+
+
       <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-      <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-        <li class="layui-nav-item layui-nav-itemed">
+      <ul class="layui-nav layui-nav-tree"  lay-filter="test" id="leftMenu">
+        <!--<li class="layui-nav-item layui-nav-itemed">
           <a class="" href="javascript:;">所有商品</a>
           <dl class="layui-nav-child">
             <dd><a href="javascript:;">列表一</a></dd>
@@ -51,8 +53,8 @@
             <dd><a href="javascript:;">列表三</a></dd>
             <dd><a href="">超链接</a></dd>
           </dl>
-        </li>
-        <li class="layui-nav-item">
+        </li>-->
+    <!--    <li class="layui-nav-item">
           <a href="javascript:;">解决方案</a>
           <dl class="layui-nav-child">
             <dd><a href="javascript:;">列表一</a></dd>
@@ -62,15 +64,17 @@
         </li>
         <li class="layui-nav-item"><a href="">云市场</a></li>
         <li class="layui-nav-item"><a href="">发布商品</a></li>
-        <li class="layui-nav-item"><a href="http://www.baidu.com" target="iframe">iframe</a></li>
+        <li class="layui-nav-item"><a href="http://www.baidu.com" target="iframe">iframe</a></li>-->
        <!-- <li class="layui-nav-item">百度</li>
         <li class="layui-nav-item">Google</li>-->
-
       </ul>
+
+
+<!--
       <div class="layui-btn-group">
         <button type="button" class="layui-btn" id="addBaiDu">Baidu</button>
         <button type="button" class="layui-btn" id="addGoogle">Google</button>
-      </div>
+      </div>-->
     </div>
   </div>
   
@@ -78,7 +82,7 @@
     <!-- 内容主体区域 -->
     <!--<div style="padding: 15px;">内容主体区域</div>-->
     <!--可删除的选项卡-->
-    <div lay-filter="demo" class="layui-tab" lay-allowClose="true">
+    <!--<div lay-filter="demo" class="layui-tab" lay-allowClose="true">
       <ul class="layui-tab-title">
         <li class="layui-this" lay-id="1" id="baidu" >百度</li>
         <li lay-id="2" id="google">Google </li>
@@ -91,7 +95,7 @@
           <iframe src="http://www.google.com" width="1300" height="600"></iframe>
         </div>
       </div>
-    </div>
+    </div>-->
   </div>
   
   <div class="layui-footer">
@@ -106,11 +110,52 @@
   var element = layui.element;
   
 });*/
+
 layui.use(['element','jquery'], function(){
+  function buildLeftMenu(result){
+    //var ul=$("<ul lay-filter='test'></ul>")
+    var flag=true
+    $.each(result,function (index, obj) {
+      var li = $("<li></li>")
+      if (flag=true){
+        li.addClass("layui-nav-item layui-nav-itemed");
+        flag=false;
+      }
+      else {
+      li.addClass("layui-nav-item");
+      }
+      var a=$("<a href='javascript:'></a>").append(obj.name);
+      $(a).appendTo(li)
+      var dl=$("<dl></dl>").addClass("layui-nav-child")
+
+      $.each(obj.secondMenu,function (index, obj) {
+        console.log(obj.name)
+        var dd=$("<dd></dd>")
+        var a2=$("<a href='javascript:'></a>").append(obj.name)
+        $(a2).appendTo(dd)
+        dd.appendTo(dl)
+        dl.appendTo(li)
+      })
+      li.appendTo("#leftMenu")
+    })
+  }
   var element = layui.element;
   var $=layui.jquery;
   var baidu_id=1;
   var google_id=2;
+
+  $(document).ready(function(){
+    init();
+  });
+  init=function(){
+    $.ajax({
+      url:"/index/menus",
+      type : "GET",
+      success:function (result) {
+        buildLeftMenu(result)
+      }
+    })
+  };
 
   $("#addBaiDu").click(function () {
     if (document.getElementById("baidu")){

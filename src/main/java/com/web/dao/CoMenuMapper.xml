@@ -47,6 +47,6 @@
         select * from qypt.co_menu where PID=ID;
     </select>-->
     <select id="getMenus" resultType="com.web.model.CoMenu">
-        select * from qypt.co_menu order by ID;
+        select * from qypt.co_menu order by PID,ID;
     </select>
 </mapper>
