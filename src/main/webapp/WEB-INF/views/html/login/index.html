@@ -53,8 +53,8 @@
             <dd><a href="javascript:;">列表三</a></dd>
             <dd><a href="">超链接</a></dd>
           </dl>
-        </li>-->
-    <!--    <li class="layui-nav-item">
+        </li>
+        <li class="layui-nav-item">
           <a href="javascript:;">解决方案</a>
           <dl class="layui-nav-child">
             <dd><a href="javascript:;">列表一</a></dd>
@@ -64,17 +64,11 @@
         </li>
         <li class="layui-nav-item"><a href="">云市场</a></li>
         <li class="layui-nav-item"><a href="">发布商品</a></li>
-        <li class="layui-nav-item"><a href="http://www.baidu.com" target="iframe">iframe</a></li>-->
-       <!-- <li class="layui-nav-item">百度</li>
-        <li class="layui-nav-item">Google</li>-->
+     -->
       </ul>
 
 
-<!--
-      <div class="layui-btn-group">
-        <button type="button" class="layui-btn" id="addBaiDu">Baidu</button>
-        <button type="button" class="layui-btn" id="addGoogle">Google</button>
-      </div>-->
+
     </div>
   </div>
   
@@ -106,30 +100,34 @@
 <script src=" https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"></script>
 <script>
 //JavaScript代码区域
-/*layui.use('element', function(){
-  var element = layui.element;
-  
-});*/
 
 layui.use(['element','jquery'], function(){
-  function buildLeftMenu(result){
-    //var ul=$("<ul lay-filter='test'></ul>")
-    var flag=true
-    $.each(result,function (index, obj) {
-      var li = $("<li></li>")
-      if (flag=true){
-        li.addClass("layui-nav-item layui-nav-itemed");
-        flag=false;
-      }
-      else {
-      li.addClass("layui-nav-item");
-      }
-      var a=$("<a href='javascript:'></a>").append(obj.name);
-      $(a).appendTo(li)
-      var dl=$("<dl></dl>").addClass("layui-nav-child")
 
+
+  var element = layui.element;
+  var $=layui.jquery;
+
+  //生成左侧菜单
+  function buildLeftMenu(result){
+    $.each(result,function (index, obj) {
+      var li = $("<li style></li>")
+      //第一个菜单展开
+      if (index == 1){
+        li.addClass("layui-nav-item layui-nav-itemed");
+      }
+      //其余菜单关闭
+      else {
+        li.addClass("layui-nav-item");
+      }
+      //添加一级菜单
+      var a=$("<a href='javascript:'></a>").append(obj.name);
+      var span=$("<span ></span>").addClass("layui-nav-more")
+      $(span).appendTo(a)
+      $(a).appendTo(li)
+
+      var dl=$("<dl></dl>").addClass("layui-nav-child")
+      //添加二级菜单
       $.each(obj.secondMenu,function (index, obj) {
-        console.log(obj.name)
         var dd=$("<dd></dd>")
         var a2=$("<a href='javascript:'></a>").append(obj.name)
         $(a2).appendTo(dd)
@@ -138,11 +136,8 @@ layui.use(['element','jquery'], function(){
       })
       li.appendTo("#leftMenu")
     })
+    element.render("nav");
   }
-  var element = layui.element;
-  var $=layui.jquery;
-  var baidu_id=1;
-  var google_id=2;
 
   $(document).ready(function(){
     init();
@@ -154,6 +149,7 @@ layui.use(['element','jquery'], function(){
       success:function (result) {
         buildLeftMenu(result)
       }
+
     })
   };
 
