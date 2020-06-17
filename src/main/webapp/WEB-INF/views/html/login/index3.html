@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>权益平台</title>
-    <link rel="stylesheet" href="../../../../resources/common/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href=" https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/css/layui.css">
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
@@ -40,7 +40,7 @@
     </div>
 
     <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll ">
+        <div class="layui-side-scroll " >
 
 
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
@@ -73,34 +73,20 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div class="layui-tab" lay-filter="context" lay-allowClose="true" >
-            <ul class="layui-tab-title">
-                <!--
-                     *********
-                     动态生成标签页
-                     *********
-                     -->
-            </ul>
-            <div class="layui-tab-content" style="height: 450px">
+        <div class="main_right layui-tab-content" id="context" lay-filter="context">
                 <div class="layui-tab-item layui-show" >
-                    <!--
-                    *********
-                    动态生成iframe页面
-                    *********
-                    -->
+
                 </div>
-            </div>
         </div>
-
-
-
+            <!--<iframe frameborder="0" scrolling="yes" style="width: 100%" src="" id="aa">
+            </iframe>-->
+        </div>
     </div>
-</div>
 
-<div class="layui-footer">
-    <!-- 底部固定区域 -->
-    © layui.com - 底部固定区域
-</div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
 </div>
 <!--<script src=" https://heerey525.github.io/layui-v2.4.3/layui-v2.4.5/layui.js"></script>-->
 <script src=" ../../../../resources/common/layui/layui.js"></script>
@@ -117,7 +103,7 @@
             $.each(result, function (index, obj) {
                 var li = $("<li style></li>")
                 //第一个菜单展开
-                if (index == 1) {
+                if (index3 == 1) {
                     li.addClass("layui-nav-item layui-nav-itemed");
                 }
                 //其余菜单关闭
@@ -134,13 +120,9 @@
                 var dl = $("<dl></dl>").addClass("layui-nav-child")
                 //添加二级菜单
                 $.each(obj.secondMenu, function (index, obj) {
-                    //随机tab_id
-                    var x = 1000;//上限
-                    var y = 0; //下限
-                    var rand = parseInt(Math.random() * (x - y + 1) + y);
                     var dd = $("<dd>  </dd>")
                     var a2 = $("<a></a>")
-                    $(a2).attr("data-src", obj.page_url).attr("tab_id",rand).append(obj.name).appendTo(dd)
+                    $(a2).attr("data-src", obj.page_url).append(obj.name).appendTo(dd)
                     dd.appendTo(dl)
                     dl.appendTo(li)
                 })
@@ -151,25 +133,21 @@
 
         $(function () {
             $(document).on("click", "dd a", function () {
-                var layid = $(this).attr("tab_id");
-                var address = $(this).attr("data-src");
-                var title=$(this).text()
-                console.log(address);
-
-                if ($("li[lay-id="+layid+"]").length >0){
-                    console.log($("li[lay-id="+layid+"]"))
-                    element.tabChange('context', layid);
-                }
-                else {
-                    element.tabAdd('context', {
-                        title: title
-                        , content: "<iframe frameborder='0' width='100%' height='450' src='" + address + "'></iframe>",
-                        id: layid
-                    });
-                    element.tabChange('context', layid);
-                }
-
+               var address = $(this).attr("data-src");
+               console.log(address);
+               // $("iframe").attr("src", address);
+                element.tabAdd('context', {
+                    title: this.content
+                    ,content: '<iframe   src="http://www.baidu.com"width="1300" height="600" id="aa"></ifreame>' //支持传入html
+                });
+                //$("#aa").attr("src", address)
             })
+            //获取src值
+           /* var frame = $("#aa");
+
+            var frameheight = $(document).height();
+            console.log(frameheight);
+            frame.css("height", frameheight);*/
 
         });
 

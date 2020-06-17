@@ -49,6 +49,5 @@ public class IndexController extends BaseController {
         //System.out.println(menuMap.toString());
         List<Object> list = new ArrayList<>(menuMap.values());
         return list;
-
     }
 }
